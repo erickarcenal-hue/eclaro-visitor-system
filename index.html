@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eclaro Academy - Visitor Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container py-4">
+        <!-- Clean Header Section -->
+        <div class="text-center mb-4">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230d6efd'/><text x='50%' y='55%' font-size='22' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='middle'>EA</text></svg>" alt="Eclaro Logo" style="height: 90px;" class="mb-2">
+
+
+
+            <h2 class="text-primary fw-bold mb-0">Eclaro Academy</h2>
+            <p class="text-muted fs-6">Visitor Management System</p>
+        </div>
+
+        <!-- Visitor Registration Form -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Visitor Registration Form</h5>
+            </div>
+            <div class="card-body">
+                <form action="/register" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g. Juan Cruz" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Purpose of Visit</label>
+                        <input type="text" name="purpose" class="form-control" placeholder="e.g. Inquiry, Meeting" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Person / Department to Visit</label>
+                        <input type="text" name="person_to_visit" class="form-control" placeholder="e.g. Sir Santos / Registrar" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Check In Visitor</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Visitor Logs Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Today's Visitor Logs</h5>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Purpose</th>
+                            <th>Person to Visit</th>
+                            <th>Time In</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visitor in visitors %}
+                        <tr>
+                            <td>{{ visitor.id }}</td>
+                            <td><strong>{{ visitor.name }}</strong></td>
+                            <td>{{ visitor.purpose }}</td>
+                            <td>{{ visitor.person_to_visit }}</td>
+                            <td>{{ visitor.check_in }}</td>
+                            <td>
+                                {% if visitor.status == 'Inside Campus' %}
+                                    <span class="badge bg-warning text-dark">Inside Campus</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Checked Out</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if visitor.status == 'Inside Campus' %}
+                                    <a href="/checkout/{{ visitor.id }}" class="btn btn-sm btn-danger">Check Out</a>
+                                {% else %}
+                                    <button class="btn btn-sm btn-secondary" disabled>Done</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
