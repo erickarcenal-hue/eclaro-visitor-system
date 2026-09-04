@@ -10,6 +10,9 @@ USERS = {
     "registrar": "registrar123"
 }
 
+# Temporary List to store visitors (In-memory storage)
+VISITOR_LOGS = []
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -37,6 +40,9 @@ def add_visitor():
         "qr_url": qr_url
     }
 
+    # I-save sa listahan para makita sa dashboard
+    VISITOR_LOGS.insert(0, visitor_data)
+
     return render_template('index.html', success=True, visitor=visitor_data)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -45,7 +51,6 @@ def login():
         username = request.form.get('username', '').strip().lower()
         password = request.form.get('password', '').strip()
 
-        # Check if user exists and password matches
         if username in USERS and USERS[username] == password:
             session['logged_in'] = True
             session['user'] = username
@@ -61,15 +66,68 @@ def admin_dashboard():
         return redirect(url_for('login'))
     
     current_user = session.get('user', 'Staff').capitalize()
+    
+    # Bumuo tayo ng HTML table para makita ang listahan ng mga nag-check-in
+    rows = ""
+    if not VISITOR_LOGS:
+        rows = "<tr><td colspan='6' style='text-align:center; padding: 20px; color: #94a3b8;'>No visitors checked in yet.</td></tr>"
+    else:
+        for v in VISITOR_LOGS:
+            rows += f"""
+            <tr style="border-bottom: 1px solid #1e293b;">
+                <td style="padding: 12px; color: #8CC63F; font-weight: 600;">{v['checkin_date']}<br><span style="font-size: 11px; color: #94a3b8;">{v['checkin_time']}</span></td>
+                <td style="padding: 12px; font-weight: 600; color: white;">{v['name']}</td>
+                <td style="padding: 12px; color: #cbd5e1;">{v['contact']}</td>
+                <td style="padding: 12px; color: #cbd5e1;">{v['purpose']}</td>
+                <td style="padding: 12px; color: #cbd5e1;">{v['person_to_visit']}</td>
+                <td style="padding: 12px;"><span style="background: rgba(140, 198, 63, 0.2); color: #8CC63F; padding: 4px 10px; border-radius: 20px; font-size: 11px;">Checked-in</span></td>
+            </tr>
+            """
+
     return f"""
-    <div style="font-family:sans-serif; padding: 40px; background-color: #031137; color: white; min-height: 100vh;">
-        <h1 style="color: #8CC63F;">Eclaro Staff Dashboard (SY 2026–2027)</h1>
-        <p>Welcome, <strong>{current_user}</strong>!</p>
-        <hr style="border-color: #334155;">
-        <p>Status: Active Staff Session</p>
-        <br>
-        <a href='/logout' style="color: #8CC63F; text-decoration: underline;">Logout</a>
-    </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Eclaro Staff Dashboard</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
+    <body style="font-family: 'Poppins', sans-serif; background-color: #031137; color: #f8fafc; padding: 30px;">
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 20px; margin-bottom: 20px;">
+                <div>
+                    <h1 style="font-size: 24px; font-weight: bold; color: white;">Eclaro Staff Dashboard</h1>
+                    <p style="font-size: 12px; color: #94a3b8;">Logged in as: <strong style="color: #8CC63F;">{current_user}</strong></p>
+                </div>
+                <div>
+                    <a href="/" style="background: #1e293b; color: white; padding: 8px 16px; border-radius: 10px; text-decoration: none; font-size: 12px; margin-right: 10px;">Home Form</a>
+                    <a href="/logout" style="background: #ef4444; color: white; padding: 8px 16px; border-radius: 10px; text-decoration: none; font-size: 12px;">Logout</a>
+                </div>
+            </div>
+
+            <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 15px; color: #cbd5e1;"><i class="fas fa-users mr-2 text-[#8CC63F]"></i> Visitor Logs History</h2>
+            
+            <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                    <thead>
+                        <tr style="background: #1e293b; color: #94a3b8; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <th style="padding: 12px;">Date & Time</th>
+                            <th style="padding: 12px;">Visitor Name</th>
+                            <th style="padding: 12px;">Contact No.</th>
+                            <th style="padding: 12px;">Purpose</th>
+                            <th style="padding: 12px;">Destination</th>
+                            <th style="padding: 12px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+    </html>
     """
 
 @app.route('/logout')
