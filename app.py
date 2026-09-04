@@ -40,7 +40,6 @@ def add_visitor():
         "qr_url": qr_url
     }
 
-    # I-save sa listahan para makita sa dashboard
     VISITOR_LOGS.insert(0, visitor_data)
 
     return render_template('index.html', success=True, visitor=visitor_data)
