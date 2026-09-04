@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Academy - Visitor Management System</title>
+    <title>Eclaro - Visitor Management System</title>
+    <link rel="icon" type="image/png" href="https://www.eclaro.com/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,267 +15,117 @@
         .bg-eclaro-lime { background-color: #8CC63F; }
         .text-eclaro-lime { color: #8CC63F; }
         .border-eclaro-lime { border-color: #8CC63F; }
-        .hover-eclaro-lime:hover { background-color: #7ab332; }
     </style>
 </head>
 <body class="bg-eclaro-navy min-h-screen flex flex-col justify-between text-slate-100">
 
-    <!-- Header / Navbar -->
     <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-800/80 backdrop-blur-md">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
             <span class="text-2xl font-black text-white tracking-widest font-serif-title">E<span class="text-eclaro-lime">C</span>LARO</span>
+            <span class="hidden sm:inline-block text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">Visitor System (SY 2026–2027)</span>
         </div>
-        <a href="/login" class="text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl font-medium border border-slate-700 transition-all">
-            Staff Access
-        </a>
+        <div>
+            <a href="/login" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl font-medium border border-slate-700 transition-all flex items-center gap-1.5">
+                <i class="fas fa-lock text-eclaro-lime"></i> Staff Login
+            </a>
+        </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow flex items-center justify-center p-4 my-6">
-        <div class="w-full max-w-md space-y-6">
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
 
-            <!-- Hero Text Header -->
-            <div class="text-center space-y-2">
-                <h1 class="text-2xl sm:text-3xl font-bold font-serif-title text-white tracking-tight">
-                    the <span class="text-white underline decoration-eclaro-lime decoration-4">Right People</span> are the Answer <span class="text-eclaro-lime">®</span>
-                </h1>
-                <p class="text-xs text-slate-300 font-light">
-                    Eclaro Academy, Inc. • Visitor Management System (SY 2026–2027)
-                </p>
-            </div>
+            {% if success %}
+                <div class="text-center space-y-4">
+                    <div class="w-14 h-14 bg-eclaro-lime/20 text-eclaro-lime rounded-2xl flex items-center justify-center mx-auto text-2xl border border-eclaro-lime/30">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold font-serif-title text-white">Registration Successful!</h2>
+                        <p class="text-xs text-slate-400 mt-1">Present this digital gate pass to the Eclaro security or receptionist.</p>
+                    </div>
 
-            <!-- Card Container -->
-            <div class="bg-slate-900/90 backdrop-blur-xl text-slate-100 rounded-3xl p-6 sm:p-7 shadow-2xl border border-slate-700/60 ring-1 ring-white/10 relative overflow-hidden">
-                
-                <!-- Decorative Top Accent Bar -->
-                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
+                    <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 space-y-3 text-left text-xs">
+                        <div class="flex justify-between"><span class="text-slate-400">Visitor:</span> <span class="font-semibold text-white">{{ visitor.name }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Contact:</span> <span class="font-semibold text-white">{{ visitor.contact }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Purpose:</span> <span class="font-semibold text-eclaro-lime">{{ visitor.purpose }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Host / To Visit:</span> <span class="font-semibold text-white">{{ visitor.person_to_visit }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Date & Time:</span> <span class="font-semibold text-slate-300">{{ visitor.checkin_date }} | {{ visitor.checkin_time }}</span></div>
+                    </div>
 
-                {% if success %}
-                    <!-- QR CODE VISITOR PASS DISPLAY -->
-                    <div class="text-center space-y-5 pt-2">
-                        <div class="inline-flex items-center justify-center w-14 h-14 bg-eclaro-lime/20 text-eclaro-lime rounded-full text-2xl border border-eclaro-lime/40">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold font-serif-title text-white">Registration Complete</h2>
-                            <p class="text-xs text-slate-400 mt-1">Please present this QR Pass and your <strong class="text-white">School ID / Valid ID</strong> at the Lobby.</p>
-                        </div>
+                    <div class="bg-white p-4 rounded-2xl inline-block shadow-lg border-4 border-slate-800">
+                        <img src="{{ visitor.qr_url }}" alt="Visitor QR Code" class="w-40 h-40 mx-auto">
+                    </div>
 
-                        <!-- QR Pass Image Box -->
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 inline-block shadow-lg">
-                            <img src="{{ visitor.qr_url }}" alt="Eclaro Visitor Pass" class="w-48 h-48 mx-auto">
-                        </div>
-
-                        <!-- Visitor Summary with Date & Time -->
-                        <div class="text-left bg-slate-800/80 p-4 rounded-2xl border border-slate-700/80 text-xs space-y-2.5">
-                            <!-- Check-in Timestamp Badge -->
-                            <div class="flex items-center justify-between pb-2 border-b border-slate-700/60">
-                                <span class="text-[11px] text-slate-400"><i class="fas fa-calendar-alt text-eclaro-lime mr-1"></i> Check-in Date:</span>
-                                <span class="font-semibold text-eclaro-lime text-xs">{{ visitor.checkin_date if visitor.checkin_date else "Sep 04, 2026" }}</span>
-                            </div>
-                            <div class="flex items-center justify-between pb-2 border-b border-slate-700/60">
-                                <span class="text-[11px] text-slate-400"><i class="fas fa-clock text-eclaro-lime mr-1"></i> Check-in Time:</span>
-                                <span class="font-semibold text-eclaro-lime text-xs">{{ visitor.checkin_time if visitor.checkin_time else "12:28 PM" }}</span>
-                            </div>
-
-                            <p><strong class="text-slate-400">Visitor Name:</strong> <span class="font-bold text-white text-sm block">{{ visitor.name }}</span></p>
-                            <p><strong class="text-slate-400">Contact Number:</strong> <span class="text-slate-200">{{ visitor.contact }}</span></p>
-                            <p><strong class="text-slate-400">Purpose:</strong> <span class="text-slate-200">{{ visitor.purpose }}</span></p>
-                            <p><strong class="text-slate-400">Destination:</strong> <span class="text-slate-200">{{ visitor.person_to_visit }}</span></p>
-                        </div>
-
-                        <a href="/" class="block w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3.5 rounded-2xl text-xs transition-all shadow-md border border-slate-700">
+                    <div>
+                        <a href="/" class="w-full block bg-slate-800 hover:bg-slate-700 text-white font-medium py-2.5 rounded-xl text-xs transition-all border border-slate-700">
                             Register Another Visitor
                         </a>
                     </div>
+                </div>
+            {% else %}
+                <div class="mb-6">
+                    <h1 class="text-xl font-bold font-serif-title text-white">Visitor Registration</h1>
+                    <p class="text-xs text-slate-400 mt-1">Please fill out your details prior to entry.</p>
+                </div>
 
-                {% else %}
-
-                    <!-- REGISTRATION FORM -->
-                    <div class="mb-5 text-center pt-1">
-                        <h2 class="text-xl font-bold text-white font-serif-title tracking-wide">Visitor Check-in</h2>
-                        <p class="text-xs text-slate-400 mt-1">Fill out the details below to receive your Digital Gate Pass.</p>
+                <form action="/add" method="POST" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-user"></i></span>
+                            <input type="text" name="name" required placeholder="e.g. Juan Dela Cruz" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                        </div>
                     </div>
 
-                    <!-- Error Banner -->
-                    <div id="error-alert" class="hidden mb-4 p-3.5 bg-rose-500/20 border border-rose-500/50 rounded-2xl flex items-center gap-2.5 text-rose-300 text-xs">
-                        <i class="fas fa-exclamation-circle text-rose-400 text-base"></i>
-                        <span id="error-message">Please fill in all required fields.</span>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Contact Number</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-phone"></i></span>
+                            <input type="text" name="contact" required placeholder="e.g. 09123456789" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                        </div>
                     </div>
 
-                    <form action="/add" method="POST" onsubmit="return validateForm(event)" class="space-y-4">
-                        
-                        <!-- Hidden Inputs for Check-in Timestamp -->
-                        <input type="hidden" id="checkin_date" name="checkin_date" value="">
-                        <input type="hidden" id="checkin_time" name="checkin_time" value="">
-
-                        <!-- Full Name -->
-                        <div>
-                            <label class="text-xs font-semibold text-slate-300">Full Name</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
-                                <i class="fas fa-user text-eclaro-lime text-sm"></i>
-                                <input type="text" id="name" name="name" placeholder="e.g. Juan Dela Cruz" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
-                            </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Purpose of Visit</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-clipboard-question"></i></span>
+                            <select name="purpose" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white focus:outline-none focus:border-[#8CC63F] transition-all">
+                                <option value="" disabled selected>Select purpose...</option>
+                                <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
+                                <option value="Meeting / Appointment">Meeting / Appointment</option>
+                                <option value="Delivery / Supplier">Delivery / Supplier</option>
+                                <option value="Maintenance / Repair">Maintenance / Repair</option>
+                                <option value="Others">Others</option>
+                            </select>
                         </div>
+                    </div>
 
-                        <!-- Mobile Contact Number -->
-                        <div>
-                            <label class="text-xs font-semibold text-slate-300">Mobile Contact Number</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
-                                <i class="fas fa-mobile-alt text-eclaro-lime text-sm"></i>
-                                <input type="tel" id="contact" name="contact" maxlength="11" placeholder="09123456789" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
-                            </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Person to Visit / Department</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-building-user"></i></span>
+                            <input type="text" name="person_to_visit" required placeholder="e.g. Registrar Office / Dean" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
                         </div>
+                    </div>
 
-                        <!-- Purpose Dropdown Trigger -->
-                        <div>
-                            <label class="text-xs font-semibold text-slate-300">Purpose of Visit</label>
-                            <input type="hidden" id="purpose" name="purpose" value="">
-                            <div onclick="toggleModal(true)" class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:border-eclaro-lime transition-all">
-                                <div class="flex items-center gap-3">
-                                    <i class="fas fa-clipboard-list text-eclaro-lime text-sm"></i>
-                                    <span id="purpose-label" class="text-sm text-slate-500">Select Purpose</span>
-                                </div>
-                                <i class="fas fa-chevron-down text-slate-400 text-xs"></i>
-                            </div>
-                        </div>
+                    <input type="hidden" name="checkin_date" id="checkin_date">
+                    <input type="hidden" name="checkin_time" id="checkin_time">
 
-                        <!-- Target Person/Department -->
-                        <div>
-                            <label class="text-xs font-semibold text-slate-300">Person / Department to Visit</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
-                                <i class="fas fa-building text-eclaro-lime text-sm"></i>
-                                <input type="text" id="person_to_visit" name="person_to_visit" placeholder="Registrar / Cashier" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
-                            </div>
-                        </div>
+                    <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-lg shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-qrcode"></i> Generate Gate Pass
+                    </button>
+                </form>
 
-                        <!-- ID Requirement Notice -->
-                        <div class="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-start gap-3">
-                            <i class="fas fa-id-card text-amber-400 text-base mt-0.5"></i>
-                            <p class="text-[11px] text-amber-200/90 leading-relaxed">
-                                <strong class="text-amber-300">Requirement:</strong> Please prepare a <span class="underline">School ID or Valid ID</span> for verification at the entrance.
-                            </p>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="w-full bg-eclaro-lime hover-eclaro-lime text-eclaro-navy font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-95 text-xs uppercase tracking-wider mt-2 flex items-center justify-center gap-2">
-                            <span>Get Visitor QR Pass</span>
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </button>
-                    </form>
-
-                {% endif %}
-
-            </div>
+                <script>
+                    const now = new Date();
+                    document.getElementById('checkin_date').value = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    document.getElementById('checkin_time').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                </script>
+            {% endif %}
         </div>
     </main>
 
-    <!-- Custom Modal Dropdown -->
-    <div id="purpose-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-all duration-300">
-        <div class="bg-slate-900 border border-slate-700/80 rounded-3xl p-6 w-full max-w-sm space-y-4 shadow-2xl relative">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="text-base font-bold text-white flex items-center gap-2">
-                    <i class="fas fa-list-ul text-eclaro-lime"></i> Select Purpose
-                </h3>
-                <button type="button" onclick="toggleModal(false)" class="text-slate-400 hover:text-white text-lg">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="space-y-2.5">
-                <div onclick="selectPurpose('Inquiry / Enrollment')" class="bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
-                    <span>Inquiry / Enrollment</span>
-                </div>
-                <div onclick="selectPurpose('Document Request / Registrar')" class="bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
-                    <span>Document Request / Registrar</span>
-                </div>
-                <div onclick="selectPurpose('Parent-Teacher Conference')" class="bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
-                    <span>Parent-Teacher Conference</span>
-                </div>
-                <div onclick="selectPurpose('Official Delivery / Supplier')" class="bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
-                    <span>Official Delivery / Supplier</span>
-                </div>
-                <div onclick="selectPurpose('Other Official Business')" class="bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
-                    <span>Other Official Business</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script for Live Date/Time Capture & Modal -->
-    <script>
-        // Set live Date and Time on Page Load
-        window.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            
-            // Format Date: e.g. Sep 04, 2026
-            const optionsDate = { month: 'short', day: '2-digit', year: 'numeric' };
-            const formattedDate = now.toLocaleDateString('en-US', optionsDate);
-            
-            // Format Time: e.g. 12:28 PM
-            const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
-            const formattedTime = now.toLocaleTimeString('en-US', optionsTime);
-
-            document.getElementById('checkin_date').value = formattedDate;
-            document.getElementById('checkin_time').value = formattedTime;
-        });
-
-        function toggleModal(show) {
-            const modal = document.getElementById('purpose-modal');
-            if(show) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
-        }
-
-        function selectPurpose(val) {
-            document.getElementById('purpose').value = val;
-            const label = document.getElementById('purpose-label');
-            label.innerText = val;
-            label.classList.remove('text-slate-500');
-            label.classList.add('text-white', 'font-medium');
-            toggleModal(false);
-        }
-
-        function validateForm(e) {
-            const name = document.getElementById('name').value.trim();
-            const contact = document.getElementById('contact').value.trim();
-            const purpose = document.getElementById('purpose').value;
-            const person = document.getElementById('person_to_visit').value.trim();
-            
-            const errorAlert = document.getElementById('error-alert');
-            const errorMsg = document.getElementById('error-message');
-
-            const phonePattern = /^09\d{9}$/;
-            const namePattern = /^[A-Za-z\s]{3,}$/;
-
-            if (!name || !contact || !purpose || !person) {
-                e.preventDefault();
-                errorMsg.innerText = "Please fill out all required fields.";
-                errorAlert.classList.remove('hidden');
-                return false;
-            }
-
-            if (!namePattern.test(name)) {
-                e.preventDefault();
-                errorMsg.innerText = "Please enter a valid full name (letters only).";
-                errorAlert.classList.remove('hidden');
-                return false;
-            }
-
-            if (!phonePattern.test(contact)) {
-                e.preventDefault();
-                errorMsg.innerText = "Mobile number must be an 11-digit PH number starting with 09.";
-                errorAlert.classList.remove('hidden');
-                return false;
-            }
-
-            errorAlert.classList.add('hidden');
-            return true;
-        }
-    </script>
-
-    <!-- Footer -->
     <footer class="w-full text-center py-4 border-t border-slate-800/80 text-[11px] text-slate-400">
         <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
