@@ -69,6 +69,7 @@
                         <div class="text-left bg-slate-800/80 p-4 rounded-2xl border border-slate-700/80 text-xs space-y-2">
                             <p><strong class="text-slate-400">Visitor Name:</strong> <span class="font-bold text-white text-sm block">{{ visitor.name }}</span></p>
                             <p><strong class="text-slate-400">Contact Number:</strong> <span class="text-slate-200">{{ visitor.contact }}</span></p>
+                            <p><strong class="text-slate-400">Purpose:</strong> <span class="text-slate-200">{{ visitor.purpose }}</span></p>
                             <p><strong class="text-slate-400">Destination:</strong> <span class="text-slate-200">{{ visitor.person_to_visit }}</span></p>
                         </div>
 
@@ -85,44 +86,48 @@
                         <p class="text-xs text-slate-400 mt-1">Fill out the details below to receive your Digital Gate Pass.</p>
                     </div>
 
-                    <!-- Sleek Error Notification Banner -->
+                    <!-- Error Banner -->
                     <div id="error-alert" class="hidden mb-4 p-3.5 bg-rose-500/20 border border-rose-500/50 rounded-2xl flex items-center gap-2.5 text-rose-300 text-xs">
                         <i class="fas fa-exclamation-circle text-rose-400 text-base"></i>
                         <span id="error-message">Please fill in all required fields.</span>
                     </div>
 
                     <form action="/add" method="POST" onsubmit="return validateForm(event)" class="space-y-4">
-                        <!-- Name Field -->
+                        <!-- Full Name -->
                         <div>
                             <label class="text-xs font-semibold text-slate-300">Full Name</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent transition-all">
+                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
                                 <i class="fas fa-user text-eclaro-lime text-sm"></i>
                                 <input type="text" id="name" name="name" placeholder="e.g. Juan Dela Cruz" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
                             </div>
                         </div>
 
-                        <!-- Contact Field -->
+                        <!-- Mobile Contact Number -->
                         <div>
                             <label class="text-xs font-semibold text-slate-300">Mobile Contact Number</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent transition-all">
+                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
                                 <i class="fas fa-mobile-alt text-eclaro-lime text-sm"></i>
                                 <input type="tel" id="contact" name="contact" maxlength="11" placeholder="09123456789" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
                             </div>
                         </div>
 
-                        <!-- Purpose Field -->
+                        <!-- Custom Designed Purpose Dropdown Button -->
                         <div>
                             <label class="text-xs font-semibold text-slate-300">Purpose of Visit</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent transition-all">
-                                <i class="fas fa-clipboard-list text-eclaro-lime text-sm"></i>
-                                <input type="text" id="purpose" name="purpose" placeholder="Inquiry / Document Submission" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
+                            <input type="hidden" id="purpose" name="purpose" value="">
+                            <div onclick="toggleModal(true)" class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center justify-between cursor-pointer hover:border-eclaro-lime transition-all">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-clipboard-list text-eclaro-lime text-sm"></i>
+                                    <span id="purpose-label" class="text-sm text-slate-500">Select Purpose</span>
+                                </div>
+                                <i class="fas fa-chevron-down text-slate-400 text-xs"></i>
                             </div>
                         </div>
 
-                        <!-- Target Person/Dept -->
+                        <!-- Target Person/Department -->
                         <div>
                             <label class="text-xs font-semibold text-slate-300">Person / Department to Visit</label>
-                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent transition-all">
+                            <div class="mt-1.5 bg-slate-800/90 border border-slate-700 rounded-2xl p-3.5 flex items-center gap-3 focus-within:ring-2 focus-within:ring-eclaro-lime transition-all">
                                 <i class="fas fa-building text-eclaro-lime text-sm"></i>
                                 <input type="text" id="person_to_visit" name="person_to_visit" placeholder="Registrar / Cashier" class="bg-transparent text-sm w-full focus:outline-none text-white placeholder-slate-500">
                             </div>
@@ -149,12 +154,74 @@
         </div>
     </main>
 
-    <!-- Custom English Validation Script -->
+    <!-- BEAUTIFUL ECLARO CUSTOM POPUP MODAL (PANG-ALIS SA MADILIM NA ANDROID DIALOG) -->
+    <div id="purpose-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-all duration-300">
+        <div class="bg-slate-900 border border-slate-700/80 rounded-3xl p-6 w-full max-w-sm space-y-4 shadow-2xl relative">
+            
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fas fa-list-ul text-eclaro-lime"></i> Select Purpose
+                </h3>
+                <button type="button" onclick="toggleModal(false)" class="text-slate-400 hover:text-white text-lg">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- List of Custom Options -->
+            <div class="space-y-2.5">
+                <div onclick="selectPurpose('Inquiry / Enrollment')" class="option-item bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
+                    <span>Inquiry / Enrollment</span>
+                    <i class="fas fa-circle-check opacity-0 transition-opacity"></i>
+                </div>
+
+                <div onclick="selectPurpose('Document Request / Registrar')" class="option-item bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
+                    <span>Document Request / Registrar</span>
+                    <i class="fas fa-circle-check opacity-0 transition-opacity"></i>
+                </div>
+
+                <div onclick="selectPurpose('Parent-Teacher Conference')" class="option-item bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
+                    <span>Parent-Teacher Conference</span>
+                    <i class="fas fa-circle-check opacity-0 transition-opacity"></i>
+                </div>
+
+                <div onclick="selectPurpose('Official Delivery / Supplier')" class="option-item bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
+                    <span>Official Delivery / Supplier</span>
+                    <i class="fas fa-circle-check opacity-0 transition-opacity"></i>
+                </div>
+
+                <div onclick="selectPurpose('Other Official Business')" class="option-item bg-slate-800/80 hover:bg-eclaro-lime hover:text-slate-900 text-slate-200 p-3.5 rounded-2xl text-xs font-semibold flex items-center justify-between cursor-pointer border border-slate-700 transition-all">
+                    <span>Other Official Business</span>
+                    <i class="fas fa-circle-check opacity-0 transition-opacity"></i>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Handlers for Custom Modal and Form Validation -->
     <script>
+        function toggleModal(show) {
+            const modal = document.getElementById('purpose-modal');
+            if(show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function selectPurpose(val) {
+            document.getElementById('purpose').value = val;
+            const label = document.getElementById('purpose-label');
+            label.innerText = val;
+            label.classList.remove('text-slate-500');
+            label.classList.add('text-white', 'font-medium');
+            toggleModal(false);
+        }
+
         function validateForm(e) {
             const name = document.getElementById('name').value.trim();
             const contact = document.getElementById('contact').value.trim();
-            const purpose = document.getElementById('purpose').value.trim();
+            const purpose = document.getElementById('purpose').value;
             const person = document.getElementById('person_to_visit').value.trim();
             
             const errorAlert = document.getElementById('error-alert');
