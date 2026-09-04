@@ -3,54 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Visitor Logs</title>
+    <title>Eclaro Staff Dashboard - Visitor Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style> * { font-family: 'Poppins', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .font-serif-title { font-family: 'Merriweather', serif; }
+        .bg-eclaro-navy { background-color: #031137; }
+        .bg-eclaro-lime { background-color: #8CC63F; }
+        .text-eclaro-lime { color: #8CC63F; }
+        .border-eclaro-lime { border-color: #8CC63F; }
+        .hover-eclaro-lime:hover { background-color: #7ab332; }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4">
+<body class="bg-eclaro-navy min-h-screen flex flex-col justify-between text-slate-100">
 
-    <div class="max-w-4xl mx-auto space-y-4">
-        <div class="bg-white p-5 rounded-2xl shadow-sm border flex justify-between items-center">
-            <div>
-                <h1 class="text-lg font-bold text-slate-800">Visitor Log Dashboard</h1>
-                <p class="text-xs text-slate-500">Logged in as: <span class="font-bold text-teal-600">{{ user }}</span></p>
+    <!-- Navbar / Header -->
+    <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-800/80 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl font-black text-white tracking-widest font-serif-title">E<span class="text-eclaro-lime">C</span>LARO</span>
+            <span class="hidden sm:inline-block text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">Staff Portal (SY 2026–2027)</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="text-right hidden md:block">
+                <p class="text-xs font-semibold text-white">Logged in as: <span class="text-eclaro-lime uppercase">{{ current_user }}</span></p>
             </div>
-            <a href="/logout" class="text-xs bg-red-50 text-red-600 font-semibold px-4 py-2 rounded-xl hover:bg-red-100">Logout</a>
+            <a href="/" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl font-medium border border-slate-700 transition-all flex items-center gap-1.5">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/logout" class="text-xs bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 px-3.5 py-2 rounded-xl font-medium border border-rose-500/30 transition-all flex items-center gap-1.5">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-6 my-2">
+
+        <!-- Welcome Banner & Quick Stats -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900/80 p-6 rounded-3xl border border-slate-700/60 shadow-xl backdrop-blur-xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold font-serif-title text-white">Welcome back, {{ current_user }}! 👋</h1>
+                <p class="text-xs text-slate-400 mt-1">Monitor real-time visitors checking in at Eclaro Academy gates.</p>
+            </div>
+            <!-- Stats Counter Pill -->
+            <div class="bg-slate-800/90 border border-slate-700 px-5 py-3 rounded-2xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-eclaro-lime/20 text-eclaro-lime flex items-center justify-center text-lg">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Visitors Today</p>
+                    <p class="text-lg font-bold text-white">{{ visitors|length }}</p>
+                </div>
+            </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <!-- Visitor Logs Table Container -->
+        <div class="bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-700/60 shadow-2xl overflow-hidden">
+            
+            <!-- Table Header Bar -->
+            <div class="p-5 sm:p-6 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-base font-bold text-white font-serif-title flex items-center gap-2">
+                        <i class="fas fa-clipboard-list text-eclaro-lime"></i> Visitor Logs History
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">List of all registered visitors awaiting verification.</p>
+                </div>
+            </div>
+
+            <!-- Responsive Table -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-slate-500 uppercase border-b">
-                        <tr>
-                            <th class="p-3">Full Name</th>
-                            <th class="p-3">Contact</th>
-                            <th class="p-3">Purpose</th>
-                            <th class="p-3">To Visit</th>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800/60 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-800">
+                            <th class="py-4 px-6 font-semibold">Date & Time</th>
+                            <th class="py-4 px-6 font-semibold">Visitor Name</th>
+                            <th class="py-4 px-6 font-semibold">Contact No.</th>
+                            <th class="py-4 px-6 font-semibold">Purpose</th>
+                            <th class="py-4 px-6 font-semibold">Destination</th>
+                            <th class="py-4 px-6 font-semibold">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        {% if visitors %}
-                            {% for visitor in visitors %}
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-3 font-semibold text-slate-800">{{ visitor.name }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.contact }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.purpose }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.person_to_visit }}</td>
+                    <tbody class="divide-y divide-slate-800/60 text-xs text-slate-200">
+                        {% if not visitors %}
+                            <tr>
+                                <td colspan="6" class="text-center py-12 text-slate-500">
+                                    <div class="space-y-2">
+                                        <i class="fas fa-folder-open text-3xl text-slate-600"></i>
+                                        <p class="text-sm">No visitors checked in yet.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            {% for v in visitors %}
+                            <tr class="hover:bg-slate-800/40 transition-colors">
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="font-semibold text-eclaro-lime block">{{ v.checkin_date }}</span>
+                                    <span class="text-[11px] text-slate-400">{{ v.checkin_time }}</span>
+                                </td>
+                                <td class="py-4 px-6 font-semibold text-white">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 font-bold text-[10px]">
+                                            {{ v.name[0]|upper }}
+                                        </div>
+                                        {{ v.name }}
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-slate-300">{{ v.contact }}</td>
+                                <td class="py-4 px-6">
+                                    <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-slate-300 font-medium">
+                                        {{ v.purpose }}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-slate-300 font-medium">{{ v.person_to_visit }}</td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1.5 bg-eclaro-lime/10 text-eclaro-lime border border-eclaro-lime/30 px-3 py-1 rounded-full text-[11px] font-semibold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-eclaro-lime animate-pulse"></span> Checked-in
+                                    </span>
+                                </td>
                             </tr>
                             {% endfor %}
-                        {% else %}
-                            <tr>
-                                <td colspan="4" class="p-6 text-center text-slate-400 italic">No visitors recorded today.</td>
-                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
             </div>
+
         </div>
-    </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 border-t border-slate-800/80 text-[11px] text-slate-400">
+        <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
