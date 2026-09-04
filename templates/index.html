@@ -19,6 +19,7 @@
 </head>
 <body class="bg-eclaro-navy min-h-screen flex flex-col justify-between text-slate-100">
 
+    <!-- Navbar -->
     <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-800/80 backdrop-blur-md">
         <div class="flex items-center gap-3">
             <span class="text-2xl font-black text-white tracking-widest font-serif-title">E<span class="text-eclaro-lime">C</span>LARO</span>
@@ -31,11 +32,13 @@
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
         <div class="w-full max-w-md bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
 
             {% if success %}
+                <!-- Success State / QR Display -->
                 <div class="text-center space-y-4">
                     <div class="w-14 h-14 bg-eclaro-lime/20 text-eclaro-lime rounded-2xl flex items-center justify-center mx-auto text-2xl border border-eclaro-lime/30">
                         <i class="fas fa-check"></i>
@@ -64,6 +67,7 @@
                     </div>
                 </div>
             {% else %}
+                <!-- Registration Form -->
                 <div class="mb-6">
                     <h1 class="text-xl font-bold font-serif-title text-white">Visitor Registration</h1>
                     <p class="text-xs text-slate-400 mt-1">Please fill out your details prior to entry.</p>
@@ -86,18 +90,31 @@
                         </div>
                     </div>
 
+                    <!-- Custom Purpose Selection Buttons (Replaced ugly native select dropdown) -->
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Purpose of Visit</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-clipboard-question"></i></span>
-                            <select name="purpose" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white focus:outline-none focus:border-[#8CC63F] transition-all">
-                                <option value="" disabled selected>Select purpose...</option>
-                                <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
-                                <option value="Meeting / Appointment">Meeting / Appointment</option>
-                                <option value="Delivery / Supplier">Delivery / Supplier</option>
-                                <option value="Maintenance / Repair">Maintenance / Repair</option>
-                                <option value="Others">Others</option>
-                            </select>
+                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Purpose of Visit</label>
+                        <input type="hidden" name="purpose" id="purpose_value" required>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button type="button" onclick="setPurpose(this, 'Inquiry / Enrollment')" class="purpose-btn text-left px-3.5 py-2.5 rounded-xl text-xs bg-slate-800/80 border border-slate-700 text-slate-300 hover:border-[#8CC63F] transition-all flex items-center justify-between">
+                                <span><i class="fas fa-circle-question text-slate-500 mr-2"></i> Inquiry / Enrollment</span>
+                                <i class="fas fa-check text-[#8CC63F] opacity-0 check-icon"></i>
+                            </button>
+                            <button type="button" onclick="setPurpose(this, 'Meeting / Appointment')" class="purpose-btn text-left px-3.5 py-2.5 rounded-xl text-xs bg-slate-800/80 border border-slate-700 text-slate-300 hover:border-[#8CC63F] transition-all flex items-center justify-between">
+                                <span><i class="fas fa-handshake text-slate-500 mr-2"></i> Meeting / Appointment</span>
+                                <i class="fas fa-check text-[#8CC63F] opacity-0 check-icon"></i>
+                            </button>
+                            <button type="button" onclick="setPurpose(this, 'Delivery / Supplier')" class="purpose-btn text-left px-3.5 py-2.5 rounded-xl text-xs bg-slate-800/80 border border-slate-700 text-slate-300 hover:border-[#8CC63F] transition-all flex items-center justify-between">
+                                <span><i class="fas fa-box text-slate-500 mr-2"></i> Delivery / Supplier</span>
+                                <i class="fas fa-check text-[#8CC63F] opacity-0 check-icon"></i>
+                            </button>
+                            <button type="button" onclick="setPurpose(this, 'Maintenance / Repair')" class="purpose-btn text-left px-3.5 py-2.5 rounded-xl text-xs bg-slate-800/80 border border-slate-700 text-slate-300 hover:border-[#8CC63F] transition-all flex items-center justify-between">
+                                <span><i class="fas fa-tools text-slate-500 mr-2"></i> Maintenance / Repair</span>
+                                <i class="fas fa-check text-[#8CC63F] opacity-0 check-icon"></i>
+                            </button>
+                            <button type="button" onclick="setPurpose(this, 'Others')" class="purpose-btn text-left px-3.5 py-2.5 rounded-xl text-xs bg-slate-800/80 border border-slate-700 text-slate-300 hover:border-[#8CC63F] transition-all flex items-center justify-between">
+                                <span><i class="fas fa-ellipsis-h text-slate-500 mr-2"></i> Others</span>
+                                <i class="fas fa-check text-[#8CC63F] opacity-0 check-icon"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -109,6 +126,7 @@
                         </div>
                     </div>
 
+                    <!-- Hidden fields for automatic date/time capture -->
                     <input type="hidden" name="checkin_date" id="checkin_date">
                     <input type="hidden" name="checkin_time" id="checkin_time">
 
@@ -118,6 +136,19 @@
                 </form>
 
                 <script>
+                    // Script for handling custom purpose selection buttons
+                    function setPurpose(btn, value) {
+                        document.querySelectorAll('.purpose-btn').forEach(b => {
+                            b.classList.remove('border-[#8CC63F]', 'bg-[#8CC63F]/10', 'text-white');
+                            b.classList.add('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
+                            b.querySelector('.check-icon').classList.add('opacity-0');
+                        });
+                        btn.classList.remove('bg-slate-800/80', 'border-slate-700', 'text-slate-300');
+                        btn.classList.add('border-[#8CC63F]', 'bg-[#8CC63F]/10', 'text-white');
+                        btn.querySelector('.check-icon').classList.remove('opacity-0');
+                        document.getElementById('purpose_value').value = value;
+                    }
+
                     const now = new Date();
                     document.getElementById('checkin_date').value = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     document.getElementById('checkin_time').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -126,6 +157,7 @@
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="w-full text-center py-4 border-t border-slate-800/80 text-[11px] text-slate-400">
         <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
