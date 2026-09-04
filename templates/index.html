@@ -8,187 +8,57 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Poppins', sans-serif;
-            box-sizing: border-box;
-        }
-        body {
-            background: linear-gradient(135deg, #e0f2fe 0%, #e6fffa 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 16px;
-        }
-
-        /* Container Card */
-        .main-card {
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            width: 100%;
-            max-width: 480px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Slide Views */
-        .slider-wrapper {
-            display: flex;
-            width: 200%;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .slide-view {
-            width: 50%;
-            padding: 24px;
-            box-sizing: border-box;
-        }
-
-        /* Active Tab Styling */
-        .tab-btn {
-            transition: all 0.3s ease;
-        }
-        .tab-btn.active {
-            background-color: #0d9488;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-        }
-
-        .btn-custom {
-            border-radius: 16px;
-            background-color: #0d9488;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 12px 24px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .btn-custom:active {
-            transform: scale(0.97);
-        }
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #e0f2fe 0%, #e6fffa 100%); }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="main-card">
-        
-        <!-- Header Banner -->
-        <div class="bg-gradient-to-r from-teal-600 to-blue-600 p-6 text-white text-center">
-            <h1 class="text-2xl font-bold tracking-wide">Eclaro Visitor System</h1>
-            <p class="text-xs text-teal-100 mt-1">Welcome! Please log your visit below.</p>
+    <div class="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden border border-slate-100">
+        <div class="bg-gradient-to-r from-teal-600 to-blue-600 p-6 text-white text-center relative">
+            <h1 class="text-2xl font-bold">Eclaro Visitor System</h1>
+            <p class="text-xs text-teal-100 mt-1">Please enter your details to check in.</p>
+            <a href="/login" class="absolute top-4 right-4 text-xs bg-white/20 hover:bg-white/30 text-white px-2.5 py-1 rounded-lg">Admin Login</a>
         </div>
 
-        <!-- Animated Tab Switcher -->
-        <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-center">
-            <div class="bg-slate-200/80 p-1 rounded-2xl flex w-full max-w-xs">
-                <button id="tabForm" onclick="showForm()" class="tab-btn active flex-1 py-2 text-xs font-semibold rounded-xl text-slate-600 flex items-center justify-center gap-1.5">
-                    <i class="fas fa-edit"></i> Register
-                </button>
-                <button id="tabList" onclick="showList()" class="tab-btn flex-1 py-2 text-xs font-semibold rounded-xl text-slate-600 flex items-center justify-center gap-1.5">
-                    <i class="fas fa-list-ul"></i> Today's Visitors
-                </button>
-            </div>
-        </div>
+        <div class="p-6">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="mb-4 text-xs p-3 rounded-xl bg-emerald-100 text-emerald-800 text-center font-semibold">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
 
-        <!-- Sliding Content Wrapper -->
-        <div class="slider-wrapper" id="sliderWrapper">
-            
-            <!-- VIEW 1: REGISTRATION FORM -->
-            <div class="slide-view">
-                <form action="/add" method="POST" class="space-y-3.5">
-                    <h2 class="text-base font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
-                        <i class="fas fa-user-plus text-teal-600"></i> Visitor Check-In
-                    </h2>
-                    
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
-                        <i class="fas fa-user text-slate-400 text-sm"></i>
-                        <input type="text" name="name" required placeholder="Full Name" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
-                    </div>
-
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
-                        <i class="fas fa-phone text-slate-400 text-sm"></i>
-                        <input type="tel" name="contact" required placeholder="Contact Number" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
-                    </div>
-
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
-                        <i class="fas fa-clipboard-list text-slate-400 text-sm"></i>
-                        <input type="text" name="purpose" required placeholder="Purpose of Visit" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
-                    </div>
-
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
-                        <i class="fas fa-building text-slate-400 text-sm"></i>
-                        <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
-                    </div>
-
-                    <button type="submit" class="btn-custom w-full shadow-md hover:bg-teal-700 mt-2">
-                        Check in Visitor
-                    </button>
-                </form>
-            </div>
-
-            <!-- VIEW 2: TODAY'S VISITORS LOG TABLE -->
-            <div class="slide-view">
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fas fa-users text-teal-600"></i> Today's Visitors
-                        </h2>
-                        <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Live Logs</span>
-                    </div>
-
-                    <div class="overflow-y-auto max-h-[300px] rounded-xl border border-slate-100">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-50 text-slate-500 uppercase sticky top-0 border-b">
-                                <tr>
-                                    <th class="p-2.5">Name</th>
-                                    <th class="p-2.5">Purpose</th>
-                                    <th class="p-2.5">To Visit</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100">
-                                {% if visitors %}
-                                    {% for visitor in visitors %}
-                                    <tr class="hover:bg-slate-50/80 transition-colors">
-                                        <td class="p-2.5 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
-                                        <td class="p-2.5 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
-                                        <td class="p-2.5 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                {% else %}
-                                    <tr>
-                                        <td colspan="3" class="p-6 text-center text-slate-400 italic">No visitors recorded today.</td>
-                                    </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
-                    </div>
+            <form action="/add" method="POST" class="space-y-4">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
+                    <i class="fas fa-user text-slate-400 text-sm"></i>
+                    <input type="text" name="name" required placeholder="Full Name" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
-            </div>
 
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
+                    <i class="fas fa-phone text-slate-400 text-sm"></i>
+                    <input type="tel" name="contact" required placeholder="Contact Number" class="bg-transparent text-sm w-full focus:outline-none">
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
+                    <i class="fas fa-clipboard-list text-slate-400 text-sm"></i>
+                    <input type="text" name="purpose" required placeholder="Purpose of Visit" class="bg-transparent text-sm w-full focus:outline-none">
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
+                    <i class="fas fa-building text-slate-400 text-sm"></i>
+                    <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none">
+                </div>
+
+                <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3.5 rounded-xl shadow-md transition-all active:scale-95">
+                    Check in Visitor
+                </button>
+            </form>
         </div>
-
     </div>
 
-    <!-- JavaScript for Tab Sliding Effect -->
-    <script>
-        const sliderWrapper = document.getElementById('sliderWrapper');
-        const tabForm = document.getElementById('tabForm');
-        const tabList = document.getElementById('tabList');
-
-        function showForm() {
-            sliderWrapper.style.transform = 'translateX(0%)';
-            tabForm.classList.add('active');
-            tabList.classList.remove('active');
-        }
-
-        function showList() {
-            sliderWrapper.style.transform = 'translateX(-50%)';
-            tabList.classList.add('active');
-            tabForm.classList.remove('active');
-        }
-    </script>
 </body>
 </html>
