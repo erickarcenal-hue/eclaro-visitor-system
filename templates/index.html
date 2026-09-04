@@ -13,113 +13,125 @@
             box-sizing: border-box;
         }
         body {
-            background: #eef2f3;
+            background: linear-gradient(135deg, #e0f2fe 0%, #e6fffa 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 16px;
         }
-        .container {
-            background-color: #fff;
-            border-radius: 25px;
-            box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
-            position: relative;
-            overflow: hidden;
-            width: 850px;
-            max-width: 100%;
-            min-height: 550px;
-        }
-        .form-container {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            transition: all 0.6s ease-in-out;
-        }
-        .register-container {
-            left: 0;
-            width: 50%;
-            z-index: 2;
-        }
-        .container.right-panel-active .register-container {
-            transform: translateX(100%);
-        }
-        .list-container {
-            left: 0;
-            width: 50%;
-            opacity: 0;
-            z-index: 1;
-        }
-        .container.right-panel-active .list-container {
-            transform: translateX(100%);
-            opacity: 1;
-            z-index: 5;
-            animation: show 0.6s;
-        }
-        @keyframes show {
-            0%, 49.99% {
+        
+        /* DESKTOP SLIDING LAYOUT */
+        @media (min-width: 768px) {
+            .container {
+                background-color: #fff;
+                border-radius: 25px;
+                box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+                position: relative;
+                overflow: hidden;
+                width: 850px;
+                max-width: 100%;
+                min-height: 550px;
+            }
+            .form-container {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                transition: all 0.6s ease-in-out;
+            }
+            .register-container {
+                left: 0;
+                width: 50%;
+                z-index: 2;
+            }
+            .container.right-panel-active .register-container {
+                transform: translateX(100%);
+            }
+            .list-container {
+                left: 0;
+                width: 50%;
                 opacity: 0;
                 z-index: 1;
             }
-            50%, 100% {
+            .container.right-panel-active .list-container {
+                transform: translateX(100%);
                 opacity: 1;
                 z-index: 5;
+                animation: show 0.6s;
+            }
+            @keyframes show {
+                0%, 49.99% { opacity: 0; z-index: 1; }
+                50%, 100% { opacity: 1; z-index: 5; }
+            }
+            .overlay-container {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                overflow: hidden;
+                transition: transform 0.6s ease-in-out;
+                z-index: 100;
+            }
+            .container.right-panel-active .overlay-container {
+                transform: translateX(-100%);
+            }
+            .overlay {
+                background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
+                color: #FFFFFF;
+                position: relative;
+                left: -100%;
+                height: 100%;
+                width: 200%;
+                transform: translateX(0);
+                transition: transform 0.6s ease-in-out;
+            }
+            .container.right-panel-active .overlay {
+                transform: translateX(50%);
+            }
+            .overlay-panel {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                padding: 0 40px;
+                text-align: center;
+                top: 0;
+                height: 100%;
+                width: 50%;
+                transform: translateX(0);
+                transition: transform 0.6s ease-in-out;
+            }
+            .overlay-left { transform: translateX(-20%); }
+            .container.right-panel-active .overlay-left { transform: translateX(0); }
+            .overlay-right { right: 0; transform: translateX(0); }
+            .container.right-panel-active .overlay-right { transform: translateX(20%); }
+        }
+
+        /* MOBILE RESPONSIVE LAYOUT */
+        @media (max-width: 767px) {
+            .container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .overlay-container {
+                display: none; /* Hide desktop slider overlay on mobile */
+            }
+            .form-container {
+                position: relative !important;
+                width: 100% !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .mobile-header {
+                display: block;
             }
         }
-        .overlay-container {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 50%;
-            height: 100%;
-            overflow: hidden;
-            transition: transform 0.6s ease-in-out;
-            z-index: 100;
-        }
-        .container.right-panel-active .overlay-container {
-            transform: translateX(-100%);
-        }
-        .overlay {
-            background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
-            color: #FFFFFF;
-            position: relative;
-            left: -100%;
-            height: 100%;
-            width: 200%;
-            transform: translateX(0);
-            transition: transform 0.6s ease-in-out;
-        }
-        .container.right-panel-active .overlay {
-            transform: translateX(50%);
-        }
-        .overlay-panel {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 0 40px;
-            text-align: center;
-            top: 0;
-            height: 100%;
-            width: 50%;
-            transform: translateX(0);
-            transition: transform 0.6s ease-in-out;
-        }
-        .overlay-left {
-            transform: translateX(-20%);
-        }
-        .container.right-panel-active .overlay-left {
-            transform: translateX(0);
-        }
-        .overlay-right {
-            right: 0;
-            transform: translateX(0);
-        }
-        .container.right-panel-active .overlay-right {
-            transform: translateX(20%);
-        }
+
         .btn-custom {
             border-radius: 20px;
             border: 1px solid #0d9488;
@@ -133,23 +145,64 @@
             transition: transform 80ms ease-in;
             cursor: pointer;
         }
-        .btn-custom:active {
-            transform: scale(0.95);
-        }
-        .btn-ghost {
-            background-color: transparent;
-            border-color: #FFFFFF;
-        }
+        .btn-custom:active { transform: scale(0.95); }
+        .btn-ghost { background-color: transparent; border-color: #FFFFFF; }
     </style>
 </head>
 <body>
 
+    <!-- Main Container -->
     <div class="container" id="container">
-        
-        <!-- VISITOR REGISTRATION FORM (LEFT PANEL) -->
-        <div class="form-container register-container p-8 flex flex-col justify-center">
+
+        <!-- MOBILE HEADER CARD -->
+        <div class="mobile-header md:hidden bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl p-5 text-white shadow-md text-center">
+            <h1 class="text-xl font-bold">Eclaro Visitor System</h1>
+            <p class="text-xs text-teal-100 mt-1">Welcome! Please log your visit below.</p>
+        </div>
+
+        <!-- 1. TODAY'S VISITOR LIST (Nasa Taas) -->
+        <div class="form-container list-container bg-white rounded-2xl p-6 shadow-md md:shadow-none border border-slate-100 md:border-none flex flex-col justify-center">
+            <div class="w-full space-y-3">
+                <div class="flex items-center justify-between border-b pb-2">
+                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fas fa-users text-teal-600"></i> Today's Visitors
+                    </h2>
+                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Live Log</span>
+                </div>
+                
+                <div class="overflow-y-auto max-h-[220px] md:max-h-[350px] rounded-xl border border-slate-100">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 uppercase">
+                            <tr>
+                                <th class="p-2.5">Name</th>
+                                <th class="p-2.5">Purpose</th>
+                                <th class="p-2.5">To Visit</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {% if visitors %}
+                                {% for visitor in visitors %}
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-2.5 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
+                                    <td class="p-2.5 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
+                                    <td class="p-2.5 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="p-4 text-center text-slate-400 italic">No visitors recorded today.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. VISITOR REGISTRATION FORM (Nasa Baba) -->
+        <div class="form-container register-container bg-white rounded-2xl p-6 shadow-md md:shadow-none border border-slate-100 md:border-none flex flex-col justify-center">
             <form action="/add" method="POST" class="space-y-3 text-center">
-                <h1 class="text-2xl font-bold text-slate-800 mb-2">Visitor Registration</h1>
+                <h2 class="text-lg font-bold text-slate-800 mb-1 border-b pb-2 md:border-none">Visitor Registration</h2>
                 
                 <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
                     <i class="fas fa-user text-slate-400 mr-2"></i>
@@ -171,55 +224,19 @@
                     <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
 
-                <button type="submit" class="btn-custom mt-4">Check in Visitor</button>
+                <button type="submit" class="btn-custom w-full mt-2">Check in Visitor</button>
             </form>
         </div>
 
-        <!-- TODAY'S VISITOR LIST (RIGHT PANEL) -->
-        <div class="form-container list-container p-6 flex flex-col justify-center">
-            <div class="w-full space-y-3">
-                <h2 class="text-xl font-bold text-slate-800 text-center">Today's Visitors</h2>
-                
-                <div class="overflow-y-auto max-h-[350px] rounded-xl border border-slate-100">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-500 uppercase">
-                            <tr>
-                                <th class="p-2">Name</th>
-                                <th class="p-2">Purpose</th>
-                                <th class="p-2">To Visit</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            {% if visitors %}
-                                {% for visitor in visitors %}
-                                <tr class="hover:bg-slate-50">
-                                    <td class="p-2 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
-                                    <td class="p-2 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
-                                    <td class="p-2 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
-                                </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="3" class="p-4 text-center text-slate-400 italic">No visitors today.</td>
-                                </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDING OVERLAY PANEL -->
-        <div class="overlay-container">
+        <!-- SLIDING OVERLAY PANEL (DESKTOP ONLY) -->
+        <div class="overlay-container hidden md:block">
             <div class="overlay">
-                <!-- Overlay Left Side -->
                 <div class="overlay-panel overlay-left">
                     <h1 class="text-3xl font-bold mb-2">Welcome to Eclaro!</h1>
                     <p class="text-xs mb-6 text-teal-100">Need to check in a new guest? Switch back to the registration form.</p>
                     <button class="btn-custom btn-ghost" id="signIn">Check in Visitor</button>
                 </div>
                 
-                <!-- Overlay Right Side -->
                 <div class="overlay-panel overlay-right">
                     <h1 class="text-3xl font-bold mb-2">Eclaro Visitor System</h1>
                     <p class="text-xs mb-6 text-teal-100">Want to see who has logged in today? View the visitor log list.</p>
@@ -230,19 +247,21 @@
 
     </div>
 
-    <!-- JavaScript to trigger sliding effect -->
+    <!-- JavaScript to trigger sliding effect on Desktop -->
     <script>
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
         const container = document.getElementById('container');
 
-        signUpButton.addEventListener('click', () => {
-            container.classList.add("right-panel-active");
-        });
+        if(signUpButton && signInButton){
+            signUpButton.addEventListener('click', () => {
+                container.classList.add("right-panel-active");
+            });
 
-        signInButton.addEventListener('click', () => {
-            container.classList.remove("right-panel-active");
-        });
+            signInButton.addEventListener('click', () => {
+                container.classList.remove("right-panel-active");
+            });
+        }
     </script>
 </body>
 </html>
