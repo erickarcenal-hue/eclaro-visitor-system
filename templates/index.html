@@ -3,96 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Visitor Registration</title>
+    <title>Eclaro Academy - Visitor Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style> * { font-family: 'Poppins', sans-serif; } </style>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .font-serif-title { font-family: 'Merriweather', serif; }
+        .bg-eclaro-navy { background-color: #031137; }
+        .bg-eclaro-lime { background-color: #8CC63F; }
+        .text-eclaro-lime { color: #8CC63F; }
+        .border-eclaro-lime { border-color: #8CC63F; }
+        .hover-eclaro-lime:hover { background-color: #7ab332; }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-teal-50 to-blue-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-eclaro-navy min-h-screen flex flex-col justify-between text-slate-100">
 
-    <div class="bg-white rounded-3xl shadow-xl w-full max-w-md overflow-hidden border border-slate-100">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-teal-600 to-blue-600 p-6 text-white text-center relative">
-            <h1 class="text-2xl font-bold tracking-wide">Eclaro Academy, Inc.</h1>
-            <p class="text-xs text-teal-100 mt-1">Visitor Management System (SY 2026–2027)</p>
-            <a href="/login" class="absolute top-4 right-4 text-xs bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-lg transition-all">Staff Login</a>
+    <!-- Header / Navbar -->
+    <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-800">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl font-black text-white tracking-widest font-serif-title">E<span class="text-eclaro-lime">C</span>LARO</span>
         </div>
+        <a href="/login" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg font-medium border border-slate-700 transition-all">
+            Staff Access
+        </a>
+    </header>
 
-        <div class="p-6">
-            {% if success %}
-                <!-- QR CODE VISITOR PASS (No JavaScript Required) -->
-                <div class="text-center space-y-4">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full text-xl">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-slate-800">Check-in Successful!</h2>
-                    <p class="text-xs text-slate-500">Ipakita ang QR Pass na ito at ang iyong **School ID / Valid ID** sa lobby guard.</p>
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-4 my-6">
+        <div class="w-full max-w-md space-y-6">
 
-                    <!-- QR Image generated purely by Python -->
-                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 inline-block">
-                        <img src="{{ visitor.qr_url }}" alt="Visitor QR Pass" class="w-48 h-48 mx-auto">
-                    </div>
+            <!-- Hero Text Header -->
+            <div class="text-center space-y-2">
+                <h1 class="text-2xl sm:text-3xl font-bold font-serif-title text-white tracking-tight">
+                    the <span class="text-white underline decoration-eclaro-lime decoration-4">Right People</span> are the Answer <span class="text-eclaro-lime">®</span>
+                </h1>
+                <p class="text-xs text-slate-300 font-light">
+                    Eclaro Academy, Inc. • Visitor Management System (SY 2026–2027)
+                </p>
+            </div>
 
-                    <div class="text-left bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs space-y-1">
-                        <p><strong>Name:</strong> {{ visitor.name }}</p>
-                        <p><strong>Contact:</strong> {{ visitor.contact }}</p>
-                        <p><strong>To Visit:</strong> {{ visitor.person_to_visit }}</p>
-                    </div>
-
-                    <a href="/" class="block w-full bg-slate-800 text-white font-semibold py-3 rounded-xl text-xs hover:bg-slate-900 transition-all">
-                        New Registration
-                    </a>
-                </div>
-            {% else %}
-                <!-- REGISTRATION FORM -->
-                <form action="/add" method="POST" class="space-y-3.5">
-                    <div>
-                        <label class="text-xs font-semibold text-slate-600">Buong Pangalan (Full Name)</label>
-                        <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
-                            <i class="fas fa-id-card text-slate-400 text-sm"></i>
-                            <input type="text" name="name" required pattern="[A-Za-z\s]{3,}" title="Mangyaring maglagay ng totoong pangalan." placeholder="Juan Dela Cruz" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+            <!-- Card Container -->
+            <div class="bg-white text-slate-800 rounded-2xl p-6 shadow-2xl border-t-4 border-eclaro-lime">
+                
+                {% if success %}
+                    <!-- QR CODE VISITOR PASS DISPLAY -->
+                    <div class="text-center space-y-4">
+                        <div class="inline-flex items-center justify-center w-12 h-12 bg-lime-100 text-eclaro-lime rounded-full text-xl">
+                            <i class="fas fa-check-circle"></i>
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="text-xs font-semibold text-slate-600">Mobile Contact Number</label>
-                        <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
-                            <i class="fas fa-mobile-alt text-slate-400 text-sm"></i>
-                            <input type="tel" name="contact" required pattern="09[0-9]{9}" maxlength="11" title="Dapat ay 11-digit PH mobile number na nagsisimula sa 09." placeholder="09123456789" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                        <div>
+                            <h2 class="text-xl font-bold font-serif-title text-eclaro-navy">Registration Complete</h2>
+                            <p class="text-xs text-slate-500 mt-1">Ipakita ang QR Pass at ang iyong **School ID / Valid ID** sa Lobby.</p>
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="text-xs font-semibold text-slate-600">Layunin ng Pagbisita (Purpose)</label>
-                        <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
-                            <i class="fas fa-clipboard-list text-slate-400 text-sm"></i>
-                            <input type="text" name="purpose" required placeholder="Inquiry / Submission of Documents" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                        <!-- Pure Python Generated QR Image -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 inline-block shadow-inner">
+                            <img src="{{ visitor.qr_url }}" alt="Eclaro Visitor Pass" class="w-48 h-48 mx-auto">
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="text-xs font-semibold text-slate-600">Taong Bibisitahin / Department</label>
-                        <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5">
-                            <i class="fas fa-building text-slate-400 text-sm"></i>
-                            <input type="text" name="person_to_visit" required placeholder="Registrar Office / Accounting" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                        <!-- Visitor Summary -->
+                        <div class="text-left bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5">
+                            <p><strong class="text-slate-500">Visitor:</strong> <span class="font-bold text-slate-800">{{ visitor.name }}</span></p>
+                            <p><strong class="text-slate-500">Contact:</strong> {{ visitor.contact }}</p>
+                            <p><strong class="text-slate-500">Destination:</strong> {{ visitor.person_to_visit }}</p>
                         </div>
+
+                        <a href="/" class="block w-full bg-eclaro-navy text-white font-semibold py-3 rounded-xl text-xs hover:bg-slate-900 transition-all shadow-md">
+                            Register Another Visitor
+                        </a>
                     </div>
 
-                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5">
-                        <i class="fas fa-exclamation-triangle text-amber-600 text-sm mt-0.5"></i>
-                        <p class="text-[11px] text-amber-800 leading-tight">
-                            <strong>Paalala:</strong> Magpresenta ng <strong>Valid ID / School ID</strong> sa lobby guard para sa verification.
-                        </p>
+                {% else %}
+
+                    <!-- REGISTRATION FORM -->
+                    <div class="mb-4 text-center">
+                        <h2 class="text-lg font-bold text-eclaro-navy font-serif-title">Visitor Check-in</h2>
+                        <p class="text-xs text-slate-500">Punan ang mga detalye para makakuha ng Digital Gate Pass.</p>
                     </div>
 
-                    <button type="submit" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3.5 rounded-xl shadow-md transition-all active:scale-95 text-sm mt-2">
-                        Check-in & Get QR Pass
-                    </button>
-                </form>
-            {% endif %}
+                    <form action="/add" method="POST" class="space-y-3.5">
+                        <!-- Name Field -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600">Full Name (Buong Pangalan)</label>
+                            <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent">
+                                <i class="fas fa-user text-slate-400 text-sm"></i>
+                                <input type="text" name="name" required pattern="[A-Za-z\s]{3,}" title="Mangyaring maglagay ng totoong pangalan." placeholder="e.g. Juan Dela Cruz" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                            </div>
+                        </div>
+
+                        <!-- Contact Field -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600">Mobile Contact Number</label>
+                            <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent">
+                                <i class="fas fa-mobile-alt text-slate-400 text-sm"></i>
+                                <input type="tel" name="contact" required pattern="09[0-9]{9}" maxlength="11" title="Dapat ay 11-digit PH mobile number na nagsisimula sa 09." placeholder="09123456789" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                            </div>
+                        </div>
+
+                        <!-- Purpose Field -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600">Purpose of Visit (Layunin)</label>
+                            <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent">
+                                <i class="fas fa-clipboard-list text-slate-400 text-sm"></i>
+                                <input type="text" name="purpose" required placeholder="Inquiry / Document Submission" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                            </div>
+                        </div>
+
+                        <!-- Target Person/Dept -->
+                        <div>
+                            <label class="text-xs font-semibold text-slate-600">Person / Department to Visit</label>
+                            <div class="mt-1 bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-eclaro-lime focus-within:border-transparent">
+                                <i class="fas fa-building text-slate-400 text-sm"></i>
+                                <input type="text" name="person_to_visit" required placeholder="Registrar / Cashier" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                            </div>
+                        </div>
+
+                        <!-- ID Notice -->
+                        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2.5">
+                            <i class="fas fa-id-card text-amber-600 text-sm mt-0.5"></i>
+                            <p class="text-[11px] text-amber-900 leading-tight">
+                                <strong>Requirement:</strong> Maghanda ng <strong>School ID o Valid ID</strong> para sa verification ng Guard sa Gate.
+                            </p>
+                        </div>
+
+                        <!-- Submit Button (Eclaro Lime Green Style) -->
+                        <button type="submit" class="w-full bg-eclaro-lime hover-eclaro-lime text-eclaro-navy font-bold py-3.5 rounded-xl shadow-lg transition-all active:scale-95 text-sm uppercase tracking-wider mt-2">
+                            GET VISITOR QR PASS
+                        </button>
+                    </form>
+
+                {% endif %}
+
+            </div>
         </div>
-    </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 border-t border-slate-800 text-[11px] text-slate-400">
+        <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
+    </footer>
 
 </body>
 </html>
