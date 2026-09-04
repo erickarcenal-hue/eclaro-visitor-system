@@ -4,105 +4,245 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eclaro Visitor System</title>
-    <!-- Google Fonts & Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #e0f2fe 0%, #e6fffa 100%);
+            background: #eef2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 25px;
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            width: 850px;
+            max-width: 100%;
+            min-height: 550px;
+        }
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+        .register-container {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+        .container.right-panel-active .register-container {
+            transform: translateX(100%);
+        }
+        .list-container {
+            left: 0;
+            width: 50%;
+            opacity: 0;
+            z-index: 1;
+        }
+        .container.right-panel-active .list-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+            animation: show 0.6s;
+        }
+        @keyframes show {
+            0%, 49.99% {
+                opacity: 0;
+                z-index: 1;
+            }
+            50%, 100% {
+                opacity: 1;
+                z-index: 5;
+            }
+        }
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+        .container.right-panel-active .overlay-container {
+            transform: translateX(-100%);
+        }
+        .overlay {
+            background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
+            color: #FFFFFF;
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+        .container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+        .container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+        .btn-custom {
+            border-radius: 20px;
+            border: 1px solid #0d9488;
+            background-color: #0d9488;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 45px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform 80ms ease-in;
+            cursor: pointer;
+        }
+        .btn-custom:active {
+            transform: scale(0.95);
+        }
+        .btn-ghost {
+            background-color: transparent;
+            border-color: #FFFFFF;
         }
     </style>
 </head>
-<body class="min-h-screen p-4 flex flex-col items-center justify-start text-slate-800">
+<body>
 
-    <!-- Main Container -->
-    <div class="w-full max-w-md space-y-5">
-
-        <!-- Header Card -->
-        <div class="bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl p-6 text-white shadow-lg">
-            <h1 class="text-2xl font-bold tracking-tight">Eclaro Visitor System</h1>
-            <p class="text-teal-100 text-sm mt-1">Welcome! Please log your visit below.</p>
-        </div>
-
-        <!-- Visitor Registration Form -->
-        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 space-y-4">
-            <h2 class="text-lg font-bold text-slate-700 border-b pb-2 flex items-center gap-2">
-                <span>📝</span> Visitor Registration Form
-            </h2>
-            
-            <form action="/add" method="POST" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Full Name</label>
-                    <input type="text" name="name" required placeholder="John Doe" 
-                           class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all">
+    <div class="container" id="container">
+        
+        <!-- VISITOR REGISTRATION FORM (LEFT PANEL) -->
+        <div class="form-container register-container p-8 flex flex-col justify-center">
+            <form action="/add" method="POST" class="space-y-3 text-center">
+                <h1 class="text-2xl font-bold text-slate-800 mb-2">Visitor Registration</h1>
+                
+                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
+                    <i class="fas fa-user text-slate-400 mr-2"></i>
+                    <input type="text" name="name" required placeholder="Full Name" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Contact Number</label>
-                    <input type="tel" name="contact" required placeholder="09123456789" 
-                           class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all">
+                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
+                    <i class="fas fa-phone text-slate-400 mr-2"></i>
+                    <input type="tel" name="contact" required placeholder="Contact Number" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Purpose of Visit</label>
-                    <input type="text" name="purpose" required placeholder="Meeting / Inquiry / Delivery" 
-                           class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all">
+                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
+                    <i class="fas fa-clipboard-list text-slate-400 mr-2"></i>
+                    <input type="text" name="purpose" required placeholder="Purpose of Visit" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Person/Department to Visit</label>
-                    <input type="text" name="person_to_visit" required placeholder="HR Department / Jane Smith" 
-                           class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all">
+                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
+                    <i class="fas fa-building text-slate-400 mr-2"></i>
+                    <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none">
                 </div>
 
-                <button type="submit" 
-                        class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]">
-                    Check in Visitor
-                </button>
+                <button type="submit" class="btn-custom mt-4">Check in Visitor</button>
             </form>
         </div>
 
-        <!-- Visitor Log Table -->
-        <div class="bg-white rounded-2xl p-6 shadow-md border border-slate-100 space-y-4">
-            <div class="flex items-center justify-between border-b pb-2">
-                <h2 class="text-lg font-bold text-slate-700 flex items-center gap-2">
-                    <span>👥</span> Visitor Log List
-                </h2>
-                <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded-full">Today</span>
-            </div>
-
-            <div class="overflow-x-auto rounded-xl border border-slate-100">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-wider border-b">
-                        <tr>
-                            <th class="p-3">Full Name</th>
-                            <th class="p-3">Contact</th>
-                            <th class="p-3">Purpose</th>
-                            <th class="p-3">To Visit</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        {% if visitors %}
-                            {% for visitor in visitors %}
-                            <tr class="hover:bg-slate-50/50 transition-colors">
-                                <td class="p-3 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.contact if visitor.contact else visitor[1] }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
-                                <td class="p-3 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
-                            </tr>
-                            {% endfor %}
-                        {% else %}
+        <!-- TODAY'S VISITOR LIST (RIGHT PANEL) -->
+        <div class="form-container list-container p-6 flex flex-col justify-center">
+            <div class="w-full space-y-3">
+                <h2 class="text-xl font-bold text-slate-800 text-center">Today's Visitors</h2>
+                
+                <div class="overflow-y-auto max-h-[350px] rounded-xl border border-slate-100">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-500 uppercase">
                             <tr>
-                                <td colspan="4" class="p-4 text-center text-slate-400 italic">No visitors recorded today.</td>
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Purpose</th>
+                                <th class="p-2">To Visit</th>
                             </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            {% if visitors %}
+                                {% for visitor in visitors %}
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-2 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
+                                    <td class="p-2 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
+                                    <td class="p-2 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="p-4 text-center text-slate-400 italic">No visitors today.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDING OVERLAY PANEL -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <!-- Overlay Left Side -->
+                <div class="overlay-panel overlay-left">
+                    <h1 class="text-3xl font-bold mb-2">Welcome to Eclaro!</h1>
+                    <p class="text-xs mb-6 text-teal-100">Need to check in a new guest? Switch back to the registration form.</p>
+                    <button class="btn-custom btn-ghost" id="signIn">Check in Visitor</button>
+                </div>
+                
+                <!-- Overlay Right Side -->
+                <div class="overlay-panel overlay-right">
+                    <h1 class="text-3xl font-bold mb-2">Eclaro Visitor System</h1>
+                    <p class="text-xs mb-6 text-teal-100">Want to see who has logged in today? View the visitor log list.</p>
+                    <button class="btn-custom btn-ghost" id="signUp">View Visitor Logs</button>
+                </div>
             </div>
         </div>
 
     </div>
 
+    <!-- JavaScript to trigger sliding effect -->
+    <script>
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+    </script>
 </body>
 </html>
