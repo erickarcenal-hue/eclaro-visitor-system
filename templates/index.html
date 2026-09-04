@@ -21,246 +21,173 @@
             margin: 0;
             padding: 16px;
         }
-        
-        /* DESKTOP SLIDING LAYOUT */
-        @media (min-width: 768px) {
-            .container {
-                background-color: #fff;
-                border-radius: 25px;
-                box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.08);
-                position: relative;
-                overflow: hidden;
-                width: 850px;
-                max-width: 100%;
-                min-height: 550px;
-            }
-            .form-container {
-                position: absolute;
-                top: 0;
-                height: 100%;
-                transition: all 0.6s ease-in-out;
-            }
-            .register-container {
-                left: 0;
-                width: 50%;
-                z-index: 2;
-            }
-            .container.right-panel-active .register-container {
-                transform: translateX(100%);
-            }
-            .list-container {
-                left: 0;
-                width: 50%;
-                opacity: 0;
-                z-index: 1;
-            }
-            .container.right-panel-active .list-container {
-                transform: translateX(100%);
-                opacity: 1;
-                z-index: 5;
-                animation: show 0.6s;
-            }
-            @keyframes show {
-                0%, 49.99% { opacity: 0; z-index: 1; }
-                50%, 100% { opacity: 1; z-index: 5; }
-            }
-            .overlay-container {
-                position: absolute;
-                top: 0;
-                left: 50%;
-                width: 50%;
-                height: 100%;
-                overflow: hidden;
-                transition: transform 0.6s ease-in-out;
-                z-index: 100;
-            }
-            .container.right-panel-active .overlay-container {
-                transform: translateX(-100%);
-            }
-            .overlay {
-                background: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
-                color: #FFFFFF;
-                position: relative;
-                left: -100%;
-                height: 100%;
-                width: 200%;
-                transform: translateX(0);
-                transition: transform 0.6s ease-in-out;
-            }
-            .container.right-panel-active .overlay {
-                transform: translateX(50%);
-            }
-            .overlay-panel {
-                position: absolute;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                padding: 0 40px;
-                text-align: center;
-                top: 0;
-                height: 100%;
-                width: 50%;
-                transform: translateX(0);
-                transition: transform 0.6s ease-in-out;
-            }
-            .overlay-left { transform: translateX(-20%); }
-            .container.right-panel-active .overlay-left { transform: translateX(0); }
-            .overlay-right { right: 0; transform: translateX(0); }
-            .container.right-panel-active .overlay-right { transform: translateX(20%); }
+
+        /* Container Card */
+        .main-card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* MOBILE RESPONSIVE LAYOUT */
-        @media (max-width: 767px) {
-            .container {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-            .overlay-container {
-                display: none; /* Hide desktop slider overlay on mobile */
-            }
-            .form-container {
-                position: relative !important;
-                width: 100% !important;
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            .mobile-header {
-                display: block;
-            }
+        /* Slide Views */
+        .slider-wrapper {
+            display: flex;
+            width: 200%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-view {
+            width: 50%;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* Active Tab Styling */
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            background-color: #0d9488;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
         }
 
         .btn-custom {
-            border-radius: 20px;
-            border: 1px solid #0d9488;
+            border-radius: 16px;
             background-color: #0d9488;
             color: #FFFFFF;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 12px 45px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: transform 80ms ease-in;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 12px 24px;
+            transition: all 0.2s ease;
             cursor: pointer;
         }
-        .btn-custom:active { transform: scale(0.95); }
-        .btn-ghost { background-color: transparent; border-color: #FFFFFF; }
+        .btn-custom:active {
+            transform: scale(0.97);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Main Container -->
-    <div class="container" id="container">
-
-        <!-- MOBILE HEADER CARD -->
-        <div class="mobile-header md:hidden bg-gradient-to-r from-teal-600 to-blue-600 rounded-2xl p-5 text-white shadow-md text-center">
-            <h1 class="text-xl font-bold">Eclaro Visitor System</h1>
+    <div class="main-card">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-teal-600 to-blue-600 p-6 text-white text-center">
+            <h1 class="text-2xl font-bold tracking-wide">Eclaro Visitor System</h1>
             <p class="text-xs text-teal-100 mt-1">Welcome! Please log your visit below.</p>
         </div>
 
-        <!-- 1. TODAY'S VISITOR LIST (Nasa Taas) -->
-        <div class="form-container list-container bg-white rounded-2xl p-6 shadow-md md:shadow-none border border-slate-100 md:border-none flex flex-col justify-center">
-            <div class="w-full space-y-3">
-                <div class="flex items-center justify-between border-b pb-2">
-                    <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        <i class="fas fa-users text-teal-600"></i> Today's Visitors
+        <!-- Animated Tab Switcher -->
+        <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-center">
+            <div class="bg-slate-200/80 p-1 rounded-2xl flex w-full max-w-xs">
+                <button id="tabForm" onclick="showForm()" class="tab-btn active flex-1 py-2 text-xs font-semibold rounded-xl text-slate-600 flex items-center justify-center gap-1.5">
+                    <i class="fas fa-edit"></i> Register
+                </button>
+                <button id="tabList" onclick="showList()" class="tab-btn flex-1 py-2 text-xs font-semibold rounded-xl text-slate-600 flex items-center justify-center gap-1.5">
+                    <i class="fas fa-list-ul"></i> Today's Visitors
+                </button>
+            </div>
+        </div>
+
+        <!-- Sliding Content Wrapper -->
+        <div class="slider-wrapper" id="sliderWrapper">
+            
+            <!-- VIEW 1: REGISTRATION FORM -->
+            <div class="slide-view">
+                <form action="/add" method="POST" class="space-y-3.5">
+                    <h2 class="text-base font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
+                        <i class="fas fa-user-plus text-teal-600"></i> Visitor Check-In
                     </h2>
-                    <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Live Log</span>
-                </div>
-                
-                <div class="overflow-y-auto max-h-[220px] md:max-h-[350px] rounded-xl border border-slate-100">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-500 uppercase">
-                            <tr>
-                                <th class="p-2.5">Name</th>
-                                <th class="p-2.5">Purpose</th>
-                                <th class="p-2.5">To Visit</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            {% if visitors %}
-                                {% for visitor in visitors %}
-                                <tr class="hover:bg-slate-50">
-                                    <td class="p-2.5 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
-                                    <td class="p-2.5 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
-                                    <td class="p-2.5 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
-                                </tr>
-                                {% endfor %}
-                            {% else %}
+                    
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
+                        <i class="fas fa-user text-slate-400 text-sm"></i>
+                        <input type="text" name="name" required placeholder="Full Name" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
+                        <i class="fas fa-phone text-slate-400 text-sm"></i>
+                        <input type="tel" name="contact" required placeholder="Contact Number" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
+                        <i class="fas fa-clipboard-list text-slate-400 text-sm"></i>
+                        <input type="text" name="purpose" required placeholder="Purpose of Visit" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center gap-2.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:bg-white transition-all">
+                        <i class="fas fa-building text-slate-400 text-sm"></i>
+                        <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none text-slate-800">
+                    </div>
+
+                    <button type="submit" class="btn-custom w-full shadow-md hover:bg-teal-700 mt-2">
+                        Check in Visitor
+                    </button>
+                </form>
+            </div>
+
+            <!-- VIEW 2: TODAY'S VISITORS LOG TABLE -->
+            <div class="slide-view">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fas fa-users text-teal-600"></i> Today's Visitors
+                        </h2>
+                        <span class="bg-teal-100 text-teal-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Live Logs</span>
+                    </div>
+
+                    <div class="overflow-y-auto max-h-[300px] rounded-xl border border-slate-100">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-500 uppercase sticky top-0 border-b">
                                 <tr>
-                                    <td colspan="3" class="p-4 text-center text-slate-400 italic">No visitors recorded today.</td>
+                                    <th class="p-2.5">Name</th>
+                                    <th class="p-2.5">Purpose</th>
+                                    <th class="p-2.5">To Visit</th>
                                 </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                {% if visitors %}
+                                    {% for visitor in visitors %}
+                                    <tr class="hover:bg-slate-50/80 transition-colors">
+                                        <td class="p-2.5 font-semibold text-slate-800">{{ visitor.name if visitor.name else visitor[0] }}</td>
+                                        <td class="p-2.5 text-slate-600">{{ visitor.purpose if visitor.purpose else visitor[2] }}</td>
+                                        <td class="p-2.5 text-slate-600">{{ visitor.person_to_visit if visitor.person_to_visit else visitor[3] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="p-6 text-center text-slate-400 italic">No visitors recorded today.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 2. VISITOR REGISTRATION FORM (Nasa Baba) -->
-        <div class="form-container register-container bg-white rounded-2xl p-6 shadow-md md:shadow-none border border-slate-100 md:border-none flex flex-col justify-center">
-            <form action="/add" method="POST" class="space-y-3 text-center">
-                <h2 class="text-lg font-bold text-slate-800 mb-1 border-b pb-2 md:border-none">Visitor Registration</h2>
-                
-                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
-                    <i class="fas fa-user text-slate-400 mr-2"></i>
-                    <input type="text" name="name" required placeholder="Full Name" class="bg-transparent text-sm w-full focus:outline-none">
-                </div>
-
-                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
-                    <i class="fas fa-phone text-slate-400 mr-2"></i>
-                    <input type="tel" name="contact" required placeholder="Contact Number" class="bg-transparent text-sm w-full focus:outline-none">
-                </div>
-
-                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
-                    <i class="fas fa-clipboard-list text-slate-400 mr-2"></i>
-                    <input type="text" name="purpose" required placeholder="Purpose of Visit" class="bg-transparent text-sm w-full focus:outline-none">
-                </div>
-
-                <div class="bg-slate-100 rounded-xl p-2.5 flex items-center px-3">
-                    <i class="fas fa-building text-slate-400 mr-2"></i>
-                    <input type="text" name="person_to_visit" required placeholder="Person / Department to Visit" class="bg-transparent text-sm w-full focus:outline-none">
-                </div>
-
-                <button type="submit" class="btn-custom w-full mt-2">Check in Visitor</button>
-            </form>
-        </div>
-
-        <!-- SLIDING OVERLAY PANEL (DESKTOP ONLY) -->
-        <div class="overlay-container hidden md:block">
-            <div class="overlay">
-                <div class="overlay-panel overlay-left">
-                    <h1 class="text-3xl font-bold mb-2">Welcome to Eclaro!</h1>
-                    <p class="text-xs mb-6 text-teal-100">Need to check in a new guest? Switch back to the registration form.</p>
-                    <button class="btn-custom btn-ghost" id="signIn">Check in Visitor</button>
-                </div>
-                
-                <div class="overlay-panel overlay-right">
-                    <h1 class="text-3xl font-bold mb-2">Eclaro Visitor System</h1>
-                    <p class="text-xs mb-6 text-teal-100">Want to see who has logged in today? View the visitor log list.</p>
-                    <button class="btn-custom btn-ghost" id="signUp">View Visitor Logs</button>
-                </div>
-            </div>
         </div>
 
     </div>
 
-    <!-- JavaScript to trigger sliding effect on Desktop -->
+    <!-- JavaScript for Tab Sliding Effect -->
     <script>
-        const signUpButton = document.getElementById('signUp');
-        const signInButton = document.getElementById('signIn');
-        const container = document.getElementById('container');
+        const sliderWrapper = document.getElementById('sliderWrapper');
+        const tabForm = document.getElementById('tabForm');
+        const tabList = document.getElementById('tabList');
 
-        if(signUpButton && signInButton){
-            signUpButton.addEventListener('click', () => {
-                container.classList.add("right-panel-active");
-            });
+        function showForm() {
+            sliderWrapper.style.transform = 'translateX(0%)';
+            tabForm.classList.add('active');
+            tabList.classList.remove('active');
+        }
 
-            signInButton.addEventListener('click', () => {
-                container.classList.remove("right-panel-active");
-            });
+        function showList() {
+            sliderWrapper.style.transform = 'translateX(-50%)';
+            tabList.classList.add('active');
+            tabForm.classList.remove('active');
         }
     </script>
 </body>
