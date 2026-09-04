@@ -1,23 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+import urllib.parse
 
 app = Flask(__name__)
-app.secret_key = 'eclaro_secret_key_123'  # Key para sa session management
+app.secret_key = 'eclaro_secret_key_123'
 
-# Accounts (Username: Password)
 USERS = {
-    "admin": "admin123",       # Admin Account
-    "registrar": "eclaro2026"  # Registrar Account
+    "admin": "admin123",
+    "registrar": "eclaro2026"
 }
 
-# Temporary in-memory storage para sa visitor logs
 visitors = []
 
-# PUBLIC ROUTE: Registration Form lang ang makikita ng visitors
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# ACTION ROUTE: Pag-submit ng Visitor Form
 @app.route('/add', methods=['POST'])
 def add_visitor():
     name = request.form.get('name')
@@ -26,17 +23,28 @@ def add_visitor():
     person_to_visit = request.form.get('person_to_visit')
 
     if name and contact and purpose and person_to_visit:
-        visitors.append({
+        # Gumawa ng natatanging Pass Data para sa QR Code
+        qr_data = f"ECLARO VISITOR | Name: {name} | Contact: {contact} | Purpose: {purpose}"
+        
+        # Pure Python URL Encoding para sa QR Image (Walang JavaScript)
+        encoded_data = urllib.parse.quote(qr_data)
+        qr_url = f"https://quickchart.io/qr?text={encoded_data}&size=200"
+
+        new_visitor = {
             'name': name,
             'contact': contact,
             'purpose': purpose,
-            'person_to_visit': person_to_visit
-        })
-        flash('Successfully Checked In!', 'success')
+            'person_to_visit': person_to_visit,
+            'qr_url': qr_url
+        }
+        
+        visitors.append(new_visitor)
+        
+        # Ipasa ang visitor data sa confirmation page
+        return render_template('index.html', success=True, visitor=new_visitor)
     
     return redirect(url_for('index'))
 
-# LOGIN ROUTE: Para sa Admin at Registrar
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -51,18 +59,16 @@ def login():
 
     return render_template('login.html')
 
-# PROTECTED ROUTE: Ikaw at Registrar lang ang makakakita ng logs
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session:
-        return redirect(url_for('login'))  # Harang kapag hindi nakalogin
+        return redirect(url_for('login'))
     
     return render_template('dashboard.html', visitors=visitors, user=session['user'])
 
-# LOGOUT ROUTE
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.clear()
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
