@@ -4,9 +4,11 @@ import urllib.parse
 app = Flask(__name__)
 app.secret_key = 'eclaro_academy_secret_key_2026'
 
-# Dummy Credentials for Staff Portal
-ADMIN_USER = "admin"
-ADMIN_PASS = "admin123"
+# Allowed Staff & Registrar Accounts
+USERS = {
+    "admin": "admin123",
+    "registrar": "registrar123"
+}
 
 @app.route('/')
 def home():
@@ -21,7 +23,6 @@ def add_visitor():
     checkin_date = request.form.get('checkin_date', '')
     checkin_time = request.form.get('checkin_time', '')
 
-    # Generate QR Code URL
     qr_data = f"Name: {name}\nContact: {contact}\nPurpose: {purpose}\nHost: {person_to_visit}\nDate: {checkin_date}\nTime: {checkin_time}"
     encoded_data = urllib.parse.quote(qr_data)
     qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={encoded_data}"
@@ -41,14 +42,16 @@ def add_visitor():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = request.form.get('username', '').strip().lower()
+        password = request.form.get('password', '').strip()
 
-        if username == ADMIN_USER and password == ADMIN_PASS:
+        # Check if user exists and password matches
+        if username in USERS and USERS[username] == password:
             session['logged_in'] = True
+            session['user'] = username
             return redirect(url_for('admin_dashboard'))
         else:
-            flash("Invalid credentials. Please try again.", "error")
+            flash("Invalid credentials. Please check your username or password.", "error")
 
     return render_template('login.html')
 
@@ -56,11 +59,22 @@ def login():
 def admin_dashboard():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-    return "<h1>Eclaro Staff Dashboard (SY 2026-2027)</h1><p>Welcome, Authorized Personnel.</p><a href='/logout'>Logout</a>"
+    
+    current_user = session.get('user', 'Staff').capitalize()
+    return f"""
+    <div style="font-family:sans-serif; padding: 40px; background-color: #031137; color: white; min-height: 100vh;">
+        <h1 style="color: #8CC63F;">Eclaro Staff Dashboard (SY 2026–2027)</h1>
+        <p>Welcome, <strong>{current_user}</strong>!</p>
+        <hr style="border-color: #334155;">
+        <p>Status: Active Staff Session</p>
+        <br>
+        <a href='/logout' style="color: #8CC63F; text-decoration: underline;">Logout</a>
+    </div>
+    """
 
 @app.route('/logout')
 def logout():
-    session.pop('logged_in', None)
+    session.clear()
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
