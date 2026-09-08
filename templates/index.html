@@ -4,188 +4,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eclaro Academy - Visitor Registration</title>
-    <!-- Eclaro Logo / Favicon -->
+    <!-- Favicon Logo -->
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
     <style>
         :root {
-            --bg-dark: #0b132b;
-            --card-dark: #101a36;
-            --input-dark: #1c2541;
-            --border-blue: #2a3a5e;
-            --text-main: #ffffff;
-            --text-sub: #a0aec0;
-            --lime-green: #88d400;
-            --lime-hover: #76b900;
+            --eclaro-navy: #030d22;
+            --eclaro-card: #091736;
+            --eclaro-input: #12244a;
+            --eclaro-border: #1d3568;
+            --eclaro-green: #79c000;
+            --eclaro-green-hover: #68a600;
+            --text-white: #ffffff;
+            --text-gray: #a3b3d1;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-dark);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--eclaro-navy);
+            background-image: radial-gradient(circle at top right, #10234a 0%, #030d22 60%);
             margin: 0;
             padding: 0;
-            color: var(--text-main);
+            color: var(--text-white);
+            min-height: 100vh;
         }
 
-        .header {
-            background-color: #070d1f;
-            color: white;
-            padding: 25px 15px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-blue);
+        /* Official Header Navbar Style */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--eclaro-border);
+            background: rgba(3, 13, 34, 0.8);
+            backdrop-filter: blur(10px);
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-            letter-spacing: 0.5px;
-            color: var(--text-main);
+        .brand-logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: var(--text-white);
+            text-decoration: none;
         }
 
-        .header p {
-            margin: 5px 0 0 0;
+        .brand-logo span {
+            color: var(--eclaro-green);
+        }
+
+        .sub-brand {
             font-size: 13px;
-            color: var(--lime-green);
+            color: var(--text-gray);
+            margin-top: 2px;
         }
 
         .container {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 0 15px;
+            max-width: 520px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .hero-title h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: var(--text-white);
+        }
+
+        .hero-title p {
+            font-size: 14px;
+            color: var(--eclaro-green);
+            margin: 0;
         }
 
         .card {
-            background: var(--card-dark);
-            padding: 22px;
+            background: var(--eclaro-card);
+            padding: 30px;
             border-radius: 12px;
-            border: 1px solid var(--border-blue);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            margin-bottom: 18px;
-            font-size: 18px;
-            color: var(--lime-green);
-            border-bottom: 1px solid var(--border-blue);
-            padding-bottom: 8px;
+            border: 1px solid var(--eclaro-border);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 14px;
-            color: var(--text-main);
+            font-size: 13px;
+            color: var(--text-white);
+            letter-spacing: 0.3px;
         }
 
         .form-group input, 
         .form-group select {
             width: 100%;
-            padding: 12px;
-            background-color: var(--input-dark);
-            border: 1px solid var(--border-blue);
-            border-radius: 8px;
+            padding: 12px 14px;
+            background-color: var(--eclaro-input);
+            border: 1px solid var(--eclaro-border);
+            border-radius: 6px;
             box-sizing: border-box;
             font-size: 14px;
-            color: var(--text-main);
+            color: var(--text-white);
+            transition: all 0.2s ease;
         }
 
         .form-group input::placeholder {
-            color: #5c6b89;
+            color: #5d74a3;
         }
 
         .form-group input:focus, 
         .form-group select:focus {
             outline: none;
-            border-color: var(--lime-green);
-            box-shadow: 0 0 8px rgba(136, 212, 0, 0.3);
+            border-color: var(--eclaro-green);
+            box-shadow: 0 0 10px rgba(121, 192, 0, 0.25);
         }
 
         .privacy-box {
-            background-color: rgba(28, 37, 65, 0.6);
-            border-left: 4px solid var(--lime-green);
+            background-color: rgba(18, 36, 74, 0.6);
+            border-left: 3px solid var(--eclaro-green);
             padding: 12px;
-            margin: 18px 0;
+            margin: 20px 0;
             border-radius: 4px;
         }
 
         .btn {
-            background-color: var(--lime-green);
-            color: #000000;
-            padding: 14px 20px;
+            background-color: var(--eclaro-green);
+            color: #030d22;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             width: 100%;
             letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(136, 212, 0, 0.25);
+            transition: background 0.2s ease;
+            box-shadow: 0 4px 15px rgba(121, 192, 0, 0.3);
         }
 
         .btn:hover {
-            background-color: var(--lime-hover);
+            background-color: var(--eclaro-green-hover);
         }
 
         .alert-success {
             padding: 15px;
-            background-color: #2e7d32;
+            background-color: #1e5a22;
             color: white;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
             text-align: center;
-            font-weight: 500;
+            font-size: 14px;
         }
 
-        .login-link {
+        .footer-link {
             text-align: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
+            margin-top: 25px;
+            margin-bottom: 40px;
         }
 
-        .login-link a {
-            color: var(--text-sub);
+        .footer-link a {
+            color: var(--text-gray);
             font-size: 13px;
             text-decoration: none;
+            transition: color 0.2s ease;
         }
 
-        .login-link a:hover {
-            color: var(--lime-green);
+        .footer-link a:hover {
+            color: var(--eclaro-green);
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>ECLARO ACADEMY, INC.</h1>
-        <p>Web-Based Visitor Management System (S.Y. 2026–2027)</p>
+    <div class="navbar">
+        <div>
+            <a href="/" class="brand-logo"><span>E</span>CLARO</a>
+            <div class="sub-brand">Eclaro Academy, Inc.</div>
+        </div>
+        <div style="font-size: 12px; color: var(--text-gray);">
+            Campus Visitor System
+        </div>
     </div>
 
     <div class="container">
-        <div class="card">
-            <h2>Visitor Check-In Form</h2>
+        <div class="hero-title">
+            <h2>Visitor Check-In</h2>
+            <p>Welcome! Please register your entry details below.</p>
+        </div>
 
+        <div class="card">
             {% if success %}
                 <div class="alert-success">{{ msg }}</div>
                 <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Register Another Visitor</a>
             {% else %}
                 <form action="/" method="POST">
                     <div class="form-group">
-                        <label>Full Name:</label>
+                        <label>FULL NAME</label>
                         <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
                     </div>
 
                     <div class="form-group">
-                        <label>Contact Number:</label>
+                        <label>CONTACT NUMBER</label>
                         <input type="tel" name="contact_no" required placeholder="09123456789">
                     </div>
 
                     <div class="form-group">
-                        <label>Purpose of Visit:</label>
+                        <label>PURPOSE OF VISIT</label>
                         <select name="purpose" required>
                             <option value="">-- Select Purpose --</option>
                             <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
@@ -197,24 +237,24 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Person to Visit:</label>
+                        <label>PERSON TO VISIT</label>
                         <input type="text" name="person_to_visit" required placeholder="Name of Staff / Teacher / Admin">
                     </div>
 
                     <div class="privacy-box">
-                        <label style="font-weight: normal; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: var(--text-sub);">
+                        <label style="font-weight: normal; font-size: 11px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: var(--text-gray);">
                             <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
-                            <span>I hereby certify that the information provided is true and correct. I authorize <strong>Eclaro Academy, Inc.</strong> to collect and process my personal data solely for campus security and safety monitoring in compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
+                            <span>I authorize <strong>Eclaro Academy</strong> to process my personal data solely for campus security and safety monitoring in compliance with the Data Privacy Act of 2012 (R.A. 10173).</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="btn">Submit Check-In</button>
+                    <button type="submit" class="btn">SUBMIT CHECK-IN</button>
                 </form>
             {% endif %}
         </div>
 
-        <div class="login-link">
-            <a href="/login">Authorized Personnel Login</a>
+        <div class="footer-link">
+            <a href="/login">Authorized Personnel Portal →</a>
         </div>
     </div>
 
