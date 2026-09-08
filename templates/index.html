@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Academy - Admin Dashboard</title>
+    <title>Eclaro Academy - Visitor Registration</title>
     <style>
         :root {
             --bg-dark: #0b132b;
@@ -11,138 +11,210 @@
             --input-dark: #1c2541;
             --border-blue: #2a3a5e;
             --text-main: #ffffff;
+            --text-sub: #a0aec0;
             --lime-green: #88d400;
+            --lime-hover: #76b900;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            color: var(--text-main);
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-blue);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        h1 { font-size: 20px; margin: 0; color: var(--text-main); }
-        .sub { color: var(--lime-green); font-size: 12px; }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            background: var(--input-dark);
-            border: 1px solid var(--border-blue);
+            background-color: #070d1f;
             color: white;
-            border-radius: 6px;
-            width: 250px;
+            padding: 25px 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-blue);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 13px;
+            color: var(--lime-green);
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-dark);
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid var(--border-blue);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 18px;
+            color: var(--lime-green);
+            border-bottom: 1px solid var(--border-blue);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-dark);
+            border: 1px solid var(--border-blue);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .form-group input::placeholder {
+            color: #5c6b89;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--lime-green);
+            box-shadow: 0 0 8px rgba(136, 212, 0, 0.3);
+        }
+
+        .privacy-box {
+            background-color: rgba(28, 37, 65, 0.6);
+            border-left: 4px solid var(--lime-green);
+            padding: 12px;
+            margin: 18px 0;
+            border-radius: 4px;
         }
 
         .btn {
             background-color: var(--lime-green);
-            color: black;
-            padding: 10px 16px;
+            color: #000000;
+            padding: 14px 20px;
             border: none;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 13px;
-            display: inline-block;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-dark);
             border-radius: 8px;
-            overflow: hidden;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 800;
+            width: 100%;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(136, 212, 0, 0.25);
         }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-blue);
+        .btn:hover {
+            background-color: var(--lime-hover);
+        }
+
+        .alert-success {
+            padding: 15px;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .login-link a {
+            color: var(--text-sub);
             font-size: 13px;
+            text-decoration: none;
         }
 
-        th { background: #070d1f; color: var(--lime-green); }
-
-        .status-active { color: #ffb703; font-weight: bold; }
-        .status-out { color: #a0aec0; }
+        .login-link a:hover {
+            color: var(--lime-green);
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div>
-            <h1>ECLARO ACADEMY</h1>
-            <span class="sub">Admin Visitor Logs Dashboard</span>
-        </div>
-        <div style="display: flex; gap: 8px;">
-            <a href="/" class="btn" style="background:#1c2541; color:white; border:1px solid #2a3a5e;">Visitor Form</a>
-            <a href="/export_csv" class="btn">Export CSV</a>
-            <a href="/logout" class="btn" style="background:#c62828; color:white;">Logout</a>
-        </div>
+        <h1>ECLARO ACADEMY, INC.</h1>
+        <p>Web-Based Visitor Management System (S.Y. 2026–2027)</p>
     </div>
 
-    <form method="GET" action="/admin" class="actions">
-        <input type="text" name="search" placeholder="Search visitor name or date..." value="{{ search }}">
-        <button type="submit" class="btn">Search</button>
-    </form>
+    <div class="container">
+        <div class="card">
+            <h2>Visitor Check-In Form</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Visitor Name</th>
-                <th>Contact</th>
-                <th>Purpose</th>
-                <th>Person to Visit</th>
-                <th>Date</th>
-                <th>Time In</th>
-                <th>Time Out</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log[0] }}</td>
-                <td><strong>{{ log[1] }}</strong></td>
-                <td>{{ log[2] }}</td>
-                <td>{{ log[3] }}</td>
-                <td>{{ log[4] }}</td>
-                <td>{{ log[5] }}</td>
-                <td>{{ log[6] }}</td>
-                <td>
-                    {% if log[7] == 'ON CAMPUS' %}
-                        <span class="status-active">ON CAMPUS</span>
-                    {% else %}
-                        <span class="status-out">{{ log[7] }}</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if log[7] == 'ON CAMPUS' %}
-                        <a href="/checkout/{{ log[0] }}" class="btn" style="padding:4px 8px; font-size:11px;">Check-Out</a>
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            {% if success %}
+                <div class="alert-success">{{ msg }}</div>
+                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Register Another Visitor</a>
+            {% else %}
+                <form action="/" method="POST">
+                    <div class="form-group">
+                        <label>Full Name:</label>
+                        <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Number:</label>
+                        <input type="tel" name="contact_no" required placeholder="09123456789">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Purpose of Visit:</label>
+                        <select name="purpose" required>
+                            <option value="">-- Select Purpose --</option>
+                            <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
+                            <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
+                            <option value="Official Business / Staff Meeting">Official Business / Staff Meeting</option>
+                            <option value="Delivery / Vendor">Delivery / Vendor</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Person to Visit:</label>
+                        <input type="text" name="person_to_visit" required placeholder="Name of Staff / Teacher / Admin">
+                    </div>
+
+                    <div class="privacy-box">
+                        <label style="font-weight: normal; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: var(--text-sub);">
+                            <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
+                            <span>I hereby certify that the information provided is true and correct. I authorize <strong>Eclaro Academy, Inc.</strong> to collect and process my personal data solely for campus security and safety monitoring in compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn">Submit Check-In</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="login-link">
+            <a href="/login">Authorized Personnel Login</a>
+        </div>
+    </div>
 
 </body>
 </html>
