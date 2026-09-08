@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eclaro Academy - Visitor Registration</title>
     
-    <!-- Link sa External CSS -->
+    <!-- Link to External CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <!-- Internal Backup CSS para siguradong may kulay at maayos ang layout agad sa Mobile -->
+    <!-- Internal Backup CSS for Guaranteed Styling -->
     <style>
         :root {
             --primary-color: #0d47a1;
@@ -162,23 +162,23 @@
 
             {% if success %}
                 <div class="alert-success">{{ msg }}</div>
-                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Mag-log ng Bagong Bisita</a>
+                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Register Another Visitor</a>
             {% else %}
                 <form action="/" method="POST">
                     <div class="form-group">
-                        <label>Buong Pangalan (Full Name):</label>
-                        <input type="text" name="full_name" required placeholder="mga halimbawa: Juan Dela Cruz">
+                        <label>Full Name:</label>
+                        <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
                     </div>
 
                     <div class="form-group">
-                        <label>Numero ng Telepono (Contact No.):</label>
+                        <label>Contact Number:</label>
                         <input type="tel" name="contact_no" required placeholder="09123456789">
                     </div>
 
                     <div class="form-group">
-                        <label>Layunin ng Pagbisita (Purpose):</label>
+                        <label>Purpose of Visit:</label>
                         <select name="purpose" required>
-                            <option value="">-- Pumili ng Layunin --</option>
+                            <option value="">-- Select Purpose --</option>
                             <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
                             <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
                             <option value="Official Business / Staff Meeting">Official Business / Staff Meeting</option>
@@ -188,15 +188,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Taong Bibisitahin (Person to Visit):</label>
-                        <input type="text" name="person_to_visit" required placeholder="Pangalan ng Staff/Guro/Admin">
+                        <label>Person to Visit:</label>
+                        <input type="text" name="person_to_visit" required placeholder="Name of Staff / Teacher / Admin">
                     </div>
 
                     <!-- DATA PRIVACY ACT CONSENT CHECKBOX (R.A. 10173) -->
                     <div class="privacy-box">
                         <label style="font-weight: normal; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: #1a237e;">
                             <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
-                            <span>Pinagtitibay ko na ang mga ibinigay kong impormasyon ay tama. Sumasang-ayon ako na kolektahin ng <strong>Eclaro Academy, Inc.</strong> ang aking datos para lamang sa seguridad ng campus alinsunod sa <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
+                            <span>I hereby certify that the information provided is true and correct. I authorize <strong>Eclaro Academy, Inc.</strong> to collect and process my personal data solely for campus security and safety monitoring in compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
                         </label>
                     </div>
 
