@@ -2,70 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Administrator Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta http-equiv="refresh" content="0; url=/admin">
+    <title>Redirecting...</title>
 </head>
 <body>
-    <div class="header">
-        <h1>ECLARO ACADEMY - Control Center</h1>
-        <p>Logged in as Admin: <strong>{{ username }}</strong> | <a href="/logout" style="color: yellow;">Logout</a></p>
-    </div>
-
-    <div class="container" style="max-width: 1100px;">
-        <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                <h2>Master Visitor Audit Trail Logs</h2>
-                <!-- REPORT GENERATION BUTTONS -->
-                <div class="no-print" style="display: flex; gap: 10px;">
-                    <a href="/export_csv" class="btn" style="background-color: #2e7d32;">📥 Export to CSV / Excel</a>
-                    <button onclick="window.print()" class="btn" style="background-color: #555;">🖨️ Print Report</button>
-                </div>
-            </div>
-            
-            <form method="GET" action="/admin" class="no-print" style="display: flex; gap: 10px; margin: 20px 0;">
-                <input type="text" name="search" placeholder="Search by Name, Purpose, Person, or Date (YYYY-MM-DD)..." value="{{ search }}" style="flex: 1; padding: 10px;">
-                <button type="submit" class="btn">Search</button>
-            </form>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Pangalan</th>
-                        <th>Contact No.</th>
-                        <th>Layunin</th>
-                        <th>Kausap</th>
-                        <th>Petsa</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for log in logs %}
-                    <tr>
-                        <td>{{ log[0] }}</td>
-                        <td>{{ log[1] }}</td>
-                        <td>{{ log[2] }}</td>
-                        <td>{{ log[3] }}</td>
-                        <td>{{ log[4] }}</td>
-                        <td>{{ log[5] }}</td>
-                        <td>{{ log[6] }}</td>
-                        <td>
-                            {% if log[7] == 'ON CAMPUS' %}
-                                <span style="color: green; font-weight: bold;">ON CAMPUS</span>
-                            {% else %}
-                                {{ log[7] }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="8" style="text-align: center;">Walang nahanap na visitor logs.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <p>Redirecting to Admin Dashboard... <a href="/admin">Click here if not redirected</a>.</p>
 </body>
 </html>
