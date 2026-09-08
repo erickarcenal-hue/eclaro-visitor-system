@@ -143,7 +143,13 @@ def admin_dashboard():
     return render_template("admin.html", logs=logs, search=search_query)
 
 
-# 4. Check-out Visitor
+# 4. Secondary Dashboard Route (redirects to /admin)
+@app.route("/dashboard")
+def dashboard():
+    return redirect(url_for("admin_dashboard"))
+
+
+# 5. Check-out Visitor
 @app.route("/checkout/<int:visitor_id>")
 def checkout(visitor_id):
     if session.get("user") != "admin":
@@ -162,7 +168,7 @@ def checkout(visitor_id):
     return redirect(url_for("admin_dashboard"))
 
 
-# 5. Export CSV
+# 6. Export CSV
 @app.route("/export_csv")
 def export_csv():
     if session.get("user") != "admin":
@@ -203,7 +209,7 @@ def export_csv():
     )
 
 
-# 6. Logout
+# 7. Logout
 @app.route("/logout")
 def logout():
     session.clear()
