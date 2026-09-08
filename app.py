@@ -123,7 +123,7 @@ def index():
         return render_template(
             "index.html",
             success=True,
-            msg="Matagumpay na na-record ang inyong pagpasok sa Eclaro Academy!",
+            msg="Your check-in has been successfully!",
         )
 
     return render_template("index.html", success=False)
