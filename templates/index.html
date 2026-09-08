@@ -3,133 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Academy - Visitor Registration</title>
+    <title>Eclaro Academy - Visitor Pass</title>
     
-    <!-- Link to External CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <!-- Internal Backup CSS for Guaranteed Styling -->
+    <!-- Modern Vibrant Dark Theme Styling -->
     <style>
         :root {
-            --primary-color: #0d47a1;
-            --accent-color: #1976d2;
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-color: #333333;
+            --bg-dark: #0b132b;
+            --card-dark: #101a36;
+            --input-dark: #1c2541;
+            --border-blue: #2a3a5e;
+            --text-main: #ffffff;
+            --text-sub: #a0aec0;
+            --lime-green: #88d400;
+            --lime-hover: #76b900;
+            --gold-warning: #ffb703;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--bg-dark);
             margin: 0;
             padding: 0;
-            color: var(--text-color);
+            color: var(--text-main);
         }
 
         .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 25px 15px;
+            background-color: #070d1f;
+            padding: 20px 15px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-bottom: 1px solid var(--border-blue);
         }
 
         .header h1 {
             margin: 0;
-            font-size: 22px;
-            letter-spacing: 0.5px;
+            font-size: 20px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
         .header p {
-            margin: 5px 0 0 0;
-            font-size: 13px;
-            opacity: 0.9;
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: var(--lime-green);
         }
 
         .container {
-            max-width: 500px;
-            margin: 20px auto;
+            max-width: 450px;
+            margin: 15px auto;
             padding: 0 15px;
         }
 
         .card {
-            background: var(--card-bg);
+            background: var(--card-dark);
             padding: 22px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            margin-bottom: 18px;
-            font-size: 18px;
-            color: var(--primary-color);
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 8px;
+            border-radius: 16px;
+            border: 1px solid var(--border-blue);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            font-size: 16px;
         }
 
         .form-group input, 
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 12px 12px 12px 38px;
+            background-color: var(--input-dark);
+            border: 1px solid var(--border-blue);
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 14px;
-            background-color: #fafafa;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #5c6b89;
         }
 
         .form-group input:focus, 
         .form-group select:focus {
             outline: none;
-            border-color: var(--accent-color);
-            background-color: #fff;
+            border-color: var(--lime-green);
+            box-shadow: 0 0 8px rgba(136, 212, 0, 0.3);
+        }
+
+        .notice-box {
+            background-color: rgba(255, 183, 3, 0.1);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 15px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .notice-box span {
+            font-size: 12px;
+            color: #ffe082;
+            line-height: 1.4;
         }
 
         .privacy-box {
-            background-color: #e8f0fe;
-            border-left: 4px solid var(--accent-color);
+            background-color: rgba(28, 37, 65, 0.6);
+            border-left: 3px solid var(--lime-green);
             padding: 12px;
-            margin: 18px 0;
-            border-radius: 4px;
-        }
-
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 12px 20px;
-            border: none;
+            margin: 15px 0;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .btn:hover {
-            background-color: var(--primary-color);
+        .privacy-box label {
+            font-weight: normal;
+            font-size: 11px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin: 0;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .btn-lime {
+            background-color: var(--lime-green);
+            color: #000000;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 800;
+            width: 100%;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(136, 212, 0, 0.3);
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-lime:hover {
+            background-color: var(--lime-hover);
         }
 
         .alert-success {
             padding: 15px;
             background-color: #2e7d32;
             color: white;
-            border-radius: 6px;
+            border-radius: 10px;
             margin-bottom: 15px;
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .login-link {
@@ -139,13 +188,13 @@
         }
 
         .login-link a {
-            color: #666;
-            font-size: 13px;
+            color: var(--text-sub);
+            font-size: 12px;
             text-decoration: none;
         }
 
         .login-link a:hover {
-            text-decoration: underline;
+            color: var(--lime-green);
         }
     </style>
 </head>
@@ -153,56 +202,75 @@
 
     <div class="header">
         <h1>ECLARO ACADEMY, INC.</h1>
-        <p>Web-Based Visitor Management System (S.Y. 2026–2027)</p>
+        <p>● Campus Visitor Management System</p>
     </div>
 
     <div class="container">
         <div class="card">
-            <h2>Visitor Check-In Form</h2>
 
             {% if success %}
-                <div class="alert-success">{{ msg }}</div>
-                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Register Another Visitor</a>
+                <div class="alert-success">✓ {{ msg }}</div>
+                <a href="/" class="btn-lime" style="text-decoration: none;">REGISTER ANOTHER VISITOR</a>
             {% else %}
                 <form action="/" method="POST">
+                    
                     <div class="form-group">
-                        <label>Full Name:</label>
-                        <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
+                        <label>Buong Pangalan (Full Name)</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">👤</span>
+                            <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Contact Number:</label>
-                        <input type="tel" name="contact_no" required placeholder="09123456789">
+                        <label>Mobile Contact Number</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📱</span>
+                            <input type="tel" name="contact_no" required placeholder="09123456789">
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Purpose of Visit:</label>
-                        <select name="purpose" required>
-                            <option value="">-- Select Purpose --</option>
-                            <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
-                            <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
-                            <option value="Official Business / Staff Meeting">Official Business / Staff Meeting</option>
-                            <option value="Delivery / Vendor">Delivery / Vendor</option>
-                            <option value="Others">Others</option>
-                        </select>
+                        <label>Purpose of Visit (Layunin)</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">📋</span>
+                            <select name="purpose" required>
+                                <option value="">-- Select Purpose --</option>
+                                <option value="Inquiry / Document Submission">Inquiry / Document Submission</option>
+                                <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
+                                <option value="Registrar / Cashier Transaction">Registrar / Cashier Transaction</option>
+                                <option value="Official Business / Staff Meeting">Official Business / Staff Meeting</option>
+                                <option value="Delivery / Vendor">Delivery / Vendor</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Person to Visit:</label>
-                        <input type="text" name="person_to_visit" required placeholder="Name of Staff / Teacher / Admin">
+                        <label>Person / Department to Visit</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">🏫</span>
+                            <input type="text" name="person_to_visit" required placeholder="Registrar / Cashier / Staff Name">
+                        </div>
                     </div>
 
-                    <!-- DATA PRIVACY ACT CONSENT CHECKBOX (R.A. 10173) -->
+                    <!-- REQUIREMENT BANNER -->
+                    <div class="notice-box">
+                        <span style="font-size: 16px;">🪪</span>
+                        <span><strong>Requirement:</strong> Maghanda ng <strong>School ID o Valid ID</strong> para sa verification ng Guard sa Gate.</span>
+                    </div>
+
+                    <!-- DATA PRIVACY CHECKBOX -->
                     <div class="privacy-box">
-                        <label style="font-weight: normal; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: #1a237e;">
+                        <label>
                             <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
-                            <span>I hereby certify that the information provided is true and correct. I authorize <strong>Eclaro Academy, Inc.</strong> to collect and process my personal data solely for campus security and safety monitoring in compliance with the <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
+                            <span>Sumasang-ayon ako sa pagproseso ng aking datos para sa seguridad ng campus alinsunod sa <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="btn">Submit Check-In</button>
+                    <button type="submit" class="btn-lime">GET VISITOR PASS ➔</button>
                 </form>
             {% endif %}
+
         </div>
 
         <div class="login-link">
