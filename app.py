@@ -58,11 +58,11 @@ def init_db():
     if not cursor.fetchone():
         cursor.execute(
             "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-            ("admin", generate_password_hash("admin123"), "ADMIN"),
+            ("admin", generate_password_hash("adminpassword"), "ADMIN"),
         )
         cursor.execute(
             "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-            ("guard", generate_password_hash("guard123"), "GUARD"),
+            ("guard", generate_password_hash("guardpassword"), "GUARD"),
         )
 
     conn.commit()
@@ -72,12 +72,12 @@ def init_db():
 init_db()
 
 
-# Login Required Decorator (Security Check)
+# Security Decorator
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "user_id" not in session:
-            flash("Kailangan mong mag-login muna.", "danger")
+            flash("Please log in first to access this page.", "danger")
             return redirect(url_for("login"))
         return f(*args, **kwargs)
 
@@ -99,7 +99,7 @@ def index():
 
         if not privacy_consent:
             flash(
-                "Kailangang pumayag sa Data Privacy Consent bago makapag-submit.",
+                "You must agree to the Data Privacy Consent before submitting.",
                 "danger",
             )
             return render_template("index.html", success=False)
@@ -123,13 +123,13 @@ def index():
         return render_template(
             "index.html",
             success=True,
-            msg="Your check-in has been successfully!",
+            msg="Your visitor check-in has been successfully recorded!",
         )
 
     return render_template("index.html", success=False)
 
 
-# 2. Login
+# 2. Login Page
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -152,7 +152,7 @@ def login():
             else:
                 return redirect(url_for("guard_dashboard"))
         else:
-            flash("Maling username o password.", "danger")
+            flash("Invalid username or password.", "danger")
 
     return render_template("login.html")
 
@@ -188,7 +188,7 @@ def checkout(visitor_id):
     )
     conn.commit()
     conn.close()
-    flash("Naka-check out na ang bisita.", "info")
+    flash("Visitor successfully checked out.", "info")
     return redirect(url_for("guard_dashboard"))
 
 
@@ -197,7 +197,7 @@ def checkout(visitor_id):
 @login_required
 def admin_dashboard():
     if session.get("role") != "ADMIN":
-        flash("Access Denied: Para lamang sa Administrators.", "danger")
+        flash("Access Denied: Restricted to Administrators.", "danger")
         return redirect(url_for("guard_dashboard"))
 
     search_query = request.args.get("search", "")
@@ -233,7 +233,7 @@ def admin_dashboard():
     )
 
 
-# 6. EXPORT LOGS TO CSV (Bagong Feature)
+# 6. Export Logs to CSV
 @app.route("/export_csv")
 @login_required
 def export_csv():
@@ -279,7 +279,7 @@ def export_csv():
 @app.route("/logout")
 def logout():
     session.clear()
-    flash("Naka-logout ka na.", "success")
+    flash("You have successfully logged out.", "success")
     return redirect(url_for("login"))
 
 
