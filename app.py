@@ -1,19 +1,38 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
+from flask_sqlalchemy import SQLAlchemy
 import urllib.parse
 from openpyxl import Workbook
 import io
+import os
 
 app = Flask(__name__)
 app.secret_key = 'eclaro_academy_secret_key_2026'
 
-# Allowed Staff & Registrar Accounts
+# SQLite Database Setup (Permanent File Storage)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///visitors.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Database Model Table Definition
+class Visitor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    contact = db.Column(db.String(50), nullable=False)
+    purpose = db.Column(db.String(100), nullable=False)
+    person_to_visit = db.Column(db.String(100), nullable=False)
+    checkin_date = db.Column(db.String(50), nullable=False)
+    checkin_time = db.Column(db.String(50), nullable=False)
+    qr_url = db.Column(db.Text, nullable=False)
+
+# Auto-create the database table upon app starting
+with app.app_context():
+    db.create_all()
+
+# Allowed Staff Accounts
 USERS = {
     "admin": "admin123",
     "registrar": "registrar123"
 }
-
-# Temporary List to store visitors
-VISITOR_LOGS = []
 
 @app.route('/')
 def home():
@@ -32,18 +51,20 @@ def add_visitor():
     encoded_data = urllib.parse.quote(qr_data)
     qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={encoded_data}"
 
-    visitor_data = {
-        "name": name,
-        "contact": contact,
-        "purpose": purpose,
-        "person_to_visit": person_to_visit,
-        "checkin_date": checkin_date,
-        "checkin_time": checkin_time,
-        "qr_url": qr_url
-    }
+    # Save permanently inside SQLite database
+    new_visitor = Visitor(
+        name=name,
+        contact=contact,
+        purpose=purpose,
+        person_to_visit=person_to_visit,
+        checkin_date=checkin_date,
+        checkin_time=checkin_time,
+        qr_url=qr_url
+    )
+    db.session.add(new_visitor)
+    db.session.commit()
 
-    VISITOR_LOGS.insert(0, visitor_data)
-    return render_template('index.html', success=True, visitor=visitor_data)
+    return render_template('index.html', success=True, visitor=new_visitor)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -66,9 +87,10 @@ def admin_dashboard():
         return redirect(url_for('login'))
     
     current_user = session.get('user', 'Staff').capitalize()
-    return render_template('dashboard.html', current_user=current_user, visitors=VISITOR_LOGS)
+    # Fetch all records ordered by newest ID first
+    visitors = Visitor.query.order_by(Visitor.id.desc()).all()
+    return render_template('dashboard.html', current_user=current_user, visitors=visitors)
 
-# Route para sa Auto-Generate at Download ng Excel File
 @app.route('/export')
 def export_excel():
     if not session.get('logged_in'):
@@ -78,22 +100,20 @@ def export_excel():
     ws = wb.active
     ws.title = "Visitor Logs"
 
-    # Header Row
     headers = ["Date", "Time", "Visitor Name", "Contact No.", "Purpose", "Destination / Host"]
     ws.append(headers)
 
-    # Input lahat ng data mula sa VISITOR_LOGS papunta sa Excel rows
-    for v in VISITOR_LOGS:
+    visitors = Visitor.query.order_by(Visitor.id.desc()).all()
+    for v in visitors:
         ws.append([
-            v.get('checkin_date', ''),
-            v.get('checkin_time', ''),
-            v.get('name', ''),
-            v.get('contact', ''),
-            v.get('purpose', ''),
-            v.get('person_to_visit', '')
+            v.checkin_date,
+            v.checkin_time,
+            v.name,
+            v.contact,
+            v.purpose,
+            v.person_to_visit
         ])
 
-    # Save sa memory buffer para ma-download agad
     buffer = io.BytesIO()
     wb.save(buffer)
     buffer.seek(0)
