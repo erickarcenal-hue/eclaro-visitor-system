@@ -1,262 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Academy - Visitor Registration</title>
-    <!-- Favicon Logo -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-    <style>
-        :root {
-            --eclaro-navy: #030d22;
-            --eclaro-card: #091736;
-            --eclaro-input: #12244a;
-            --eclaro-border: #1d3568;
-            --eclaro-green: #79c000;
-            --eclaro-green-hover: #68a600;
-            --text-white: #ffffff;
-            --text-gray: #a3b3d1;
-        }
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+import urllib.parse
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--eclaro-navy);
-            background-image: radial-gradient(circle at top right, #10234a 0%, #030d22 60%);
-            margin: 0;
-            padding: 0;
-            color: var(--text-white);
-            min-height: 100vh;
-        }
+app = Flask(__name__)
+app.secret_key = 'eclaro_academy_secret_key_2026'
 
-        /* Official Header Navbar Style */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--eclaro-border);
-            background: rgba(3, 13, 34, 0.8);
-            backdrop-filter: blur(10px);
-        }
+# Allowed Staff & Registrar Accounts
+USERS = {
+    "admin": "admin123",
+    "registrar": "registrar123"
+}
 
-        .brand-logo {
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            color: var(--text-white);
-            text-decoration: none;
-        }
+# Temporary List to store visitors (In-memory storage)
+VISITOR_LOGS = []
 
-        .brand-logo span {
-            color: var(--eclaro-green);
-        }
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-        .sub-brand {
-            font-size: 13px;
-            color: var(--text-gray);
-            margin-top: 2px;
-        }
+@app.route('/add', methods=['POST'])
+def add_visitor():
+    name = request.form.get('name', '').strip()
+    contact = request.form.get('contact', '').strip()
+    purpose = request.form.get('purpose', '').strip()
+    person_to_visit = request.form.get('person_to_visit', '').strip()
+    checkin_date = request.form.get('checkin_date', '')
+    checkin_time = request.form.get('checkin_time', '')
 
-        .container {
-            max-width: 520px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+    qr_data = f"Name: {name}\nContact: {contact}\nPurpose: {purpose}\nHost: {person_to_visit}\nDate: {checkin_date}\nTime: {checkin_time}"
+    encoded_data = urllib.parse.quote(qr_data)
+    qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={encoded_data}"
 
-        .hero-title {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    visitor_data = {
+        "name": name,
+        "contact": contact,
+        "purpose": purpose,
+        "person_to_visit": person_to_visit,
+        "checkin_date": checkin_date,
+        "checkin_time": checkin_time,
+        "qr_url": qr_url
+    }
 
-        .hero-title h2 {
-            font-size: 26px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            color: var(--text-white);
-        }
+    # I-save sa listahan para makita sa dashboard
+    VISITOR_LOGS.insert(0, visitor_data)
 
-        .hero-title p {
-            font-size: 14px;
-            color: var(--eclaro-green);
-            margin: 0;
-        }
+    return render_template('index.html', success=True, visitor=visitor_data)
 
-        .card {
-            background: var(--eclaro-card);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--eclaro-border);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip().lower()
+        password = request.form.get('password', '').strip()
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+        if username in USERS and USERS[username] == password:
+            session['logged_in'] = True
+            session['user'] = username
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash("Invalid credentials. Please check your username or password.", "error")
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text-white);
-            letter-spacing: 0.3px;
-        }
+    return render_template('login.html')
 
-        .form-group input, 
-        .form-group select {
-            width: 100%;
-            padding: 12px 14px;
-            background-color: var(--eclaro-input);
-            border: 1px solid var(--eclaro-border);
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 14px;
-            color: var(--text-white);
-            transition: all 0.2s ease;
-        }
+@app.route('/dashboard')
+def admin_dashboard():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    
+    current_user = session.get('user', 'Staff').capitalize()
+    return render_template('dashboard.html', current_user=current_user, visitors=VISITOR_LOGS)
 
-        .form-group input::placeholder {
-            color: #5d74a3;
-        }
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
-        .form-group input:focus, 
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--eclaro-green);
-            box-shadow: 0 0 10px rgba(121, 192, 0, 0.25);
-        }
-
-        .privacy-box {
-            background-color: rgba(18, 36, 74, 0.6);
-            border-left: 3px solid var(--eclaro-green);
-            padding: 12px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-
-        .btn {
-            background-color: var(--eclaro-green);
-            color: #030d22;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 800;
-            width: 100%;
-            letter-spacing: 0.5px;
-            transition: background 0.2s ease;
-            box-shadow: 0 4px 15px rgba(121, 192, 0, 0.3);
-        }
-
-        .btn:hover {
-            background-color: var(--eclaro-green-hover);
-        }
-
-        .alert-success {
-            padding: 15px;
-            background-color: #1e5a22;
-            color: white;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .footer-link {
-            text-align: center;
-            margin-top: 25px;
-            margin-bottom: 40px;
-        }
-
-        .footer-link a {
-            color: var(--text-gray);
-            font-size: 13px;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-link a:hover {
-            color: var(--eclaro-green);
-        }
-
-        @media (max-width: 600px) {
-            .navbar {
-                flex-direction: column;
-                text-align: center;
-                gap: 5px;
-                padding: 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="navbar">
-        <div>
-            <a href="/" class="brand-logo"><span>E</span>CLARO</a>
-            <div class="sub-brand">Eclaro Academy, Inc.</div>
-        </div>
-        <div style="font-size: 12px; color: var(--text-gray);">
-            Campus Visitor System
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="hero-title">
-            <h2>Visitor Check-In</h2>
-            <p>Welcome! Please register your entry details below.</p>
-        </div>
-
-        <div class="card">
-            {% if success %}
-                <div class="alert-success">{{ msg }}</div>
-                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Register Another Visitor</a>
-            {% else %}
-                <form action="/" method="POST">
-                    <div class="form-group">
-                        <label>FULL NAME</label>
-                        <input type="text" name="full_name" required placeholder="e.g. Juan Dela Cruz">
-                    </div>
-
-                    <div class="form-group">
-                        <label>CONTACT NUMBER</label>
-                        <input type="tel" name="contact_no" required placeholder="09123456789">
-                    </div>
-
-                    <div class="form-group">
-                        <label>PURPOSE OF VISIT</label>
-                        <select name="purpose" required>
-                            <option value="">-- Select Purpose --</option>
-                            <option value="Parent-Teacher Conference (PTC)">Parent-Teacher Conference (PTC)</option>
-                            <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
-                            <option value="Official Business / Staff Meeting">Official Business / Staff Meeting</option>
-                            <option value="Delivery / Vendor">Delivery / Vendor</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>PERSON TO VISIT</label>
-                        <input type="text" name="person_to_visit" required placeholder="Name of Staff / Teacher / Admin">
-                    </div>
-
-                    <div class="privacy-box">
-                        <label style="font-weight: normal; font-size: 11px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: var(--text-gray);">
-                            <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
-                            <span>I authorize <strong>Eclaro Academy</strong> to process my personal data solely for campus security and safety monitoring in compliance with the Data Privacy Act of 2012 (R.A. 10173).</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn">SUBMIT CHECK-IN</button>
-                </form>
-            {% endif %}
-        </div>
-
-        <div class="footer-link">
-            <a href="/login">Authorized Personnel Portal →</a>
-        </div>
-    </div>
-
-</body>
-</html>
+if __name__ == '__main__':
+    app.run(debug=True)
