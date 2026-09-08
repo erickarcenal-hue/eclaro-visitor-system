@@ -4,9 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eclaro Academy - Visitor Registration</title>
+    
+    <!-- Link sa External CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Internal Backup CSS para siguradong may kulay at maayos ang layout agad sa Mobile -->
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --accent-color: #1976d2;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 18px;
+            color: var(--primary-color);
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #fafafa;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: #fff;
+        }
+
+        .privacy-box {
+            background-color: #e8f0fe;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px;
+            margin: 18px 0;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .alert-success {
+            padding: 15px;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .login-link a {
+            color: #666;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+
     <div class="header">
         <h1>ECLARO ACADEMY, INC.</h1>
         <p>Web-Based Visitor Management System (S.Y. 2026–2027)</p>
@@ -17,18 +161,20 @@
             <h2>Visitor Check-In Form</h2>
 
             {% if success %}
-                <div class="alert alert-success">{{ msg }}</div>
-                <a href="/" class="btn">Mag-log ng Bagong Bisita</a>
+                <div class="alert-success">{{ msg }}</div>
+                <a href="/" class="btn" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">Mag-log ng Bagong Bisita</a>
             {% else %}
                 <form action="/" method="POST">
                     <div class="form-group">
                         <label>Buong Pangalan (Full Name):</label>
-                        <input type="text" name="full_name" required placeholder="Juan Dela Cruz">
+                        <input type="text" name="full_name" required placeholder="mga halimbawa: Juan Dela Cruz">
                     </div>
+
                     <div class="form-group">
                         <label>Numero ng Telepono (Contact No.):</label>
                         <input type="tel" name="contact_no" required placeholder="09123456789">
                     </div>
+
                     <div class="form-group">
                         <label>Layunin ng Pagbisita (Purpose):</label>
                         <select name="purpose" required>
@@ -40,6 +186,7 @@
                             <option value="Others">Others</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>Taong Bibisitahin (Person to Visit):</label>
                         <input type="text" name="person_to_visit" required placeholder="Pangalan ng Staff/Guro/Admin">
@@ -47,17 +194,21 @@
 
                     <!-- DATA PRIVACY ACT CONSENT CHECKBOX (R.A. 10173) -->
                     <div class="privacy-box">
-                        <label style="font-weight: normal; font-size: 0.9em; display: flex; gap: 10px; align-items: flex-start;">
-                            <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 3px;">
+                        <label style="font-weight: normal; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; margin: 0; color: #1a237e;">
+                            <input type="checkbox" name="privacy_consent" value="YES" required style="width: auto; margin-top: 2px;">
                             <span>Pinagtitibay ko na ang mga ibinigay kong impormasyon ay tama. Sumasang-ayon ako na kolektahin ng <strong>Eclaro Academy, Inc.</strong> ang aking datos para lamang sa seguridad ng campus alinsunod sa <strong>Data Privacy Act of 2012 (R.A. 10173)</strong>.</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="btn" style="width: 100%; margin-top: 15px;">Submit Check-In</button>
+                    <button type="submit" class="btn">Submit Check-In</button>
                 </form>
             {% endif %}
         </div>
-        <p style="text-align: center;"><a href="/login" style="color: #666;">Authorized Personnel Login</a></p>
+
+        <div class="login-link">
+            <a href="/login">Authorized Personnel Login</a>
+        </div>
     </div>
+
 </body>
 </html>
