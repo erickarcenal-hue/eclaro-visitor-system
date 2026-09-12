@@ -11,13 +11,12 @@
     <style>
         body { font-family: 'Poppins', sans-serif; }
         .font-serif-title { font-family: 'Merriweather', serif; }
-        .bg-eclaro-navy { background-color: #031137; }
-        .bg-eclaro-lime { background-color: #8CC63F; }
         .text-eclaro-lime { color: #8CC63F; }
+        .bg-eclaro-lime { background-color: #8CC63F; }
         .border-eclaro-lime { border-color: #8CC63F; }
     </style>
 </head>
-<body class="bg-white min-h-screen flex flex-col justify-between text-slate-100">
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800">
 
     <!-- Navbar -->
     <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-200 bg-white shadow-sm">
@@ -34,34 +33,34 @@
 
     <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
-        <div class="w-full max-w-md bg-slate-900 backdrop-blur-xl border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden text-slate-100">
-            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
+        <div class="w-full max-w-md bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden text-slate-800">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
 
             {% if success %}
                 <!-- Success State / QR Display -->
                 <div class="text-center space-y-4">
-                    <div class="w-14 h-14 bg-eclaro-lime/20 text-eclaro-lime rounded-2xl flex items-center justify-center mx-auto text-2xl border border-eclaro-lime/30">
+                    <div class="w-14 h-14 bg-[#8CC63F]/20 text-[#72a131] rounded-2xl flex items-center justify-center mx-auto text-2xl border border-[#8CC63F]/30">
                         <i class="fas fa-check"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold font-serif-title text-white">Registration Successful!</h2>
-                        <p class="text-xs text-slate-400 mt-1">Present this digital gate pass to the Eclaro security or receptionist.</p>
+                        <h2 class="text-xl font-bold font-serif-title text-slate-900">Registration Successful!</h2>
+                        <p class="text-xs text-slate-500 mt-1">Present this digital gate pass to the Eclaro security or receptionist.</p>
                     </div>
 
-                    <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700 space-y-3 text-left text-xs">
-                        <div class="flex justify-between"><span class="text-slate-400">Visitor:</span> <span class="font-semibold text-white">{{ visitor.name }}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Contact:</span> <span class="font-semibold text-white">{{ visitor.contact }}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Purpose:</span> <span class="font-semibold text-eclaro-lime">{{ visitor.purpose }}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Host / To Visit:</span> <span class="font-semibold text-white">{{ visitor.person_to_visit }}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400">Date & Time:</span> <span class="font-semibold text-slate-300">{{ visitor.checkin_date }} | {{ visitor.checkin_time }}</span></div>
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 text-left text-xs">
+                        <div class="flex justify-between"><span class="text-slate-500">Visitor:</span> <span class="font-semibold text-slate-900">{{ visitor.name }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Contact:</span> <span class="font-semibold text-slate-900">{{ visitor.contact }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Purpose:</span> <span class="font-semibold text-[#72a131]">{{ visitor.purpose }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Host / To Visit:</span> <span class="font-semibold text-slate-900">{{ visitor.person_to_visit }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Date & Time:</span> <span class="font-semibold text-slate-700">{{ visitor.checkin_date }} | {{ visitor.checkin_time }}</span></div>
                     </div>
 
-                    <div class="bg-white p-4 rounded-2xl inline-block shadow-lg border-4 border-slate-800">
+                    <div class="bg-white p-4 rounded-2xl inline-block shadow-md border-2 border-slate-200">
                         <img src="{{ visitor.qr_url }}" alt="Visitor QR Code" class="w-40 h-40 mx-auto">
                     </div>
 
                     <div>
-                        <a href="/" class="w-full block bg-slate-800 hover:bg-slate-700 text-white font-medium py-2.5 rounded-xl text-xs transition-all border border-slate-700">
+                        <a href="/" class="w-full block bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2.5 rounded-xl text-xs transition-all border border-slate-200">
                             Register Another Visitor
                         </a>
                     </div>
@@ -69,32 +68,32 @@
             {% else %}
                 <!-- Registration Form -->
                 <div class="mb-6">
-                    <h1 class="text-xl font-bold font-serif-title text-white">Visitor Registration</h1>
-                    <p class="text-xs text-slate-400 mt-1">Please fill out your details prior to entry.</p>
+                    <h1 class="text-xl font-bold font-serif-title text-slate-900">Visitor Registration</h1>
+                    <p class="text-xs text-slate-500 mt-1">Please fill out your details prior to entry.</p>
                 </div>
 
                 <form action="/add" method="POST" class="space-y-4">
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Full Name</label>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-user"></i></span>
-                            <input type="text" name="name" required placeholder="e.g. Juan Dela Cruz" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-user"></i></span>
+                            <input type="text" name="name" required placeholder="e.g. Juan Dela Cruz" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Contact Number</label>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Contact Number</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-phone"></i></span>
-                            <input type="text" name="contact" required placeholder="e.g. 09123456789" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-phone"></i></span>
+                            <input type="text" name="contact" required placeholder="e.g. 09123456789" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Purpose of Visit</label>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Purpose of Visit</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-clipboard-question"></i></span>
-                            <select name="purpose" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white focus:outline-none focus:border-[#8CC63F] transition-all">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-clipboard-question"></i></span>
+                            <select name="purpose" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                                 <option value="" disabled selected>Select purpose...</option>
                                 <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
                                 <option value="Meeting / Appointment">Meeting / Appointment</option>
@@ -106,10 +105,10 @@
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Person to Visit / Department</label>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Person to Visit / Department</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-building-user"></i></span>
-                            <input type="text" name="person_to_visit" required placeholder="e.g. Registrar Office / Dean" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-building-user"></i></span>
+                            <input type="text" name="person_to_visit" required placeholder="e.g. Registrar Office / Dean" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                         </div>
                     </div>
 
@@ -117,7 +116,7 @@
                     <input type="hidden" name="checkin_date" id="checkin_date">
                     <input type="hidden" name="checkin_time" id="checkin_time">
 
-                    <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-lg shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
                         <i class="fas fa-qrcode"></i> Generate Gate Pass
                     </button>
                 </form>
@@ -132,7 +131,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="w-full text-center py-4 border-t border-slate-200 text-[11px] text-slate-600 bg-white">
+    <footer class="w-full text-center py-4 border-t border-slate-200 text-[11px] text-slate-500 bg-white">
         <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
 
