@@ -29,11 +29,6 @@
                 <p class="text-xs font-semibold text-slate-700">Logged in as: <span class="text-[#72a131] uppercase">{{ current_user }}</span></p>
             </div>
             
-            <!-- Export to Excel Button -->
-            <a href="/export" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl font-medium shadow-sm transition-all flex items-center gap-1.5">
-                <i class="fas fa-file-excel"></i> Export Excel
-            </a>
-
             <a href="/" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-xl font-medium border border-slate-200 transition-all flex items-center gap-1.5">
                 <i class="fas fa-home"></i> Home
             </a>
@@ -51,7 +46,7 @@
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
             <div>
                 <h1 class="text-xl sm:text-2xl font-bold font-serif-title text-slate-900">Welcome back, {{ current_user }}! 👋</h1>
-                <p class="text-xs text-slate-500 mt-1">Monitor real-time visitors checking in at Eclaro Academy gates.</p>
+                <p class="text-xs text-slate-500 mt-1">Monitor real-time Time-In and Time-Out logs of visitors at Eclaro Academy.</p>
             </div>
             <div class="bg-slate-50 border border-slate-200 px-5 py-3 rounded-2xl flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-[#8CC63F]/20 text-[#72a131] flex items-center justify-center text-lg">
@@ -71,9 +66,9 @@
             <div class="p-5 sm:p-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-base font-bold text-slate-900 font-serif-title flex items-center gap-2">
-                        <i class="fas fa-clipboard-list text-[#72a131]"></i> Visitor Logs History
+                        <i class="fas fa-clipboard-list text-[#72a131]"></i> Visitor Time-In & Time-Out Logs
                     </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Permanent record database of all registered visitors.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Track exact entry and exit times of registered guests.</p>
                 </div>
 
                 <!-- Real-time Search Bar -->
@@ -81,7 +76,7 @@
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-search text-xs"></i>
                     </span>
-                    <input type="text" id="searchInput" onkeyup="filterVisitors()" placeholder="Search visitor, host, purpose..." 
+                    <input type="text" id="searchInput" onkeyup="filterVisitors()" placeholder="Search visitor, purpose..." 
                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all shadow-inner">
                 </div>
             </div>
@@ -90,37 +85,36 @@
                 <table class="w-full text-left border-collapse" id="visitorTable">
                     <thead>
                         <tr class="bg-slate-50 text-slate-500 text-[11px] uppercase tracking-wider border-b border-slate-200">
-                            <th class="py-4 px-6 font-semibold">Date & Time</th>
                             <th class="py-4 px-6 font-semibold">Visitor Name</th>
                             <th class="py-4 px-6 font-semibold">Contact No.</th>
                             <th class="py-4 px-6 font-semibold">Purpose</th>
                             <th class="py-4 px-6 font-semibold">Destination</th>
-                            <th class="py-4 px-6 font-semibold">Status</th>
+                            <th class="py-4 px-6 font-semibold text-[#72a131]">Time-In</th>
+                            <th class="py-4 px-6 font-semibold text-amber-600">Time-Out</th>
+                            <th class="py-4 px-6 font-semibold text-center">Action / Status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-xs text-slate-700" id="tableBody">
                         {% if not visitors %}
                             <tr id="noDataRow">
-                                <td colspan="6" class="text-center py-12 text-slate-400">
+                                <td colspan="7" class="text-center py-12 text-slate-400">
                                     <div class="space-y-2">
                                         <i class="fas fa-folder-open text-3xl text-slate-300"></i>
-                                        <p class="text-sm">No visitors checked in yet.</p>
+                                        <p class="text-sm">No visitors recorded yet.</p>
                                     </div>
                                 </td>
                             </tr>
                         {% else %}
                             {% for v in visitors %}
                             <tr class="visitor-row hover:bg-slate-50/80 transition-colors">
-                                <td class="py-4 px-6 whitespace-nowrap">
-                                    <span class="font-semibold text-[#72a131] block">{{ v.checkin_date }}</span>
-                                    <span class="text-[11px] text-slate-500">{{ v.checkin_time }}</span>
-                                </td>
                                 <td class="py-4 px-6 font-semibold text-slate-950 visitor-name">
                                     <div class="flex items-center gap-2">
                                         <div class="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 font-bold text-[10px]">
                                             {{ v.name[0]|upper }}
                                         </div>
-                                        {{ v.name }}
+                                        <div>
+                                            <span class="block">{{ v.name }}</span>
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="py-4 px-6 text-slate-600">{{ v.contact }}</td>
@@ -130,10 +124,33 @@
                                     </span>
                                 </td>
                                 <td class="py-4 px-6 text-slate-700 font-medium">{{ v.person_to_visit }}</td>
+                                <!-- Time-In Details -->
                                 <td class="py-4 px-6 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 bg-[#8CC63F]/10 text-[#72a131] border border-[#8CC63F]/30 px-3 py-1 rounded-full text-[11px] font-semibold">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-[#8CC63F] animate-pulse"></span> Checked-in
-                                    </span>
+                                    <span class="font-semibold text-[#72a131] block">{{ v.checkin_date }}</span>
+                                    <span class="text-[11px] text-slate-500"><i class="fas fa-arrow-right-to-bracket text-[10px]"></i> {{ v.checkin_time }}</span>
+                                </td>
+                                <!-- Time-Out Details -->
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    {% if v.checkout_time and v.checkout_time != '-' %}
+                                        <span class="font-semibold text-amber-600 block">Logged Out</span>
+                                        <span class="text-[11px] text-slate-500"><i class="fas fa-arrow-right-from-bracket text-[10px]"></i> {{ v.checkout_time }}</span>
+                                    {% else %}
+                                        <span class="text-slate-400 italic">Not yet checked out</span>
+                                    {% endif %}
+                                </td>
+                                <!-- Action Button for Time-Out -->
+                                <td class="py-4 px-6 text-center whitespace-nowrap">
+                                    {% if not v.checkout_time or v.checkout_time == '-' %}
+                                        <form action="/checkout/{{ v.id }}" method="POST" class="inline">
+                                            <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-medium px-3 py-1.5 rounded-xl text-[11px] transition-all shadow-sm flex items-center gap-1 mx-auto">
+                                                <i class="fas fa-sign-out-alt"></i> Time-Out
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-500 border border-slate-200 px-3 py-1 rounded-full text-[11px] font-semibold">
+                                            <i class="fas fa-check text-emerald-600"></i> Completed
+                                        </span>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
