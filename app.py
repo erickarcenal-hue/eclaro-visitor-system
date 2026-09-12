@@ -17,12 +17,18 @@ def add_visitor():
     name = request.form.get('name')
     contact = request.form.get('contact')
     
-    # Backend strict validation for contact number
+    # Backend strict validation for contact number (11 digits starting with 09)
     if not contact or len(contact) != 11 or not contact.isdigit() or not contact.startswith('09'):
         return render_template('index.html', success=False, error="Invalid contact number. Must be exactly 11 digits starting with 09.")
     
     purpose = request.form.get('purpose')
     person_to_visit = request.form.get('person_to_visit')
+    
+    # New: Calendar / Schedule details
+    scheduled_date = request.form.get('scheduled_date')
+    scheduled_time = request.form.get('scheduled_time')
+    
+    # System check-in timestamp (real-time when they registered/arrived)
     checkin_date = request.form.get('checkin_date')
     checkin_time = request.form.get('checkin_time')
     
@@ -34,10 +40,12 @@ def add_visitor():
         "contact": contact,
         "purpose": purpose,
         "person_to_visit": person_to_visit,
+        "scheduled_date": scheduled_date if scheduled_date else "Immediate / Walk-in",
+        "scheduled_time": scheduled_time if scheduled_time else "-",
         "checkin_date": checkin_date,
         "checkin_time": checkin_time,
         "checkout_time": "-",
-        "status": "Checked-in",
+        "status": "Scheduled / Checked-in",
         "qr_url": qr_url
     }
     
@@ -83,13 +91,14 @@ def export_excel():
     
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(['Visitor Name', 'Contact No.', 'Purpose', 'Destination', 'Check-In Date & Time', 'Time-Out', 'Status'])
+    writer.writerow(['Visitor Name', 'Contact No.', 'Purpose', 'Destination', 'Appointment Schedule', 'Time-In', 'Time-Out', 'Status'])
     for v in visitors_db:
         writer.writerow([
             v['name'], 
             v['contact'], 
             v['purpose'], 
             v['person_to_visit'], 
+            f"{v['scheduled_date']} {v['scheduled_time']}",
             f"{v['checkin_date']} | {v['checkin_time']}", 
             v['checkout_time'], 
             v['status']
