@@ -9,6 +9,10 @@ app.secret_key = 'eclaro_academy_secure_secret_key'
 visitors_db = []
 
 @app.route('/')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/register')
 def index():
     return render_template('index.html', success=False)
 
@@ -17,18 +21,13 @@ def add_visitor():
     name = request.form.get('name')
     contact = request.form.get('contact')
     
-    # Backend strict validation for contact number (11 digits starting with 09)
     if not contact or len(contact) != 11 or not contact.isdigit() or not contact.startswith('09'):
         return render_template('index.html', success=False, error="Invalid contact number. Must be exactly 11 digits starting with 09.")
     
     purpose = request.form.get('purpose')
     person_to_visit = request.form.get('person_to_visit')
-    
-    # New: Calendar / Schedule details
     scheduled_date = request.form.get('scheduled_date')
     scheduled_time = request.form.get('scheduled_time')
-    
-    # System check-in timestamp (real-time when they registered/arrived)
     checkin_date = request.form.get('checkin_date')
     checkin_time = request.form.get('checkin_time')
     
@@ -117,3 +116,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
