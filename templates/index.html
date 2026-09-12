@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclaro Academy - Visitor System</title>
+    <title>Eclaro Academy - Visitor Management System</title>
     <meta name="description" content="Official Visitor Registration & Gate Pass System for Eclaro Academy.">
 
-    <!-- OPEN GRAPH (OG) META TAGS FOR YOUR OWN LINK PREVIEW -->
+    <!-- OPEN GRAPH (OG) META TAGS FOR LINK PREVIEW -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Eclaro Academy - Visitor System">
+    <meta property="og:title" content="Eclaro Academy - Visitor Management System">
     <meta property="og:description" content="Official Visitor Registration & Gate Pass System. Fill out details to get your digital entry pass.">
-    <!-- Naka-set sa logo para lumabas ang picture sa link preview kapag isinend mo sa Messenger/WhatsApp -->
     <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Eclaro_Logo.png/600px-Eclaro_Logo.png">
-    <meta property="og:url" content="https://eclaro-visitor-system.edu.ph">
+    <meta property="og:url" content="https://eclaro-vms-2026-2027.netlify.app">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,11 +26,10 @@
                 extend: {
                     colors: {
                         brand: {
-                            /* Official Eclaro Bright Lime Green */
                             eclaroGreen: '#85cc00', 
                             eclaroGreenHover: '#72b000',
                             navy: '#0b192c',
-                            bgLight: '#FFFFFF',       /* White Background */
+                            bgLight: '#FFFFFF',
                             cardBg: '#FFFFFF',
                             inputBg: '#F8FAFC',
                             border: '#E2E8F0',
@@ -45,102 +43,79 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
 <body class="bg-brand-bgLight text-brand-textDark min-h-screen flex flex-col justify-between selection:bg-brand-eclaroGreen selection:text-white">
 
     <!-- HEADER BAR -->
-    <header class="w-full bg-white border-b border-brand-border py-4 px-6 md:px-12 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-3">
-            
+    <header class="w-full bg-white border-b border-brand-border py-4 px-6 md:px-12 flex items-center justify-between shadow-sm sticky top-0 z-40">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="showVisitorView()">
             <!-- ECLARO CREST LOGO -->
-            <div class="flex items-center gap-3">
-                <svg class="w-9 h-10 drop-shadow-sm" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 20 20 L 100 20 L 100 200 C 50 190 20 150 20 20 Z" fill="#0B192C"/>
-                    <path d="M 100 20 L 180 20 L 180 20 C 180 150 150 190 100 200 Z" fill="#85CC00"/>
-                    
-                    <!-- Key Icon -->
-                    <path d="M 45 75 L 75 45 M 70 40 L 80 50 M 63 47 L 70 54" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
-                    <circle cx="43" cy="77" r="7" stroke="#FFFFFF" stroke-width="5" fill="none"/>
-                    
-                    <!-- Book Icon -->
-                    <path d="M 115 40 Q 140 35 140 55 L 140 75 Q 115 55 115 40 Z" fill="#FFFFFF" stroke="#0B192C" stroke-width="2"/>
-                    <path d="M 165 40 Q 140 35 140 55 L 140 75 Q 165 55 165 40 Z" fill="#FFFFFF" stroke="#0B192C" stroke-width="2"/>
-                    
-                    <!-- Center E Badge -->
-                    <circle cx="100" cy="130" r="45" fill="#FFFFFF"/>
-                    <circle cx="100" cy="130" r="38" fill="#0B192C"/>
-                    <text x="100" y="148" font-family="'Georgia', serif" font-size="52" font-weight="bold" fill="#FFFFFF" text-anchor="middle">E</text>
-                </svg>
+            <svg class="w-9 h-10 drop-shadow-sm" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 20 20 L 100 20 L 100 200 C 50 190 20 150 20 20 Z" fill="#0B192C"/>
+                <path d="M 100 20 L 180 20 L 180 20 C 180 150 150 190 100 200 Z" fill="#85CC00"/>
+                <path d="M 45 75 L 75 45 M 70 40 L 80 50 M 63 47 L 70 54" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+                <circle cx="43" cy="77" r="7" stroke="#FFFFFF" stroke-width="5" fill="none"/>
+                <path d="M 115 40 Q 140 35 140 55 L 140 75 Q 115 55 115 40 Z" fill="#FFFFFF" stroke="#0B192C" stroke-width="2"/>
+                <path d="M 165 40 Q 140 35 140 55 L 140 75 Q 165 55 165 40 Z" fill="#FFFFFF" stroke="#0B192C" stroke-width="2"/>
+                <circle cx="100" cy="130" r="45" fill="#FFFFFF"/>
+                <circle cx="100" cy="130" r="38" fill="#0B192C"/>
+                <text x="100" y="148" font-family="'Georgia', serif" font-size="52" font-weight="bold" fill="#FFFFFF" text-anchor="middle">E</text>
+            </svg>
 
-                <!-- BRAND TITLE WITH ECOLARO GREEN 'E' -->
-                <h1 class="text-2xl font-extrabold tracking-tight text-brand-navy">
-                    <span class="text-brand-eclaroGreen">E</span>CLARO ACADEMY
-                </h1>
-            </div>
-
-            <span class="bg-slate-100 text-brand-textMuted text-xs font-medium px-3 py-1 rounded-full border border-slate-200 hidden sm:inline-block">
-                Visitor System (SY 2026–2027)
-            </span>
+            <!-- BRAND TITLE -->
+            <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-brand-navy">
+                <span class="text-brand-eclaroGreen">E</span>CLARO ACADEMY
+            </h1>
         </div>
 
-        <!-- STAFF LOGIN BUTTON -->
-        <button class="flex items-center gap-2 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
-            <i class="fa-solid fa-lock text-[10px]"></i>
-            Staff Login
-        </button>
+        <div class="flex items-center gap-3">
+            <span class="bg-slate-100 text-brand-textMuted text-xs font-medium px-3 py-1 rounded-full border border-slate-200 hidden md:inline-block">
+                Visitor System (SY 2026–2027)
+            </span>
+
+            <!-- STAFF LOGIN / LOGOUT BUTTON -->
+            <button id="authBtn" onclick="toggleAuthAction()" class="flex items-center gap-2 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
+                <i class="fa-solid fa-lock text-[10px]"></i>
+                <span id="authBtnText">Staff Login</span>
+            </button>
+        </div>
     </header>
 
-    <!-- MAIN FORM CONTAINER -->
-    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 my-6">
+    <!-- 1. VISITOR REGISTRATION VIEW -->
+    <main id="visitorView" class="flex-1 flex items-center justify-center p-4 sm:p-6 my-4">
         <div class="w-full max-w-md bg-brand-cardBg border border-slate-200 rounded-2xl shadow-xl p-6 sm:p-8">
-            
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-brand-navy tracking-tight">Visitor Registration</h2>
                 <p class="text-brand-textMuted text-sm mt-1">Please fill out your details prior to entry.</p>
             </div>
 
             <form id="visitorForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                
-                <!-- FULL NAME -->
                 <div>
-                    <label for="fullName" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
-                        Full Name
-                    </label>
+                    <label for="fullName" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">Full Name</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-brand-textMuted">
                             <i class="fa-solid fa-user text-sm"></i>
                         </span>
-                        <input type="text" id="fullName" required placeholder="e.g. Juan Dela Cruz"
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
+                        <input type="text" id="fullName" required placeholder="e.g. Juan Dela Cruz" class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all">
                     </div>
                 </div>
 
-                <!-- CONTACT NUMBER -->
                 <div>
-                    <label for="contactNumber" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
-                        Contact Number
-                    </label>
+                    <label for="contactNumber" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">Contact Number</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-brand-textMuted">
                             <i class="fa-solid fa-phone text-sm"></i>
                         </span>
-                        <input type="tel" id="contactNumber" required placeholder="e.g. 09123456789"
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
+                        <input type="tel" id="contactNumber" required placeholder="e.g. 09123456789" class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all">
                     </div>
                 </div>
 
-                <!-- PURPOSE OF VISIT -->
                 <div>
-                    <label for="purpose" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
-                        Purpose of Visit
-                    </label>
+                    <label for="purpose" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">Purpose of Visit</label>
                     <div class="relative">
-                        <select id="purpose" required
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all appearance-none cursor-pointer">
+                        <select id="purpose" required class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all appearance-none cursor-pointer">
                             <option value="" disabled selected>Select purpose...</option>
                             <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
                             <option value="Document Submission">Document Submission / Pickup</option>
@@ -154,23 +129,78 @@
                     </div>
                 </div>
 
-                <!-- PERSON TO VISIT / DEPARTMENT -->
                 <div>
-                    <label for="department" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">
-                        Person to Visit / Department
-                    </label>
-                    <input type="text" id="department" required placeholder="e.g. Registrar Office / Dean"
-                        class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
+                    <label for="department" class="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-1.5">Person / Department to Visit</label>
+                    <input type="text" id="department" required placeholder="e.g. Registrar Office / Dean" class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all">
                 </div>
 
-                <!-- GENERATE GATE PASS BUTTON -->
-                <button type="submit"
-                    class="w-full mt-4 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy font-bold text-sm py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.99]">
+                <button type="submit" class="w-full mt-4 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy font-bold text-sm py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.99]">
                     <i class="fa-solid fa-qrcode"></i>
                     Generate Gate Pass
                 </button>
-
             </form>
+        </div>
+    </main>
+
+    <!-- 2. STAFF DASHBOARD VIEW (HIDDEN BY DEFAULT) -->
+    <main id="staffView" class="flex-1 p-4 md:p-8 max-w-6xl w-full mx-auto hidden">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-brand-navy">Staff & Security Guard Portal</h2>
+                <p class="text-brand-textMuted text-xs mt-1">Real-time Visitor Logs & Entry Management</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="showVisitorView()" class="bg-slate-100 hover:bg-slate-200 text-brand-navy font-semibold text-xs px-4 py-2.5 rounded-xl border border-slate-200 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> Kiosk Mode
+                </button>
+            </div>
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs text-brand-textMuted uppercase font-bold tracking-wider">Total Registered Today</p>
+                <h3 id="statTotal" class="text-3xl font-black text-brand-navy mt-1">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs text-brand-textMuted uppercase font-bold tracking-wider">Currently Inside</p>
+                <h3 id="statInside" class="text-3xl font-black text-emerald-600 mt-1">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs text-brand-textMuted uppercase font-bold tracking-wider">Checked Out</p>
+                <h3 id="statOut" class="text-3xl font-black text-slate-500 mt-1">0</h3>
+            </div>
+        </div>
+
+        <!-- VISITOR LOG TABLE -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-md overflow-hidden">
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <h3 class="font-bold text-brand-navy text-sm">Today's Entry Logs</h3>
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search visitor..." class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen">
+                    <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-slate-100/70 text-brand-navy font-bold uppercase tracking-wider border-b border-slate-200">
+                        <tr>
+                            <th class="p-3.5">Pass ID</th>
+                            <th class="p-3.5">Name</th>
+                            <th class="p-3.5">Contact</th>
+                            <th class="p-3.5">Purpose</th>
+                            <th class="p-3.5">Department</th>
+                            <th class="p-3.5">Time Registered</th>
+                            <th class="p-3.5">Status</th>
+                            <th class="p-3.5 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visitorTableBody" class="divide-y divide-slate-100">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 
@@ -179,17 +209,16 @@
         &copy; 2026 Eclaro Academy, Inc. All Rights Reserved.
     </footer>
 
-    <!-- GATE PASS MODAL -->
+    <!-- GATE PASS MODAL (FOR VISITOR) -->
     <div id="gatePassModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-slate-100 transform transition-all">
             <div class="flex justify-between items-center mb-2">
                 <span class="text-xs font-bold text-brand-navy tracking-wider uppercase">Official Gate Pass</span>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg">
+                <button onclick="closeGatePassModal()" class="text-slate-400 hover:text-slate-600 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- QR Container -->
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-col items-center justify-center my-4">
                 <div id="qrcode" class="my-2"></div>
                 <p id="passId" class="text-xs font-mono font-bold text-slate-500 mt-2">ID: ---</p>
@@ -203,14 +232,39 @@
             </div>
 
             <button onclick="window.print()" class="w-full bg-brand-navy hover:bg-slate-800 text-white font-semibold text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-2">
-                <i class="fa-solid fa-print"></i>
-                Print / Save Pass
+                <i class="fa-solid fa-print"></i> Print / Save Pass
             </button>
+        </div>
+    </div>
+
+    <!-- STAFF LOGIN MODAL -->
+    <div id="staffLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-brand-navy">Staff Portal Login</h3>
+                <button onclick="closeStaffModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleStaffLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-brand-navy uppercase mb-1">Passcode / Secret</label>
+                    <input type="password" id="staffPasscode" required placeholder="Enter password (default: admin)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen">
+                </div>
+                <p id="loginError" class="text-xs text-red-500 font-medium hidden">Incorrect passcode! Default is: admin</p>
+
+                <button type="submit" class="w-full bg-brand-navy text-white font-bold py-3 rounded-xl text-xs hover:bg-slate-800 transition-all">
+                    Login to Dashboard
+                </button>
+            </form>
         </div>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        let visitorLogs = [];
+        let isLoggedIn = false;
         let qrcode = null;
 
         function handleFormSubmit(event) {
@@ -222,22 +276,35 @@
             const dept = document.getElementById('department').value;
             const passCode = 'ECL-' + Math.floor(100000 + Math.random() * 900000);
             const currentDate = new Date().toLocaleDateString('en-US', {
-                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
             });
 
+            // Save to internal array
+            const newRecord = {
+                id: passCode,
+                name: name,
+                phone: phone,
+                purpose: purpose,
+                dept: dept,
+                time: currentDate,
+                status: 'Inside'
+            };
+            visitorLogs.unshift(newRecord);
+
+            // Populate Modal
             document.getElementById('passName').innerText = name;
             document.getElementById('passPurpose').innerText = purpose;
             document.getElementById('passDept').innerText = dept;
             document.getElementById('passDate').innerText = currentDate;
             document.getElementById('passId').innerText = 'ID: ' + passCode;
 
+            // Generate QR Code
             const qrContainer = document.getElementById('qrcode');
             qrContainer.innerHTML = '';
-
             qrcode = new QRCode(qrContainer, {
-                text: JSON.stringify({ passCode, name, purpose, dept }),
-                width: 160,
-                height: 160,
+                text: JSON.stringify({ passCode, name, purpose }),
+                width: 150,
+                height: 150,
                 colorDark : "#0b192c",
                 colorLight : "#FFFFFF",
                 correctLevel : QRCode.CorrectLevel.H
@@ -246,9 +313,107 @@
             document.getElementById('gatePassModal').classList.remove('hidden');
         }
 
-        function closeModal() {
+        function closeGatePassModal() {
             document.getElementById('gatePassModal').classList.add('hidden');
             document.getElementById('visitorForm').reset();
+        }
+
+        // --- AUTH & VIEW CONTROLS ---
+        function toggleAuthAction() {
+            if (isLoggedIn) {
+                isLoggedIn = false;
+                document.getElementById('authBtnText').innerText = "Staff Login";
+                showVisitorView();
+            } else {
+                document.getElementById('staffLoginModal').classList.remove('hidden');
+            }
+        }
+
+        function closeStaffModal() {
+            document.getElementById('staffLoginModal').classList.add('hidden');
+            document.getElementById('loginError').classList.add('hidden');
+        }
+
+        function handleStaffLogin(e) {
+            e.preventDefault();
+            const passcode = document.getElementById('staffPasscode').value;
+            
+            // Simple validation (default password: admin)
+            if (passcode === 'admin' || passcode === '1234') {
+                isLoggedIn = true;
+                document.getElementById('authBtnText').innerText = "Logout Staff";
+                closeStaffModal();
+                showStaffView();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function showVisitorView() {
+            document.getElementById('visitorView').classList.remove('hidden');
+            document.getElementById('staffView').classList.add('hidden');
+        }
+
+        function showStaffView() {
+            document.getElementById('visitorView').classList.add('hidden');
+            document.getElementById('staffView').classList.remove('hidden');
+            renderTable();
+        }
+
+        // --- TABLE & DASHBOARD LOGIC ---
+        function toggleStatus(id) {
+            const visitor = visitorLogs.find(v => v.id === id);
+            if (visitor) {
+                visitor.status = visitor.status === 'Inside' ? 'Checked Out' : 'Inside';
+                renderTable();
+            }
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('visitorTableBody');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            const filtered = visitorLogs.filter(v => 
+                v.name.toLowerCase().includes(search) || 
+                v.id.toLowerCase().includes(search) ||
+                v.purpose.toLowerCase().includes(search)
+            );
+
+            // Update Statistics Counters
+            document.getElementById('statTotal').innerText = visitorLogs.length;
+            document.getElementById('statInside').innerText = visitorLogs.filter(v => v.status === 'Inside').length;
+            document.getElementById('statOut').innerText = visitorLogs.filter(v => v.status === 'Checked Out').length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-400">No visitor records found.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const isInside = item.status === 'Inside';
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-50 transition-all";
+                row.innerHTML = `
+                    <td class="p-3.5 font-mono font-bold text-brand-navy">${item.id}</td>
+                    <td class="p-3.5 font-semibold text-slate-800">${item.name}</td>
+                    <td class="p-3.5 text-slate-600">${item.phone}</td>
+                    <td class="p-3.5 text-slate-600">${item.purpose}</td>
+                    <td class="p-3.5 text-slate-600">${item.dept}</td>
+                    <td class="p-3.5 text-slate-500 text-[11px]">${item.time}</td>
+                    <td class="p-3.5">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${isInside ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-slate-100 text-slate-600 border border-slate-200'}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="p-3.5 text-center">
+                        <button onclick="toggleStatus('${item.id}')" class="px-3 py-1 rounded-lg text-xs font-semibold ${isInside ? 'bg-amber-100 text-amber-700 hover:bg-amber-200' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'} transition-all">
+                            ${isInside ? 'Check Out' : 'Re-enter'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
         }
     </script>
 </body>
