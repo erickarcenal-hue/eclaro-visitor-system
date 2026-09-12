@@ -34,7 +34,7 @@
     <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-8 my-6">
 
         {% if success %}
-        <!-- Success Pass Preview (Buttons removed as requested) -->
+        <!-- Success Pass Preview -->
         <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8 text-center space-y-6 relative overflow-hidden">
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
             
@@ -66,17 +66,17 @@
             <div class="lg:col-span-4 bg-slate-50/80 border-r border-slate-200 p-6 sm:p-8 space-y-6">
                 <div>
                     <h2 class="text-base font-bold font-serif-title text-slate-900">Schedule a Visit</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Complete the steps to register.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Follow the steps to schedule your visit.</p>
                 </div>
 
                 <div class="space-y-3">
                     <div id="step-ind-1" class="step-indicator flex items-center gap-3 p-3 rounded-2xl bg-[#8CC63F] text-slate-950 text-xs font-bold shadow-md shadow-[#8CC63F]/20 transition-all">
                         <span class="w-6 h-6 rounded-full bg-slate-950/10 flex items-center justify-center text-[11px]">1</span>
-                        <span>Date & Time</span>
+                        <span>Select Date</span>
                     </div>
                     <div id="step-ind-2" class="step-indicator flex items-center gap-3 p-3 rounded-2xl bg-slate-100 text-slate-600 text-xs font-semibold transition-all border border-slate-200">
                         <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[11px]">2</span>
-                        <span>Personal Info</span>
+                        <span>Fill up Information</span>
                     </div>
                     <div id="step-ind-3" class="step-indicator flex items-center gap-3 p-3 rounded-2xl bg-slate-100 text-slate-600 text-xs font-semibold transition-all border border-slate-200">
                         <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-[11px]">3</span>
@@ -97,37 +97,67 @@
 
                 <form action="/add" method="POST" class="space-y-6 flex-grow flex flex-col justify-between">
                     
-                    <!-- STEP 1: Date & Time & Purpose -->
+                    <!-- STEP 1: Interactive Calendar & Details -->
                     <div id="form-step-1" class="wizard-step space-y-5">
-                        <h3 class="text-sm font-bold font-serif-title text-slate-900 border-b border-slate-100 pb-2">Step 1: Visit Schedule & Destination</h3>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Scheduled Date</label>
-                                <input type="date" name="scheduled_date" id="scheduledDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                            <div class="w-9 h-9 rounded-xl bg-[#8CC63F]/20 text-[#72a131] flex items-center justify-center text-sm">
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Scheduled Time</label>
-                                <input type="time" name="scheduled_time" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                                <h3 class="text-sm font-bold font-serif-title text-slate-900">Select a Date</h3>
+                                <p class="text-[11px] text-slate-500">Choose a day for your meeting.</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Purpose of Visit</label>
-                                <input type="text" name="purpose" id="input-purpose" required placeholder="e.g., Enrollment / Inquiry" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        <!-- Calendar Widget Container -->
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-4">
+                            <div class="flex justify-between items-center px-2">
+                                <h4 id="calendarMonthYear" class="text-xs font-bold text-slate-800">September 2026</h4>
+                                <div class="flex gap-1">
+                                    <button type="button" onclick="changeMonth(-1)" class="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 text-xs"><i class="fas fa-chevron-left"></i></button>
+                                    <button type="button" onclick="changeMonth(1)" class="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 text-xs"><i class="fas fa-chevron-right"></i></button>
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Person / Office to Visit</label>
-                                <input type="text" name="person_to_visit" id="input-person" required placeholder="e.g., Registrar Office" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+
+                            <!-- Day Headers -->
+                            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                                <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
+                            </div>
+
+                            <!-- Grid Days -->
+                            <div id="calendarDays" class="grid grid-cols-7 gap-1.5 text-center text-xs">
+                                <!-- Generated by JS -->
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="flex items-center justify-end gap-4 pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+                                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#8CC63F]"></span><span>Selected</span></div>
+                                <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-300"></span><span>Available</span></div>
                             </div>
                         </div>
 
-                        <!-- Hidden auto-fill timestamps for backend compatibility -->
+                        <!-- Additional Time & Purpose Inputs for Step 1 -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Time</label>
+                                <input type="time" name="scheduled_time" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Purpose</label>
+                                <input type="text" name="purpose" id="input-purpose" required placeholder="e.g., Enrollment" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F]">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Destination</label>
+                                <input type="text" name="person_to_visit" id="input-person" required placeholder="e.g., Registrar" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F]">
+                            </div>
+                        </div>
+
+                        <!-- Hidden inputs for backend -->
+                        <input type="hidden" name="scheduled_date" id="selectedDateInput">
                         <input type="hidden" name="checkin_date" id="checkin_date">
                         <input type="hidden" name="checkin_time" id="checkin_time">
 
-                        <div class="flex justify-end pt-4">
+                        <div class="flex justify-end pt-2">
                             <button type="button" onclick="nextStep(2)" class="bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 flex items-center gap-2">
                                 <span>Next Step</span>
                                 <i class="fas fa-arrow-right text-[10px]"></i>
@@ -141,14 +171,14 @@
                         
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
-                            <input type="text" name="name" id="input-name" required placeholder="e.g., Juan Dela Cruz" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                            <input type="text" name="name" id="input-name" required placeholder="e.g., Juan Dela Cruz" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F]">
                         </div>
 
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Contact Number (11 digits, starts with 09)</label>
                             <input type="tel" name="contact" id="input-contact" required maxlength="11" placeholder="09123456789" 
                                    oninput="validateContact(this)"
-                                   class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#8CC63F]">
                             <p id="contactError" class="text-[10px] text-rose-500 mt-1 hidden font-medium">Must be exactly 11 digits and start with 09.</p>
                         </div>
 
@@ -169,6 +199,7 @@
                         <h3 class="text-sm font-bold font-serif-title text-slate-900 border-b border-slate-100 pb-2">Step 3: Confirm Registration Details</h3>
                         
                         <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2.5 text-xs">
+                            <div class="flex justify-between"><strong class="text-slate-500">Date:</strong> <span id="summary-date" class="font-semibold text-indigo-600">-</span></div>
                             <div class="flex justify-between"><strong class="text-slate-500">Name:</strong> <span id="summary-name" class="font-semibold text-slate-900">-</span></div>
                             <div class="flex justify-between"><strong class="text-slate-500">Contact:</strong> <span id="summary-contact" class="font-semibold text-slate-900">-</span></div>
                             <div class="flex justify-between"><strong class="text-slate-500">Purpose:</strong> <span id="summary-purpose" class="font-semibold text-[#72a131]">-</span></div>
@@ -198,12 +229,68 @@
         <p>© 2026 Eclaro Academy, Inc. All rights reserved.</p>
     </footer>
 
-    <!-- Scripts -->
+    <!-- Calendar & Wizard Scripts -->
     <script>
         const now = new Date();
         document.getElementById('checkin_date').value = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         document.getElementById('checkin_time').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        document.getElementById('scheduledDate').value = now.toISOString().split('T')[0];
+
+        let currentYear = now.getFullYear();
+        let currentMonth = now.getMonth();
+        let selectedDateStr = now.toISOString().split('T')[0];
+        document.getElementById('selectedDateInput').value = selectedDateStr;
+
+        const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        function renderCalendar() {
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            document.getElementById('calendarMonthYear').innerText = `${monthsNames[currentMonth]} ${currentYear}`;
+            
+            let daysContainer = document.getElementById('calendarDays');
+            daysContainer.innerHTML = '';
+
+            for (let i = 0; i < firstDay; i++) {
+                daysContainer.innerHTML += `<div></div>`;
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                let formattedMonth = String(currentMonth + 1).padStart(2, '0');
+                let formattedDay = String(day).padStart(2, '0');
+                let dateString = `${currentYear}-${formattedMonth}-${formattedDay}`;
+                
+                let isSelected = (dateString === selectedDateStr);
+                
+                let btnClass = isSelected 
+                    ? "bg-[#8CC63F] text-slate-950 font-bold shadow-md shadow-[#8CC63F]/20 border-[#8CC63F]" 
+                    : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200";
+
+                let dotColor = isSelected ? "bg-slate-950" : "bg-slate-400";
+
+                daysContainer.innerHTML += `
+                    <button type="button" onclick="selectDate('${dateString}')" class="h-10 rounded-xl border flex flex-col items-center justify-center transition-all ${btnClass}">
+                        <span class="text-xs">${day}</span>
+                        <span class="w-1 h-1 rounded-full ${dotColor} mt-0.5"></span>
+                    </button>
+                `;
+            }
+        }
+
+        function changeMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        }
+
+        function selectDate(dateStr) {
+            selectedDateStr = dateStr;
+            document.getElementById('selectedDateInput').value = dateStr;
+            renderCalendar();
+        }
+
+        renderCalendar();
 
         function validateContact(input) {
             input.value = input.value.replace(/\D/g, '');
@@ -217,11 +304,11 @@
 
         function nextStep(step) {
             if (step === 2) {
-                const dateVal = document.getElementById('scheduledDate').value;
+                const dateVal = document.getElementById('selectedDateInput').value;
                 const purposeVal = document.getElementById('input-purpose').value.trim();
                 const personVal = document.getElementById('input-person').value.trim();
                 if (!dateVal || !purposeVal || !personVal) {
-                    alert('Please fill out all schedule and destination fields before proceeding.');
+                    alert('Please select a date and fill out all fields before proceeding.');
                     return;
                 }
             }
@@ -250,6 +337,7 @@
             activeInd.querySelector('span').className = 'w-6 h-6 rounded-full bg-slate-950/10 flex items-center justify-center text-[11px]';
 
             if (step === 3) {
+                document.getElementById('summary-date').innerText = document.getElementById('selectedDateInput').value;
                 document.getElementById('summary-name').innerText = document.getElementById('input-name').value || '-';
                 document.getElementById('summary-contact').innerText = document.getElementById('input-contact').value || '-';
                 document.getElementById('summary-purpose').innerText = document.getElementById('input-purpose').value || '-';
