@@ -16,9 +16,10 @@
                 extend: {
                     colors: {
                         brand: {
-                            darkGreen: '#15803d',       /* Dark Green Color */
-                            darkGreenHover: '#166534',  /* Dark Green Hover state */
-                            navy: '#0B192C',
+                            /* Official Eclaro Green */
+                            eclaroGreen: '#85cc00', 
+                            eclaroGreenHover: '#72b000',
+                            navy: '#0b192c',
                             bgLight: '#FFFFFF',       /* White Background */
                             cardBg: '#FFFFFF',
                             inputBg: '#F8FAFC',
@@ -38,21 +39,32 @@
         }
     </style>
 </head>
-<body class="bg-brand-bgLight text-brand-textDark min-h-screen flex flex-col justify-between selection:bg-brand-darkGreen selection:text-white">
+<body class="bg-brand-bgLight text-brand-textDark min-h-screen flex flex-col justify-between selection:bg-brand-eclaroGreen selection:text-white">
 
     <!-- HEADER BAR -->
     <header class="w-full bg-white border-b border-brand-border py-4 px-6 md:px-12 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
-            <!-- LOGO: Dark Green 'E' -->
-            <h1 class="text-2xl font-extrabold tracking-tight text-brand-navy">
-                <span class="text-brand-darkGreen">E</span>claro Academy
-            </h1>
-            <span class="bg-slate-100 text-brand-textMuted text-xs font-medium px-3 py-1 rounded-full border border-slate-200">
+            <!-- LOGO ICON & BRAND NAME -->
+            <div class="flex items-center gap-2">
+                <!-- Eclaro Circle Icon -->
+                <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="#0B192C"/>
+                    <path d="M30 35 C 35 25, 65 25, 70 35 C 55 45, 45 55, 30 35 Z" fill="#85CC00"/>
+                    <path d="M30 65 C 35 75, 65 75, 70 65 C 55 55, 45 45, 30 65 Z" fill="#FFFFFF"/>
+                </svg>
+
+                <h1 class="text-2xl font-extrabold tracking-tight text-brand-navy">
+                    <span class="text-brand-eclaroGreen">E</span>CLARO ACADEMY
+                </h1>
+            </div>
+
+            <span class="bg-slate-100 text-brand-textMuted text-xs font-medium px-3 py-1 rounded-full border border-slate-200 hidden sm:inline-block">
                 Visitor System (SY 2026–2027)
             </span>
         </div>
-        <!-- STAFF LOGIN BUTTON: Dark Green -->
-        <button class="flex items-center gap-2 bg-brand-darkGreen hover:bg-brand-darkGreenHover text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
+
+        <!-- STAFF LOGIN BUTTON -->
+        <button class="flex items-center gap-2 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
             <i class="fa-solid fa-lock text-[10px]"></i>
             Staff Login
         </button>
@@ -79,7 +91,7 @@
                             <i class="fa-solid fa-user text-sm"></i>
                         </span>
                         <input type="text" id="fullName" required placeholder="e.g. Juan Dela Cruz"
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-darkGreen focus:bg-white transition-all placeholder:text-slate-400">
+                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
                     </div>
                 </div>
 
@@ -93,7 +105,7 @@
                             <i class="fa-solid fa-phone text-sm"></i>
                         </span>
                         <input type="tel" id="contactNumber" required placeholder="e.g. 09123456789"
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-darkGreen focus:bg-white transition-all placeholder:text-slate-400">
+                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
                     </div>
                 </div>
 
@@ -104,7 +116,7 @@
                     </label>
                     <div class="relative">
                         <select id="purpose" required
-                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-darkGreen focus:bg-white transition-all appearance-none cursor-pointer">
+                            class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all appearance-none cursor-pointer">
                             <option value="" disabled selected>Select purpose...</option>
                             <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
                             <option value="Document Submission">Document Submission / Pickup</option>
@@ -124,12 +136,12 @@
                         Person to Visit / Department
                     </label>
                     <input type="text" id="department" required placeholder="e.g. Registrar Office / Dean"
-                        class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-darkGreen focus:bg-white transition-all placeholder:text-slate-400">
+                        class="w-full bg-brand-inputBg border border-slate-300 text-brand-textDark text-sm rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-eclaroGreen focus:bg-white transition-all placeholder:text-slate-400">
                 </div>
 
-                <!-- GENERATE GATE PASS BUTTON: Dark Green -->
+                <!-- GENERATE GATE PASS BUTTON -->
                 <button type="submit"
-                    class="w-full mt-4 bg-brand-darkGreen hover:bg-brand-darkGreenHover text-white font-bold text-sm py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.99]">
+                    class="w-full mt-4 bg-brand-eclaroGreen hover:bg-brand-eclaroGreenHover text-brand-navy font-bold text-sm py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.99]">
                     <i class="fa-solid fa-qrcode"></i>
                     Generate Gate Pass
                 </button>
@@ -166,7 +178,7 @@
                 <p><strong class="text-brand-navy">Date:</strong> <span id="passDate"></span></p>
             </div>
 
-            <button onclick="window.print()" class="w-full bg-brand-darkGreen hover:bg-brand-darkGreenHover text-white font-semibold text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-2">
+            <button onclick="window.print()" class="w-full bg-brand-navy hover:bg-slate-800 text-white font-semibold text-xs py-3 rounded-xl transition-all flex items-center justify-center gap-2">
                 <i class="fa-solid fa-print"></i>
                 Print / Save Pass
             </button>
@@ -202,7 +214,7 @@
                 text: JSON.stringify({ passCode, name, purpose, dept }),
                 width: 160,
                 height: 160,
-                colorDark : "#15803d",
+                colorDark : "#0b192c",
                 colorLight : "#FFFFFF",
                 correctLevel : QRCode.CorrectLevel.H
             });
