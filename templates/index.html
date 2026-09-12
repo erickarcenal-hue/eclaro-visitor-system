@@ -34,7 +34,7 @@
     <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-8 my-6">
 
         {% if success %}
-        <!-- Success Pass Preview -->
+        <!-- Success Pass Preview (Buttons removed as requested) -->
         <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl border border-slate-200 p-8 text-center space-y-6 relative overflow-hidden">
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
             
@@ -44,7 +44,7 @@
             
             <div class="space-y-1">
                 <h2 class="text-2xl font-bold font-serif-title text-slate-900">Registration Successful!</h2>
-                <p class="text-xs text-slate-500">Present this gate pass upon entering Eclaro Academy.</p>
+                <p class="text-xs text-slate-500">Your visitor record has been saved successfully.</p>
             </div>
 
             <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2.5 text-xs">
@@ -53,15 +53,6 @@
                 <div class="flex justify-between"><span class="text-slate-500">Purpose:</span> <span class="font-semibold text-[#72a131]">{{ visitor.purpose }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Destination:</span> <span class="font-semibold text-slate-900">{{ visitor.person_to_visit }}</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Schedule:</span> <span class="font-semibold text-indigo-600">{{ visitor.scheduled_date }} @ {{ visitor.scheduled_time }}</span></div>
-            </div>
-
-            <div class="pt-2 flex gap-3">
-                <a href="/register" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 rounded-xl text-xs transition-all border border-slate-200 text-center">
-                    Register Another
-                </a>
-                <a href="/dashboard" class="flex-1 bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all text-center shadow-md shadow-[#8CC63F]/20">
-                    Staff Portal
-                </a>
             </div>
         </div>
 
