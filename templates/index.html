@@ -72,7 +72,7 @@
                     <p class="text-xs text-slate-500 mt-1">Please fill out your details prior to entry.</p>
                 </div>
 
-                <form action="/add" method="POST" class="space-y-4">
+                <form action="/add" method="POST" id="registrationForm" class="space-y-4">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
                         <div class="relative">
@@ -93,7 +93,7 @@
                         <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Purpose of Visit</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-clipboard-question"></i></span>
-                            <select name="purpose" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                            <select name="purpose" id="purposeSelect" required onchange="handlePurposeChange(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                                 <option value="" disabled selected>Select purpose...</option>
                                 <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
                                 <option value="Meeting / Appointment">Meeting / Appointment</option>
@@ -101,6 +101,15 @@
                                 <option value="Maintenance / Repair">Maintenance / Repair</option>
                                 <option value="Others">Others</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Hidden text field when "Others" is selected -->
+                    <div id="otherPurposeContainer" class="hidden">
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Please Specify Purpose</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-pen"></i></span>
+                            <input type="text" id="otherPurposeInput" placeholder="e.g. Special Evaluation / Auditing" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                         </div>
                     </div>
 
@@ -125,6 +134,28 @@
                     const now = new Date();
                     document.getElementById('checkin_date').value = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     document.getElementById('checkin_time').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                    function handlePurposeChange(selectEl) {
+                        const container = document.getElementById('otherPurposeContainer');
+                        const inputEl = document.getElementById('otherPurposeInput');
+                        if (selectEl.value === 'Others') {
+                            container.classList.remove('hidden');
+                            inputEl.required = true;
+                        } else {
+                            container.classList.add('hidden');
+                            inputEl.required = false;
+                            inputEl.value = '';
+                        }
+                    }
+
+                    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+                        const selectEl = document.getElementById('purposeSelect');
+                        const inputEl = document.getElementById('otherPurposeInput');
+                        if (selectEl.value === 'Others' && inputEl.value.trim() !== '') {
+                            const othersOption = selectEl.querySelector('option[value="Others"]');
+                            othersOption.value = 'Others: ' + inputEl.value.trim();
+                        }
+                    });
                 </script>
             {% endif %}
         </div>
