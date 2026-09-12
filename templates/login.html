@@ -11,12 +11,12 @@
     <style>
         body { font-family: 'Poppins', sans-serif; }
         .font-serif-title { font-family: 'Merriweather', serif; }
-        .bg-eclaro-lime { background-color: #8CC63F; }
         .text-eclaro-lime { color: #8CC63F; }
+        .bg-eclaro-lime { background-color: #8CC63F; }
         .border-eclaro-lime { border-color: #8CC63F; }
     </style>
 </head>
-<body class="bg-white min-h-screen flex flex-col justify-between text-slate-100">
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800">
 
     <!-- Navbar -->
     <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-200 bg-white shadow-sm">
@@ -33,21 +33,21 @@
 
     <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
-        <div class="w-full max-w-md bg-slate-900 backdrop-blur-xl border border-slate-800 p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden text-slate-100">
-            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
+        <div class="w-full max-w-md bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden text-slate-800">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
 
             <div class="mb-6 text-center">
-                <div class="w-12 h-12 bg-eclaro-lime/20 text-eclaro-lime rounded-2xl flex items-center justify-center mx-auto text-xl border border-eclaro-lime/30 mb-3">
+                <div class="w-12 h-12 bg-[#8CC63F]/20 text-[#72a131] rounded-2xl flex items-center justify-center mx-auto text-xl border border-[#8CC63F]/30 mb-3">
                     <i class="fas fa-lock"></i>
                 </div>
-                <h1 class="text-xl font-bold font-serif-title text-white">Staff Portal Login</h1>
-                <p class="text-xs text-slate-400 mt-1">Authorized personnel only (Admin / Registrar).</p>
+                <h1 class="text-xl font-bold font-serif-title text-slate-900">Staff Portal Login</h1>
+                <p class="text-xs text-slate-500 mt-1">Authorized personnel only (Admin / Registrar).</p>
             </div>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="mb-4 bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs p-3 rounded-xl text-center">
+                        <div class="mb-4 bg-rose-50 border border-rose-200 text-rose-600 text-xs p-3 rounded-xl text-center font-medium">
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -56,22 +56,22 @@
 
             <form action="/login" method="POST" class="space-y-4">
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Username</label>
+                    <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Username</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-user-shield"></i></span>
-                        <input type="text" name="username" required placeholder="e.g. admin or registrar" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-user-shield"></i></span>
+                        <input type="text" name="username" required placeholder="e.g. admin or registrar" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-500"><i class="fas fa-key"></i></span>
-                        <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#8CC63F] transition-all">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-key"></i></span>
+                        <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-lg shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
+                <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
                     <i class="fas fa-sign-in-alt"></i> Login to Dashboard
                 </button>
             </form>
@@ -79,7 +79,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="w-full text-center py-4 border-t border-slate-200 text-[11px] text-slate-600 bg-white">
+    <footer class="w-full text-center py-4 border-t border-slate-200 text-[11px] text-slate-500 bg-white">
         <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
 
