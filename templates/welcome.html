@@ -4,49 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eclaro Academy - Visitor Management System</title>
-    <link rel="icon" type="image/png" href="https://www.eclaro.com/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
         .font-serif-title { font-family: 'Merriweather', serif; }
-        .text-eclaro-lime { color: #72a131; }
+        .text-eclaro-lime { color: #8CC63F; }
         .bg-eclaro-lime { background-color: #8CC63F; }
+        .border-eclaro-lime { border-color: #8CC63F; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800 relative overflow-hidden">
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between items-center text-slate-800 p-4">
 
-    <header class="w-full px-6 py-5 flex justify-end items-center max-w-7xl mx-auto z-10">
-        <a href="/login" class="text-xs bg-white hover:bg-slate-100 text-slate-700 px-4 py-2 rounded-xl font-medium border border-slate-200 shadow-sm transition-all flex items-center gap-2">
-            <i class="fas fa-lock text-[#72a131]"></i> Staff Portal
-        </a>
-    </header>
+    <!-- Top Spacer -->
+    <div></div>
 
-    <main class="flex-grow flex items-center justify-center p-6 z-10">
-        <div class="max-w-md w-full bg-white border border-slate-200 p-8 rounded-3xl shadow-xl text-center space-y-6 relative overflow-hidden">
-            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
+    <!-- Main Hero Card -->
+    <main class="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-200 p-8 text-center space-y-6 relative overflow-hidden my-auto">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
 
-            <div class="w-24 h-24 bg-[#8CC63F]/10 border border-[#8CC63F]/20 rounded-3xl flex items-center justify-center mx-auto shadow-inner">
-                <span class="text-5xl font-black font-serif-title text-[#72a131]">E</span>
-            </div>
+        <!-- Logo Box with Green E -->
+        <div class="w-20 h-20 bg-[#8CC63F]/10 rounded-3xl flex items-center justify-center mx-auto border border-[#8CC63F]/30 shadow-sm">
+            <span class="text-4xl font-black font-serif-title text-[#8CC63F]">E</span>
+        </div>
 
-            <div class="space-y-2">
-                <span class="text-[11px] uppercase tracking-widest text-[#72a131] font-semibold bg-slate-100 px-3 py-1 rounded-full border border-slate-200">SY 2026–2027</span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold font-serif-title tracking-tight text-slate-900 mt-2">Eclaro Academy</h1>
-                <p class="text-xs text-slate-500">Visitor Management System</p>
-            </div>
+        <div class="space-y-2">
+            <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full border border-slate-200 font-medium">SY 2026–2027</span>
+            <h1 class="text-2xl font-bold font-serif-title text-slate-900 tracking-tight pt-1">
+                <span class="text-[#8CC63F]">E</span>claro Academy
+            </h1>
+            <p class="text-xs text-slate-500">Visitor Management System</p>
+        </div>
 
-            <div class="pt-4">
-                <a href="/register" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3.5 px-6 rounded-2xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 flex items-center justify-center gap-2 group">
-                    <span>Get Started</span>
-                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
+        <div class="pt-2 space-y-3">
+            <a href="/register" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3.5 px-6 rounded-2xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 flex items-center justify-center gap-2">
+                <span>Get Started</span>
+                <i class="fas fa-arrow-right text-[10px]"></i>
+            </a>
         </div>
     </main>
 
-    <footer class="w-full text-center py-6 text-[11px] text-slate-500 z-10 border-t border-slate-200 bg-white">
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 text-[11px] text-slate-500">
         <p>© 2026 Eclaro Academy, Inc. All rights reserved.</p>
     </footer>
 
