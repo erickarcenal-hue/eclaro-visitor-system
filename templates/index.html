@@ -13,43 +13,200 @@
         .font-serif-title { font-family: 'Merriweather', serif; }
         .text-eclaro-lime { color: #8CC63F; }
         .bg-eclaro-lime { background-color: #8CC63F; }
+        .border-eclaro-lime { border-color: #8CC63F; }
     </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex flex-col justify-between text-white relative overflow-hidden">
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800">
 
-    <!-- Background decorative gradients -->
-    <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#8CC63F]/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-    <header class="w-full px-6 py-5 flex justify-end items-center max-w-7xl mx-auto z-10">
-        <a href="/login" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl font-medium border border-slate-700 transition-all flex items-center gap-2">
-            <i class="fas fa-lock text-[#8CC63F]"></i> Staff Portal
-        </a>
+    <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-200 bg-white shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl font-black text-slate-900 tracking-widest font-serif-title"><span class="text-eclaro-lime">E</span>CLARO ACADEMY</span>
+            <span class="hidden sm:inline-block text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full border border-slate-200">Visitor System (SY 2026–2027)</span>
+        </div>
+        <div>
+            <a href="/login" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 px-4 py-2 rounded-xl font-medium border border-slate-200 transition-all flex items-center gap-1.5">
+                <i class="fas fa-lock text-eclaro-lime"></i> Staff Login
+            </a>
+        </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-6 z-10">
-        <div class="max-w-md w-full text-center space-y-6">
-            <div class="w-24 h-24 bg-white/5 border border-white/10 rounded-3xl flex items-center justify-center mx-auto shadow-2xl backdrop-blur-md">
-                <span class="text-5xl font-black font-serif-title text-[#8CC63F]">E</span>
-            </div>
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden text-slate-800">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
 
-            <div class="space-y-2">
-                <span class="text-xs uppercase tracking-widest text-[#8CC63F] font-semibold bg-[#8CC63F]/10 px-3 py-1 rounded-full border border-[#8CC63F]/20">SY 2026–2027</span>
-                <h1 class="text-3xl sm:text-4xl font-extrabold font-serif-title tracking-tight text-white mt-2">Eclaro Academy</h1>
-                <p class="text-sm text-slate-400">Visitor Management System</p>
-            </div>
+            {% if error %}
+                <div class="mb-4 bg-rose-50 border border-rose-200 text-rose-600 text-xs p-3 rounded-xl text-center font-medium">
+                    {{ error }}
+                </div>
+            {% endif %}
 
-            <div class="pt-4">
-                <a href="/register" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3.5 px-6 rounded-2xl text-sm transition-all shadow-lg shadow-[#8CC63F]/20 flex items-center justify-center gap-2 group">
-                    <span>Get Started</span>
-                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </a>
-            </div>
+            {% if success %}
+                <div class="text-center space-y-4">
+                    <div class="w-14 h-14 bg-[#8CC63F]/20 text-[#72a131] rounded-2xl flex items-center justify-center mx-auto text-2xl border border-[#8CC63F]/30">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold font-serif-title text-slate-900">Registration Successful!</h2>
+                        <p class="text-xs text-slate-500 mt-1">Present this digital gate pass to Eclaro Academy security.</p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 text-left text-xs">
+                        <div class="flex justify-between"><span class="text-slate-500">Visitor:</span> <span class="font-semibold text-slate-900">{{ visitor.name }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Contact:</span> <span class="font-semibold text-slate-900">{{ visitor.contact }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Purpose:</span> <span class="font-semibold text-[#72a131]">{{ visitor.purpose }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Host / To Visit:</span> <span class="font-semibold text-slate-900">{{ visitor.person_to_visit }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Schedule:</span> <span class="font-semibold text-indigo-600">{{ visitor.scheduled_date }} @ {{ visitor.scheduled_time }}</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500">Time-In Log:</span> <span class="font-semibold text-slate-700">{{ visitor.checkin_time }}</span></div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-2xl inline-block shadow-md border-2 border-slate-200">
+                        <img src="{{ visitor.qr_url }}" alt="Visitor QR Code" class="w-40 h-40 mx-auto">
+                    </div>
+
+                    <div>
+                        <a href="/" class="w-full block bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-2.5 rounded-xl text-xs transition-all border border-slate-200">
+                            Register Another Visitor
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="mb-6">
+                    <h1 class="text-xl font-bold font-serif-title text-slate-900">Visitor Registration & Schedule</h1>
+                    <p class="text-xs text-slate-500 mt-1">Fill out details and set your appointment schedule.</p>
+                </div>
+
+                <form action="/add" method="POST" id="registrationForm" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-user"></i></span>
+                            <input type="text" name="name" required placeholder="e.g. Juan Dela Cruz" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Contact Number (11 digits, starts with 09)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-phone"></i></span>
+                            <input type="tel" name="contact" id="contactInput" required maxlength="11" placeholder="e.g. 09123456789" 
+                                   oninput="validateContact(this)"
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        </div>
+                        <p id="contactError" class="text-[10px] text-rose-500 mt-1 hidden font-medium">Must be exactly 11 digits and start with 09.</p>
+                    </div>
+
+                    <!-- Calendar / Schedule Date & Time Pickers -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Schedule Date</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-calendar-days text-xs"></i></span>
+                                <input type="date" name="scheduled_date" id="scheduledDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 pl-9 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Schedule Time</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fas fa-clock text-xs"></i></span>
+                                <input type="time" name="scheduled_time" id="scheduledTime" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 pl-9 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Purpose of Visit</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-clipboard-question"></i></span>
+                            <select name="purpose" id="purposeSelect" required onchange="handlePurposeChange(this)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                                <option value="" disabled selected>Select purpose...</option>
+                                <option value="Inquiry / Enrollment">Inquiry / Enrollment</option>
+                                <option value="Meeting / Appointment">Meeting / Appointment</option>
+                                <option value="Delivery / Supplier">Delivery / Supplier</option>
+                                <option value="Maintenance / Repair">Maintenance / Repair</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="otherPurposeContainer" class="hidden">
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Please Specify Purpose</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-pen"></i></span>
+                            <input type="text" id="otherPurposeInput" placeholder="e.g. Special Evaluation" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1">Person to Visit / Department</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-building-user"></i></span>
+                            <input type="text" name="person_to_visit" required placeholder="e.g. Registrar Office / Dean" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 pl-10 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="checkin_date" id="checkin_date">
+                    <input type="hidden" name="checkin_time" id="checkin_time">
+
+                    <button type="submit" class="w-full bg-[#8CC63F] hover:bg-[#7ab332] text-slate-950 font-bold py-3 rounded-xl text-xs transition-all shadow-md shadow-[#8CC63F]/20 mt-2 flex items-center justify-center gap-2">
+                        <i class="fas fa-qrcode"></i> Generate Gate Pass & Schedule
+                    </button>
+                </form>
+
+                <script>
+                    const now = new Date();
+                    document.getElementById('checkin_date').value = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    document.getElementById('checkin_time').value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+                    // Set default calendar date to today
+                    const todayStr = now.toISOString().split('T')[0];
+                    document.getElementById('scheduledDate').value = todayStr;
+
+                    function validateContact(input) {
+                        input.value = input.value.replace(/\D/g, '');
+                        const errorMsg = document.getElementById('contactError');
+                        if (input.value.length > 0 && (input.value.length !== 11 || !input.value.startsWith('09'))) {
+                            errorMsg.classList.remove('hidden');
+                        } else {
+                            errorMsg.classList.add('hidden');
+                        }
+                    }
+
+                    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+                        const contactVal = document.getElementById('contactInput').value;
+                        if (contactVal.length !== 11 || !contactVal.startsWith('09')) {
+                            e.preventDefault();
+                            alert('Error: Contact number must be exactly 11 digits and start with 09.');
+                            document.getElementById('contactInput').focus();
+                            return;
+                        }
+
+                        const selectEl = document.getElementById('purposeSelect');
+                        const inputEl = document.getElementById('otherPurposeInput');
+                        if (selectEl.value === 'Others' && inputEl.value.trim() !== '') {
+                            const othersOption = selectEl.querySelector('option[value="Others"]');
+                            othersOption.value = 'Others: ' + inputEl.value.trim();
+                        }
+                    });
+
+                    function handlePurposeChange(selectEl) {
+                        const container = document.getElementById('otherPurposeContainer');
+                        const inputEl = document.getElementById('otherPurposeInput');
+                        if (selectEl.value === 'Others') {
+                            container.classList.remove('hidden');
+                            inputEl.required = true;
+                        } else {
+                            container.classList.add('hidden');
+                            inputEl.required = false;
+                            inputEl.value = '';
+                        }
+                    }
+                </script>
+            {% endif %}
         </div>
     </main>
 
-    <footer class="w-full text-center py-6 text-[11px] text-slate-500 z-10 border-t border-slate-800/60">
-        <p>© 2026 Eclaro Academy, Inc. All rights reserved. • Professional Light/White Theme Portal</p>
+    <footer class="w-full text-center py-4 border-t border-slate-200 text-[11px] text-slate-500 bg-white">
+        <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
 
 </body>
