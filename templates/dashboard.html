@@ -3,106 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Eclaro VMS</title>
+    <title>ECLARO: Staff Dashboard & Visitor Management</title>
+    <link rel="icon" type="image/png" href="https://www.eclaro.com/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: { colors: { brand: { eclaroGreen: '#85cc00', navy: '#0b192c' } } }
-            }
-        }
-    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .font-serif-title { font-family: 'Merriweather', serif; }
+        .bg-eclaro-navy { background-color: #031137; }
+        .bg-eclaro-lime { background-color: #8CC63F; }
+        .text-eclaro-lime { color: #8CC63F; }
+        .border-eclaro-lime { border-color: #8CC63F; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col justify-between font-sans">
+<body class="bg-eclaro-navy min-h-screen flex flex-col justify-between text-slate-100">
 
-    <!-- HEADER -->
-    <header class="w-full bg-white border-b border-slate-200 py-4 px-6 md:px-12 flex items-center justify-between shadow-sm">
-        <h1 class="text-xl font-extrabold text-brand-navy">
-            <span class="text-brand-eclaroGreen">E</span>CLARO VMS <span class="text-xs font-normal text-slate-500">(Admin Portal)</span>
-        </h1>
-        <a href="{{ url_for('logout') }}" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-4 py-2 rounded-lg transition-all">
-            Logout
-        </a>
-    </header>
-
-    <!-- DASHBOARD CONTENT -->
-    <main class="flex-1 p-4 md:p-8 max-w-6xl w-full mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-            <div>
-                <h2 class="text-2xl font-bold text-brand-navy">Visitor Entry Logs</h2>
-                <p class="text-slate-500 text-xs mt-1">Real-time status tracking for campus security</p>
+    <!-- Navbar / Header -->
+    <header class="w-full px-6 py-4 flex justify-between items-center border-b border-slate-800/80 backdrop-blur-md">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl font-black text-white tracking-widest font-serif-title">E<span class="text-eclaro-lime">C</span>LARO</span>
+            <span class="hidden sm:inline-block text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-full border border-slate-700">Staff Portal (SY 2026–2027)</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="text-right hidden md:block">
+                <p class="text-xs font-semibold text-white">Logged in as: <span class="text-eclaro-lime uppercase">{{ current_user }}</span></p>
             </div>
-            <a href="{{ url_for('index') }}" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-brand-navy font-semibold text-xs px-4 py-2.5 rounded-xl border border-slate-200 transition-all">
-                Open Kiosk Mode ↗
+            
+            <!-- Export to Excel Button -->
+            <a href="/export" class="text-xs bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-2 rounded-xl font-medium shadow-md transition-all flex items-center gap-1.5">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </a>
+
+            <a href="/" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl font-medium border border-slate-700 transition-all flex items-center gap-1.5">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/logout" class="text-xs bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 px-3.5 py-2 rounded-xl font-medium border border-rose-500/30 transition-all flex items-center gap-1.5">
+                <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </div>
+    </header>
 
-        <!-- STATS CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs text-slate-400 font-bold uppercase">Total Visitors</p>
-                <h3 class="text-3xl font-black text-brand-navy mt-1">{{ stats.total }}</h3>
+    <!-- Main Content -->
+    <main class="flex-grow p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-6 my-2">
+
+        <!-- Welcome Banner & Quick Stats -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900/80 p-6 rounded-3xl border border-slate-700/60 shadow-xl backdrop-blur-xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-eclaro-lime via-teal-400 to-eclaro-lime"></div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold font-serif-title text-white">Welcome back, {{ current_user }}! 👋</h1>
+                <p class="text-xs text-slate-400 mt-1">Monitor real-time visitors checking in at Eclaro gates.</p>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs text-slate-400 font-bold uppercase">Currently Inside</p>
-                <h3 class="text-3xl font-black text-emerald-600 mt-1">{{ stats.inside }}</h3>
-            </div>
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs text-slate-400 font-bold uppercase">Checked Out</p>
-                <h3 class="text-3xl font-black text-slate-500 mt-1">{{ stats.out }}</h3>
+            <div class="bg-slate-800/90 border border-slate-700 px-5 py-3 rounded-2xl flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-eclaro-lime/20 text-eclaro-lime flex items-center justify-center text-lg">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Total Stored Visitors</p>
+                    <p class="text-lg font-bold text-white">{{ visitors|length }}</p>
+                </div>
             </div>
         </div>
 
-        <!-- TABLE LOGS -->
-        <div class="bg-white border border-slate-200 rounded-2xl shadow-md overflow-hidden">
+        <!-- Visitor Logs Table Container -->
+        <div class="bg-slate-900/90 backdrop-blur-xl rounded-3xl border border-slate-700/60 shadow-2xl overflow-hidden">
+            
+            <!-- Table Header & Search Bar -->
+            <div class="p-5 sm:p-6 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-bold text-white font-serif-title flex items-center gap-2">
+                        <i class="fas fa-clipboard-list text-eclaro-lime"></i> Visitor Logs History
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Permanent record database of all registered visitors.</p>
+                </div>
+
+                <!-- Real-time Search Bar -->
+                <div class="relative w-full md:w-72">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fas fa-search text-xs"></i>
+                    </span>
+                    <input type="text" id="searchInput" onkeyup="filterVisitors()" placeholder="Search visitor, host, purpose..." 
+                           class="w-full bg-slate-800/90 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-eclaro-lime transition-all shadow-inner">
+                </div>
+            </div>
+
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-100 text-brand-navy font-bold uppercase border-b border-slate-200">
-                        <tr>
-                            <th class="p-3.5">Pass ID</th>
-                            <th class="p-3.5">Name</th>
-                            <th class="p-3.5">Contact</th>
-                            <th class="p-3.5">Purpose</th>
-                            <th class="p-3.5">Department</th>
-                            <th class="p-3.5">Time</th>
-                            <th class="p-3.5">Status</th>
-                            <th class="p-3.5 text-center">Action</th>
+                <table class="w-full text-left border-collapse" id="visitorTable">
+                    <thead>
+                        <tr class="bg-slate-800/60 text-slate-400 text-[11px] uppercase tracking-wider border-b border-slate-800">
+                            <th class="py-4 px-6 font-semibold">Date & Time</th>
+                            <th class="py-4 px-6 font-semibold">Visitor Name</th>
+                            <th class="py-4 px-6 font-semibold">Contact No.</th>
+                            <th class="py-4 px-6 font-semibold">Purpose</th>
+                            <th class="py-4 px-6 font-semibold">Destination</th>
+                            <th class="py-4 px-6 font-semibold">Status</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        {% for log in logs %}
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3.5 font-mono font-bold text-brand-navy">{{ log.id }}</td>
-                            <td class="p-3.5 font-semibold text-slate-800">{{ log.name }}</td>
-                            <td class="p-3.5 text-slate-600">{{ log.phone }}</td>
-                            <td class="p-3.5 text-slate-600">{{ log.purpose }}</td>
-                            <td class="p-3.5 text-slate-600">{{ log.department }}</td>
-                            <td class="p-3.5 text-slate-500 text-[11px]">{{ log.time }}</td>
-                            <td class="p-3.5">
-                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold {{ 'bg-emerald-100 text-emerald-800 border border-emerald-200' if log.status == 'Inside' else 'bg-slate-100 text-slate-600 border border-slate-200' }}">
-                                    {{ log.status }}
-                                </span>
-                            </td>
-                            <td class="p-3.5 text-center">
-                                <a href="{{ url_for('toggle_status', pass_id=log.id) }}" class="px-3 py-1.5 rounded-lg text-xs font-semibold {{ 'bg-amber-100 text-amber-700 hover:bg-amber-200' if log.status == 'Inside' else 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' }} transition-all">
-                                    {{ 'Check Out' if log.status == 'Inside' else 'Re-enter' }}
-                                </a>
-                            </td>
-                        </tr>
+                    <tbody class="divide-y divide-slate-800/60 text-xs text-slate-200" id="tableBody">
+                        {% if not visitors %}
+                            <tr id="noDataRow">
+                                <td colspan="6" class="text-center py-12 text-slate-500">
+                                    <div class="space-y-2">
+                                        <i class="fas fa-folder-open text-3xl text-slate-600"></i>
+                                        <p class="text-sm">No visitors checked in yet.</p>
+                                    </div>
+                                </td>
+                            </tr>
                         {% else %}
-                        <tr>
-                            <td colspan="8" class="p-4 text-center text-slate-400">No visitor records found.</td>
-                        </tr>
-                        {% endfor %}
+                            {% for v in visitors %}
+                            <tr class="visitor-row hover:bg-slate-800/40 transition-colors">
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="font-semibold text-eclaro-lime block">{{ v.checkin_date }}</span>
+                                    <span class="text-[11px] text-slate-400">{{ v.checkin_time }}</span>
+                                </td>
+                                <td class="py-4 px-6 font-semibold text-white visitor-name">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 font-bold text-[10px]">
+                                            {{ v.name[0]|upper }}
+                                        </div>
+                                        {{ v.name }}
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-slate-300">{{ v.contact }}</td>
+                                <td class="py-4 px-6">
+                                    <span class="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-slate-300 font-medium">
+                                        {{ v.purpose }}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-slate-300 font-medium">{{ v.person_to_visit }}</td>
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1.5 bg-eclaro-lime/10 text-eclaro-lime border border-eclaro-lime/30 px-3 py-1 rounded-full text-[11px] font-semibold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-eclaro-lime animate-pulse"></span> Checked-in
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
+
     </main>
 
-    <footer class="w-full py-4 border-t border-slate-200 bg-white text-center text-xs text-slate-500">
-        &copy; 2026 Eclaro Academy, Inc. All Rights Reserved.
+    <!-- JavaScript Filter Function -->
+    <script>
+        function filterVisitors() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('.visitor-row');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(input)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 border-t border-slate-800/80 text-[11px] text-slate-400">
+        <p>© 2026 Eclaro Academy, Inc. All Rights Reserved.</p>
     </footer>
+
 </body>
 </html>
