@@ -1,11 +1,11 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, Response
+import csv
+import io
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'
+app.secret_key = 'eclaro_academy_secure_secret_key'
 
-# Example structure if you are using a Python list as a temporary database
-# (If using MongoDB or SQLite, adapt this to update your specific DB record)
 visitors_db = []
 
 @app.route('/')
@@ -16,23 +16,27 @@ def index():
 def add_visitor():
     name = request.form.get('name')
     contact = request.form.get('contact')
+    
+    # Backend strict validation for contact number
+    if not contact or len(contact) != 11 or not contact.isdigit() or not contact.startswith('09'):
+        return render_template('index.html', success=False, error="Invalid contact number. Must be exactly 11 digits starting with 09.")
+    
     purpose = request.form.get('purpose')
     person_to_visit = request.form.get('person_to_visit')
     checkin_date = request.form.get('checkin_date')
     checkin_time = request.form.get('checkin_time')
     
-    # Generate a simple QR code URL (using an external API or your existing logic)
-    qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=Visitor:{name}"
+    qr_url = f"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=EclaroAcademy-Visitor:{name}"
     
     visitor_data = {
-        "id": len(visitors_db), # Simple ID tracker
+        "id": len(visitors_db),
         "name": name,
         "contact": contact,
         "purpose": purpose,
         "person_to_visit": person_to_visit,
         "checkin_date": checkin_date,
         "checkin_time": checkin_time,
-        "checkout_time": "-", # Initially blank/dash until time-out
+        "checkout_time": "-",
         "status": "Checked-in",
         "qr_url": qr_url
     }
@@ -45,7 +49,6 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        # Simple mock authentication (change according to your system setup)
         if username in ['admin', 'registrar'] and password == 'password123':
             session['user'] = username
             return redirect(url_for('dashboard'))
@@ -64,7 +67,6 @@ def checkout(visitor_id):
     if 'user' not in session:
         return redirect(url_for('login'))
     
-    # Find visitor by ID and update checkout time
     current_time = datetime.now().strftime('%I:%M %p - %b %d, %Y')
     for v in visitors_db:
         if v['id'] == visitor_id:
@@ -73,6 +75,31 @@ def checkout(visitor_id):
             break
             
     return redirect(url_for('dashboard'))
+
+@app.route('/export')
+def export_excel():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['Visitor Name', 'Contact No.', 'Purpose', 'Destination', 'Check-In Date & Time', 'Time-Out', 'Status'])
+    for v in visitors_db:
+        writer.writerow([
+            v['name'], 
+            v['contact'], 
+            v['purpose'], 
+            v['person_to_visit'], 
+            f"{v['checkin_date']} | {v['checkin_time']}", 
+            v['checkout_time'], 
+            v['status']
+        ])
+    output.seek(0)
+    return Response(
+        output,
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment;filename=Eclaro_Academy_Visitor_Logs.csv"}
+    )
 
 @app.route('/logout')
 def logout():
