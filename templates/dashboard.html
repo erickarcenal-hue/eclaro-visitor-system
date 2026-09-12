@@ -42,7 +42,7 @@
             <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#8CC63F] via-teal-400 to-[#8CC63F]"></div>
             <div>
                 <h1 class="text-xl sm:text-2xl font-bold font-serif-title text-slate-900">Welcome back, {{ current_user }}! 👋</h1>
-                <p class="text-xs text-slate-500 mt-1">Monitor real-time Time-In and Time-Out logs of visitors at Eclaro Academy.</p>
+                <p class="text-xs text-slate-500 mt-1">Monitor visitor schedules, appointments, Time-In and Time-Out logs.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="/export" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-xl text-xs transition-all shadow-sm flex items-center gap-2">
@@ -50,10 +50,10 @@
                 </a>
                 <div class="bg-slate-50 border border-slate-200 px-5 py-2.5 rounded-2xl flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-[#8CC63F]/20 text-[#72a131] flex items-center justify-center text-base">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-calendar-check"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Total Visitors</p>
+                        <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Total Records</p>
                         <p class="text-base font-bold text-slate-900">{{ visitors|length }}</p>
                     </div>
                 </div>
@@ -64,16 +64,16 @@
             <div class="p-5 sm:p-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 class="text-base font-bold text-slate-900 font-serif-title flex items-center gap-2">
-                        <i class="fas fa-clipboard-list text-[#72a131]"></i> Visitor Logs
+                        <i class="fas fa-calendar-alt text-[#72a131]"></i> Appointment Schedules & Visitor Logs
                     </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Track exact entry and exit times of registered guests.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Track visitor schedules, entry times, and exits.</p>
                 </div>
 
                 <div class="relative w-full md:w-72">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                         <i class="fas fa-search text-xs"></i>
                     </span>
-                    <input type="text" id="searchInput" onkeyup="filterVisitors()" placeholder="Search visitor, purpose..." 
+                    <input type="text" id="searchInput" onkeyup="filterVisitors()" placeholder="Search name, date, purpose..." 
                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#8CC63F] focus:bg-white transition-all shadow-inner">
                 </div>
             </div>
@@ -86,18 +86,19 @@
                             <th class="py-4 px-6 font-semibold">Contact No.</th>
                             <th class="py-4 px-6 font-semibold">Purpose</th>
                             <th class="py-4 px-6 font-semibold">Destination</th>
+                            <th class="py-4 px-6 font-semibold text-indigo-600">Schedule (Calendar)</th>
                             <th class="py-4 px-6 font-semibold text-[#72a131]">Time-In</th>
                             <th class="py-4 px-6 font-semibold text-amber-600">Time-Out</th>
-                            <th class="py-4 px-6 font-semibold text-center">Action / Status</th>
+                            <th class="py-4 px-6 font-semibold text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-xs text-slate-700" id="tableBody">
                         {% if not visitors %}
                             <tr>
-                                <td colspan="7" class="text-center py-12 text-slate-400">
+                                <td colspan="8" class="text-center py-12 text-slate-400">
                                     <div class="space-y-2">
                                         <i class="fas fa-folder-open text-3xl text-slate-300"></i>
-                                        <p class="text-sm">No visitors recorded yet.</p>
+                                        <p class="text-sm">No scheduled visitors recorded yet.</p>
                                     </div>
                                 </td>
                             </tr>
@@ -119,18 +120,26 @@
                                     </span>
                                 </td>
                                 <td class="py-4 px-6 text-slate-700 font-medium">{{ v.person_to_visit }}</td>
+                                <!-- Schedule Details -->
+                                <td class="py-4 px-6 whitespace-nowrap">
+                                    <span class="font-semibold text-indigo-600 block"><i class="fas fa-calendar text-[10px]"></i> {{ v.scheduled_date }}</span>
+                                    <span class="text-[11px] text-slate-500"><i class="fas fa-clock text-[10px]"></i> {{ v.scheduled_time }}</span>
+                                </td>
+                                <!-- Time-In Details -->
                                 <td class="py-4 px-6 whitespace-nowrap">
                                     <span class="font-semibold text-[#72a131] block">{{ v.checkin_date }}</span>
-                                    <span class="text-[11px] text-slate-500"><i class="fas fa-arrow-right-to-bracket text-[10px]"></i> {{ v.checkin_time }}</span>
+                                    <span class="text-[11px] text-slate-500">{{ v.checkin_time }}</span>
                                 </td>
+                                <!-- Time-Out Details -->
                                 <td class="py-4 px-6 whitespace-nowrap">
                                     {% if v.checkout_time and v.checkout_time != '-' %}
                                         <span class="font-semibold text-amber-600 block">Logged Out</span>
-                                        <span class="text-[11px] text-slate-500"><i class="fas fa-arrow-right-from-bracket text-[10px]"></i> {{ v.checkout_time }}</span>
+                                        <span class="text-[11px] text-slate-500">{{ v.checkout_time }}</span>
                                     {% else %}
-                                        <span class="text-slate-400 italic">Not yet checked out</span>
+                                        <span class="text-slate-400 italic">Inside campus</span>
                                     {% endif %}
                                 </td>
+                                <!-- Action Button for Time-Out -->
                                 <td class="py-4 px-6 text-center whitespace-nowrap">
                                     {% if not v.checkout_time or v.checkout_time == '-' %}
                                         <form action="/checkout/{{ v.id }}" method="POST" class="inline">
@@ -140,7 +149,7 @@
                                         </form>
                                     {% else %}
                                         <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-500 border border-slate-200 px-3 py-1 rounded-full text-[11px] font-semibold">
-                                            <i class="fas fa-check text-emerald-600"></i> Completed
+                                            <i class="fas fa-check text-emerald-600"></i> Done
                                         </span>
                                     {% endif %}
                                 </td>
