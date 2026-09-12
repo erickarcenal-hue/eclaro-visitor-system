@@ -23,7 +23,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Route para sa Welcome/Home page
+# Route para sa Welcome/Home page (Laging green ang 'E')
 @app.route('/')
 def home():
     return render_template('welcome.html')
@@ -67,7 +67,7 @@ def add_visitor():
 
     return render_template('index.html', success=True, visitor=visitor_data)
 
-# Route para sa Admin Dashboard
+# Route para sa Admin Dashboard (Gumagamit ng dashboard.html)
 @app.route('/admin')
 def admin():
     conn = sqlite3.connect('visitors.db')
@@ -77,7 +77,7 @@ def admin():
     visitors = cursor.fetchall()
     conn.close()
     
-    return render_template('admin.html', visitors=visitors)
+    return render_template('dashboard.html', visitors=visitors)
 
 if __name__ == '__main__':
     init_db()
