@@ -51,6 +51,11 @@ def add_visitor():
     visitors_db.append(visitor_data)
     return render_template('index.html', success=True, visitor=visitor_data)
 
+# FIX: Idinagdag ito para maiwasan ang 404 error kung /admin ang mapuntahan
+@app.route('/admin')
+def admin_redirect():
+    return redirect(url_for('login'))
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
